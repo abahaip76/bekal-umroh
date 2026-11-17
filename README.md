@@ -39,3 +39,7 @@ Aplikasi ini alat bantu persiapan. Ia tidak menggantikan pembimbing manasik, dok
 ## Sumber data
 
 Data peta © kontributor [OpenStreetMap](https://www.openstreetmap.org/copyright), lisensi ODbL. Posisi pintu, hotel, dan toilet mengikuti data itu dan bisa berbeda dari kondisi lapangan.
+
+## Setelah mengubah config.js atau content.js
+
+Naikkan angka `?v=` pada baris `<script src="config.js?v=...">` dan `<script src="content.js?v=...">` di `index.html`, supaya HP pengguna tidak memakai salinan lama yang tersimpan di browser.
