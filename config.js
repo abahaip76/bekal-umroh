@@ -4,7 +4,7 @@ window.APP_CONFIG = {
   tagline: "Persiapan, manasik, dan peta dalam satu aplikasi",
   /* Isi dengan Client ID dari Google Cloud Console (jenis: Web application).
      Selama kosong, tombol Google tidak tampil dan pengguna masuk sebagai tamu. */
-  googleClientId: "",
+  googleClientId: "352862920731-21qfohbl9h0mjrnlhpe4r8a8s41280u7.apps.googleusercontent.com",
   /* Halaman checkout Mayar untuk traktir. */
   mayarUrl: "https://abahdigital-36985.myr.id/pl/traktir-kopi-34630",
   /* Nama peninjau materi. Selama kosong, aplikasi menampilkan label "belum ditinjau". */
