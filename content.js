@@ -160,7 +160,7 @@ window.MATERI = {
       {judul:"Koper bagasi", ket:"Umumnya 20 sampai 23 kg, tergantung maskapai dan paket", butir:["Pakaian ibadah secukupnya (gamis, baju koko)","Pakaian dalam dan pakaian tidur","Sajadah, botol lipat, dan tas serut","Sandal dan sepatu cadangan","Jaket atau sweater tambahan","Handuk kecil","Sisa peralatan mandi ukuran besar","Makanan kering dari rumah"]}
     ],
     pria: ["Kain ihram dua lembar dan sabuk ihram","Peci atau kopiah"],
-    wanita: ["Pakaian ihram longgar berwarna gelap, legging, dan kaus kaki","Hijab segi empat","Manset tangan","Pembalut, walau sedang tidak jadwal haid"],
+    wanita: ["Pakaian longgar yang menutup aurat untuk ihram (tidak ada warna khusus), legging, dan kaus kaki","Hijab segi empat","Manset tangan","Pembalut, walau sedang tidak jadwal haid"],
     aturan: [
       ["Cairan di bawah 100 ml per wadah","ya","ya",""],
       ["Cairan di atas 100 ml","tidak","ya",""],
