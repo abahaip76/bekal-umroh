@@ -1,0 +1,16 @@
+{
+  "name": "Bekal Umroh",
+  "short_name": "Bekal Umroh",
+  "description": "Persiapan, manasik, dan peta Masjidil Haram dan Masjid Nabawi dalam satu aplikasi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f1f2ef",
+  "theme_color": "#15181a",
+  "lang": "id",
+  "icons": [
+    {"src": "ikon/ikon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "ikon/ikon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "ikon/logo.svg", "sizes": "any", "type": "image/svg+xml"}
+  ]
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512">
+<title>Bekal Umroh</title>
+<defs><path id="k" d="M0 -40 C14 -40 18 -26 17 -12 C16 2 10 8 9 14 L-9 14 C-10 8 -16 2 -17 -12 C-18 -26 -14 -40 0 -40 Z M0 20 C9 20 11 26 11 32 C11 40 6 44 0 44 C-6 44 -11 40 -11 32 C-11 26 -9 20 0 20 Z"/></defs>
+<rect width="512" height="512" rx="112" fill="#0d6b5f"/>
+<rect x="200" y="276" width="216" height="12" rx="6" fill="#f1f2ef" opacity=".28"/>
+<rect x="222" y="92" width="172" height="184" rx="6" fill="#15181a"/>
+<rect x="222" y="132" width="172" height="24" fill="#c99a36"/>
+<rect x="342" y="182" width="30" height="64" rx="3" fill="#c99a36"/>
+<g fill="#f1f2ef">
+<use xlink:href="#k" href="#k" transform="translate(112,436) rotate(33) scale(1.15)"/>
+<use xlink:href="#k" href="#k" transform="translate(178,410) rotate(33) scale(1.02)" opacity=".86"/>
+<use xlink:href="#k" href="#k" transform="translate(166,346) rotate(33) scale(.9)" opacity=".7"/>
+<use xlink:href="#k" href="#k" transform="translate(222,326) rotate(33) scale(.78)" opacity=".55"/>
+</g>
+</svg>

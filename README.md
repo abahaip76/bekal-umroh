@@ -43,3 +43,7 @@ Data peta © kontributor [OpenStreetMap](https://www.openstreetmap.org/copyright
 ## Setelah mengubah config.js atau content.js
 
 Naikkan angka `?v=` pada baris `<script src="config.js?v=...">` dan `<script src="content.js?v=...">` di `index.html`, supaya HP pengguna tidak memakai salinan lama yang tersimpan di browser.
+
+## Logo dan ikon
+
+Logo ada di `ikon/logo.svg` (vektor, bisa diperbesar tanpa pecah). Versi PNG untuk ikon HP dan tab browser ada di folder yang sama, dan `manifest.webmanifest` membuat aplikasi bisa dipasang ke layar utama HP dengan ikon ini.

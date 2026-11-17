@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#15181a">
 <title>Bekal Umroh</title>
+<link rel="icon" href="ikon/logo.svg" type="image/svg+xml">
+<link rel="icon" href="ikon/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="ikon/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -127,10 +132,12 @@ label.isian input,label.isian textarea{border:1px solid var(--garis);border-radi
 table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan th,table.aturan td{padding:8px 6px;border-bottom:1px solid var(--garis);text-align:left;vertical-align:top}table.aturan th:nth-child(n+2),table.aturan td:nth-child(n+2){text-align:center;width:56px}
 .tanda{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:700}.tanda.ya{background:#2e7d32}.tanda.tidak{background:#c62828}.tanda.jangan{background:#d18b00}
 .musim{border:1px solid var(--garis);border-radius:10px;padding:10px;margin-top:8px}.musim.on{border-color:var(--emas-isi,#c9a227);background:rgba(201,162,39,.08)}
+.logo-masuk{display:block;width:88px;height:88px;margin:0 0 14px;border-radius:20px}.logo-atas{width:30px;height:30px;border-radius:8px;flex:none}
 </style>
 </head>
 <body>
 <section id="masuk"><div class="dalam">
+  <img src="ikon/logo.svg" alt="" class="logo-masuk" width="88" height="88">
   <div class="garis-emas"></div>
   <h1 id="mNama">Bekal Umroh</h1>
   <p id="mTag" style="margin:0"></p>
@@ -147,6 +154,7 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 
 <div id="app">
   <header class="atas">
+    <img src="ikon/logo.svg" alt="" class="logo-atas" width="30" height="30">
     <h1 id="aNama">Bekal Umroh</h1>
     <button class="ikon-btn" id="btnBesar" aria-label="Perbesar huruf">A+</button>
     <button class="avatar" id="btnAkun" aria-label="Akun"></button>
