@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peta Masjidil Haram dan Masjid Nabawi</title>
+<style>
+:root{--bg:#f6f3ec;--card:#fff;--ink:#1f2328;--muted:#5f6670;--line:#e2dccf;--accent:#0f766e;--onaccent:#fff;
+--ground:#efe9dc;--plaza:#e6dcc8;--road:#ffffff;--roadc:#cfc7b6;--tunnel:#b9b3a6;--b0:#d9cfbd;--bs:#b8ad98;--mosq:#f4efe3;--mosqs:#a8905a;--hotel:#e3c9a8;--hotels:#b08a55;
+--green:#cfdcc0;--cem:#c9d3bb;--water:#cfe3ef;--busa:#ddd3ee;--women:#f2dbe3;--halo:#fbf9f4;--constr:#e7e0d0}
+@media (prefers-color-scheme:dark){:root{--bg:#131619;--card:#1c2024;--ink:#e9e6e0;--muted:#a2a8b0;--line:#2e3439;--accent:#2dd4bf;--onaccent:#06211e;
+--ground:#1a1e21;--plaza:#262b2f;--road:#3a4046;--roadc:#23282c;--tunnel:#4a5158;--b0:#343a40;--bs:#4b535a;--mosq:#5a5446;--mosqs:#c9a85a;--hotel:#5b4a36;--hotels:#b08a55;
+--green:#26352a;--cem:#2a3628;--water:#1f3340;--busa:#2e2840;--women:#3d2a33;--halo:#131619;--constr:#2a2c2a}}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-text-size-adjust:100%;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding:0 12px}
+h1{font-size:19px;margin:14px 0 2px}
+h2{font-size:16px;margin:22px 0 8px}
+.sub{color:var(--muted);font-size:13px;margin:0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 8px}
+.seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{border:0;background:none;color:var(--ink);font:inherit;font-size:14px;padding:7px 11px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.seg button.on{background:var(--accent);color:var(--onaccent)}
+.search{position:relative;flex:1 1 220px;min-width:180px}
+.search input{width:100%;font:inherit;font-size:14px;padding:9px 11px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.res{position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--card);border:1px solid var(--line);border-radius:10px;z-index:20;max-height:300px;overflow:auto;display:none;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.res button{display:flex;gap:8px;align-items:center;width:100%;text-align:left;border:0;background:none;color:var(--ink);font:inherit;font-size:13.5px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--line)}
+.res button:last-child{border-bottom:0}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:5px 10px;cursor:pointer;user-select:none}
+.chip.on{color:var(--ink);border-color:var(--accent)}
+.chip.off .dot{opacity:.3}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.stage{position:relative;height:68vh;min-height:400px;max-height:780px;background:var(--ground);border:1px solid var(--line);border-radius:14px;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+#c2{position:absolute;inset:0;width:100%;height:100%;display:block}
+#gl{position:absolute;inset:0;display:none}
+#gl canvas{display:block;width:100%;height:100%}
+#zk{position:absolute;inset:0;display:none;background:var(--ground)}
+#zk svg{width:100%;height:100%;display:block}
+.ctrls{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;z-index:3}
+.ctrls button{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:17px;cursor:pointer}
+.compass{position:absolute;left:10px;top:10px;z-index:3;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:4px 8px;font-size:12px;font-weight:600;text-align:center;line-height:1.1}
+.scale{position:absolute;left:10px;bottom:10px;z-index:2;font-size:11px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:3px 8px}
+.scale i{display:block;height:4px;border:1px solid var(--muted);border-top:0;margin-top:2px}
+.info{position:absolute;left:10px;bottom:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 38px 12px 14px;box-shadow:0 6px 24px rgba(0,0,0,.2);z-index:5;display:none;width:min(420px,calc(100% - 20px));max-height:62%;overflow:auto}
+@media (max-width:560px){.info{max-height:46%}}
+.info h3{margin:0 0 3px;font-size:15px}
+.info p{margin:5px 0 0;font-size:13.5px}
+.info ul{margin:6px 0 0;padding-left:18px;font-size:13.5px}
+.info .x{position:absolute;right:6px;top:6px;border:0;background:none;color:var(--muted);font-size:20px;cursor:pointer;width:30px;height:30px}
+.info .k{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.info .act{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:12.5px;border-radius:8px;padding:6px 10px;cursor:pointer}
+.err{position:absolute;inset:0;display:none;align-items:center;justify-content:center;text-align:center;padding:24px;color:var(--muted);font-size:14px;z-index:2}
+.quick{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:thin}
+.quick button{flex:none}
+.note{background:var(--card);border:1px solid var(--line);border-left:4px solid #d97706;border-radius:10px;padding:10px 12px;font-size:13.5px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media (min-width:760px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.card .d{font-size:12px;color:var(--muted)}
+.card p{margin:4px 0 6px;font-size:14px}
+.card a,footer a{color:var(--accent);text-decoration:none;font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tw{overflow-x:auto}
+footer{color:var(--muted);font-size:12px;padding:10px 0 30px}
+.attr{position:absolute;right:10px;bottom:6px;z-index:2;font-size:10px;color:var(--muted);background:var(--card);border-radius:6px;padding:1px 6px;opacity:.85}
+.embed body{height:100%}
+.embed .wrap{height:100vh;display:flex;flex-direction:column;padding:8px 8px 4px;max-width:none}
+.embed .wrap>h1,.embed .wrap>.sub,.embed .note,.embed #gH,.embed #zH,.embed #uH,.embed .tw,.embed #upd,.embed footer{display:none}
+.embed .bar{margin:0 0 6px;gap:6px}
+.embed .seg button{padding:6px 9px;font-size:13px}
+.embed .chips{flex-wrap:nowrap;overflow-x:auto;margin-bottom:6px;scrollbar-width:none}
+.embed .chip{flex:none}
+.embed .stage{flex:1;height:auto;min-height:0;max-height:none}
+.embed .quick{padding:6px 0 2px}
+.embed .search{flex:1 1 100%}
+.embed .info{max-height:58%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Peta & Maket Masjidil Haram dan Masjid Nabawi</h1>
+  <p class="sub">Disusun dari data OpenStreetMap yang diambil 16 November 2026: tapak bangunan asli, pintu bernomor, hotel, toilet, terminal, dan tempat ziarah.</p>
+  <div class="bar">
+    <div class="seg" id="siteSeg"><button data-s="mk" class="on">Makkah</button><button data-s="md">Madinah</button></div>
+    <div class="seg" id="modeSeg"><button data-m="2d" class="on">Peta 2D</button><button data-m="3d">Maket 3D</button><button data-m="zk">Ziarah kota</button></div>
+    <div class="search"><input id="q" type="search" placeholder="Cari hotel, pintu, tempat…" autocomplete="off"><div class="res" id="res"></div></div>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="stage" id="stage">
+    <canvas id="c2"></canvas>
+    <div id="gl"></div>
+    <div id="zk"></div>
+    <div class="err" id="err">Maket 3D butuh pustaka Three.js dan WebGL, dan salah satunya gagal dimuat di perangkat ini. Peta 2D tetap bisa dipakai.</div>
+    <div class="compass" id="compass">U<br>▲</div>
+    <div class="ctrls"><button id="zin" aria-label="Perbesar">+</button><button id="zout" aria-label="Perkecil">−</button><button id="reset" aria-label="Kembali ke awal">⟲</button></div>
+    <div class="scale" id="scale"></div>
+    <div class="attr">© OpenStreetMap</div>
+    <div class="info" id="info"><button class="x" id="infoX" aria-label="Tutup">×</button><div id="infoB"></div></div>
+  </div>
+  <div class="quick" id="quick"></div>
+
+  <div class="note"><b>Batas ketelitian.</b> Tapak bangunan, pintu, hotel, dan toilet berasal dari OpenStreetMap, peta yang diisi relawan. Datanya rinci tetapi bisa tertinggal dari kondisi lapangan, terutama di area proyek. Jarak yang tampil adalah garis lurus, jadi jalan kaki sebenarnya lebih jauh. Tinggi bangunan tanpa data tinggi, menara dan payung Masjid Nabawi di maket adalah perkiraan. Di lokasi, ikuti papan petunjuk, askar, dan izin di aplikasi Nusuk.</div>
+
+  <h2 id="gH">Daftar pintu utama</h2>
+  <div class="tw"><table id="gT"></table></div>
+
+  <h2 id="zH">Tempat ziarah dan patokan kota</h2>
+  <div class="tw"><table id="zT"></table></div>
+
+  <h2 id="uH">Kabar kondisi terbaru</h2>
+  <div class="grid" id="upd"></div>
+
+  <footer>Data peta © kontributor OpenStreetMap, lisensi ODbL (<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">openstreetmap.org/copyright</a>). Koordinat tempat ziarah dari Nominatim/OpenStreetMap. Kabar terbaru bersumber dari tautan di tiap kartu.</footer>
+</div>
+
+<script src="data.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+"use strict";
+var HD=window.HD,$=function(i){return document.getElementById(i);};
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+var SITE={mk:{name:"Masjidil Haram",city:"Makkah",v:{x:-90,y:110,span:1050},cam:{th:-0.55,ph:0.95,r:1250,tx:-80,ty:140}},
+          md:{name:"Masjid Nabawi",city:"Madinah",v:{x:-10,y:115,span:900},cam:{th:0.5,ph:0.9,r:950,tx:-10,ty:110}}};
+var CAT={gate:{c:"#2563eb",n:"Pintu"},hotel:{c:"#b45309",n:"Hotel"},toilet:{c:"#0891b2",n:"Toilet & wudu"},bus:{c:"#7c3aed",n:"Terminal & bus"},
+  ziarah:{c:"#0f766e",n:"Ibadah & ziarah"},layanan:{c:"#be123c",n:"Layanan"},belanja:{c:"#65a30d",n:"Belanja & makan"}};
+var KMAP={hotel:"hotel",toilet:"toilet",wudu:"toilet",zamzam:"toilet",bus:"bus",ibadah:"ziarah",museum:"ziarah",masjid:"ziarah",medis:"layanan",apotek:"layanan",uang:"layanan",info:"layanan",lift:"layanan",loker:"layanan",aman:"layanan",belanja:"belanja",makan:"belanja"};
+var KNAME={hotel:"Hotel",toilet:"Toilet",wudu:"Tempat wudu",zamzam:"Air Zamzam",bus:"Terminal / halte",ibadah:"Tempat ibadah",museum:"Museum / situs",masjid:"Masjid",medis:"Layanan kesehatan",apotek:"Apotek",uang:"Uang / penukaran",info:"Informasi",lift:"Lift / eskalator",loker:"Loker barang",aman:"Keamanan",belanja:"Belanja",makan:"Tempat makan"};
+var GLYPH={toilet:"WC",wudu:"W",zamzam:"Z",bus:"B",medis:"+",apotek:"Rx",uang:"$",info:"i",lift:"↕",loker:"L",aman:"!",belanja:"S",makan:"M",masjid:"☾",museum:"★",ibadah:"●"};
+var layers={gate:true,hotel:true,toilet:true,bus:true,ziarah:true,layanan:false,belanja:false};
+var state={site:"mk",mode:"2d",sel:null};
+var PREP={};
+
+var ZK={
+ md:[["Masjid Quba",24.43942,39.61746,"Masjid pertama yang dibangun Nabi. Terhubung jalur pejalan kaki Quba Avenue dari arah Nabawi."],
+  ["Masjid Qiblatain",24.48416,39.57886,"Masjid dua kiblat, tempat turunnya perintah pindah kiblat ke Ka'bah."],
+  ["Makam Syuhada Uhud & Jabal Rumat",24.50374,39.61175,"Makam para syuhada Perang Uhud dan bukit pemanah di sebelahnya."],
+  ["Jabal Uhud",24.52273,39.61826,"Gunung di utara kota, latar Perang Uhud."],
+  ["Masjid Sab'ah / Khandaq",24.47721,39.59497,"Kompleks masjid di lokasi Perang Khandaq."],
+  ["Masjid Ghamamah",24.46581,39.60696,"Dekat pelataran barat daya Nabawi, bisa jalan kaki."],
+  ["Masjid Jum'ah",24.44556,39.61557,"Di jalur menuju Quba."],
+  ["Miqat Dzulhulaifah (Bir Ali)",24.41364,39.54299,"Miqat untuk jamaah yang berangkat umrah dari Madinah."],
+  ["Stasiun Kereta Cepat Haramain",24.4723,39.6996,"Kereta cepat ke Makkah lewat Jeddah."],
+  ["Bandara Madinah",24.55549,39.70609,"Bandara Internasional Pangeran Mohammad bin Abdulaziz."],
+  ["Percetakan Al-Qur'an Raja Fahd",24.51595,39.54138,"Kompleks percetakan mushaf."],
+  ["Museum Dar Al Madinah",24.47667,39.68769,"Museum sejarah Madinah."],
+  ["Al-Noor Mall",24.49602,39.59537,"Pusat belanja besar."]],
+ mk:[["Jabal Nur & Gua Hira",21.45737,39.8592,"Tempat turunnya wahyu pertama. Pendakian cukup berat."],
+  ["Hira Cultural District",21.45685,39.86845,"Kawasan museum di kaki Jabal Nur."],
+  ["Jabal Tsur",21.377,39.84987,"Gua tempat Nabi dan Abu Bakar bersembunyi saat hijrah."],
+  ["Masjid Aisyah (Tan'im)",21.46771,39.80137,"Miqat terdekat untuk umrah dari Makkah."],
+  ["Masjid Ji'ranah",21.56818,39.95114,"Miqat umrah di timur laut Makkah."],
+  ["Pemakaman Ma'la",21.43689,39.82898,"Pemakaman tua di utara Masjidil Haram."],
+  ["Masjid Jin",21.43345,39.82897,"Di dekat Ma'la."],
+  ["Jamarat (Mina)",21.42078,39.87316,"Tempat lontar jumrah."],
+  ["Masjid Khaif (Mina)",21.41517,39.87801,"Masjid besar di Mina."],
+  ["Muzdalifah (Masy'aril Haram)",21.38623,39.91249,"Tempat mabit saat haji."],
+  ["Masjid Namirah (Arafah)",21.35296,39.9663,"Masjid di Arafah."],
+  ["Jabal Rahmah (Arafah)",21.3548,39.9841,"Bukit di Padang Arafah."],
+  ["Stasiun Kereta Cepat Haramain",21.41766,39.78853,"Kereta cepat ke Madinah lewat Jeddah."],
+  ["Museum Arsitektur Dua Masjid Suci",21.43383,39.75437,"Pameran arsitektur dan benda bersejarah kedua masjid."],
+  ["Parkir Kudai",21.39752,39.82736,"Area parkir dengan bus penghubung ke Haram."],
+  ["Hudaibiyah (Asy-Syumaisi)",21.442,39.626,"Miqat di arah Jeddah. Posisi di peta ini perkiraan.",1]]
+};
+var UPD={
+ mk:[["25 Mei 2026","Perluasan ketiga makin rampung: bangunan utama sisi utara, Mas'a, Mataf, dan halaman luar. Crane sudah tidak terlihat.","Okezone via RCTI+","https://www.rctiplus.com/news/detail/terkini/5391256/wajah-baru-masjidil-haram-usai-perluasan-ketiga--kapasitas-jemaah-bertambah--akses-makin-mudah"],
+  ["14 Juni 2026","Mataf lantai dasar kembali khusus jamaah berihram. Pria berpakaian biasa tawaf di lantai 2, 3, atau atap.","JawaPos","https://www.jawapos.com/haji/2606140170/masjidil-haram-berlakukan-kembali-aturan-wajib-ihram-di-area-mataf"],
+  ["Otoritas masjid (SPA)","Lima pintu utama: King Abdulaziz (1), King Fahd (79), King Abdullah (100), Bab Al-Umrah (62), dan Bab Al-Fath (45).","Al Riyadh Daily","https://alriyadhdaily.com/article/a85a811a3a2c4312be9cd4b08c629e3e"],
+  ["6 Mei 2026","Titik rawan tersesat ada di sekitar Terminal Syib Amir dan jalur menuju WC 9. Lansia paling rentan terpisah dari rombongan.","RRI","https://rri.co.id/info-haji/2398210/petugas-ungkap-titik-rawan-jemaah-haji-tersesat-di-haram"],
+  ["21 April 2026","Tersedia layanan untuk melihat kepadatan Mataf dan Mas'a.","pep.gov.sa","https://pep.gov.sa/en/news/937"],
+  ["15 Oktober 2025","Proyek King Salman Gate (12 juta m²) diumumkan di dekat Masjidil Haram. Masih dibangun, jadi belum tampil di peta.","Dawn","https://www.dawn.com/news/1949196/saudi-prince-unveils-mega-project-next-to-makkahs-grand-mosque"]],
+ md:[["27 April 2026","Masuk Raudhah lewat tasreh kolektif atau daftar mandiri di aplikasi Nusuk.","Kontan","https://nasional.kontan.co.id/news/ada-dua-cara-masuk-raudhah-di-masjid-nabawi-ini-mekanismenya"],
+  ["Panduan izin Raudhah","Pria dan wanita masuk Raudhah di jam dan pintu berbeda: pria umumnya Pintu 37, wanita Pintu 25. Jam sering berubah, ikuti izin di Nusuk.","Wego","https://blog.wego.com/ms/panduan-permit-raudhah/"],
+  ["Musim haji 2026","Masuk Raudhah gratis. Waspadai orang yang meminta bayaran.","Times Indonesia","https://timesindonesia.co.id/english/587773/hajj-2026-saudi-and-indonesian-officials-crack-down-on-raudhah-scams"],
+  ["16 Mei 2026","Ada jalur, pintu, dan lift khusus lansia dan disabilitas, plus peta digital lewat kode QR di berbagai pintu.","RRI","https://rri.co.id/info-haji/2416715/masjid-nabawi-permudah-akses-jemaah-calon-haji-lansia-dan-disabilitas"],
+  ["1 Agustus 2026","Petugas menyisir jamaah yang tersesat di kawasan Nabawi. Lansia diimbau menghafal penanda di sekitar.","Suara Surabaya","https://www.suarasurabaya.net/?p=894143"]]
+};
+var GNOTE={mk:{"1":"Pintu utama sisi selatan, menghadap Menara Jam. Paling dekat dari hotel di Abraj Al Bait dan Ajyad.","79":"Pintu utama sisi barat daya. Paling dekat dari hotel di Jabal Omar.","100":"Pintu utama perluasan Raja Abdullah di sisi utara-barat laut.","62":"Pintu utama sisi barat laut. Nomor 62 mengikuti daftar resmi otoritas masjid.","45":"Pintu utama sisi utara. Nomor 45 mengikuti daftar resmi otoritas masjid.","19":"Pintu di sisi timur, dekat Mas'a.","25":"Pintu di ujung utara Mas'a, dekat Bukit Marwah."},
+ md:{"1":"Pintu masuk menuju jalur ziarah makam Nabi dari sisi barat.","41":"Pintu keluar jalur ziarah makam Nabi, menghadap Baqi.","37":"Menurut panduan izin terbaru, ini pintu masuk Raudhah untuk pria.","24–26":"Pintu wanita. Menurut panduan izin terbaru, Pintu 25 dipakai untuk masuk Raudhah bagi wanita.","20–22":"Pintu utama sisi utara."}};
+
+/* ---------- prepare data ---------- */
+function hash(i){var x=Math.sin(i*127.1)*43758.5453;return x-Math.floor(x);}
+function prep(s){
+  if(PREP[s])return PREP[s];
+  var S=HD.sites[s],P={B:[],A:[],R:S.R,G:S.G,POI:S.P,idx:[]};
+  function path(p,q){var pa=new Path2D(),i;pa.moveTo(p[0]/10,-p[1]/10);for(i=2;i<p.length;i+=2)pa.lineTo(p[i]/10,-p[i+1]/10);pa.closePath();
+    if(q)q.forEach(function(h){pa.moveTo(h[0]/10,-h[1]/10);for(i=2;i<h.length;i+=2)pa.lineTo(h[i]/10,-h[i+1]/10);pa.closePath();});return pa;}
+  function cen(p){var x=0,y=0,n=p.length/2,i;for(i=0;i<p.length;i+=2){x+=p[i];y+=p[i+1];}return [x/n/10,y/n/10];}
+  S.B.forEach(function(b,i){b.i=i;b.path=path(b.p,b.q);b.cen=cen(b.p);P.B.push(b);});
+  S.A.forEach(function(a){a.path=path(a.p,a.q);a.cen=cen(a.p);P.A.push(a);});
+  S.R.forEach(function(r){var pa=new Path2D(),i,p=r.p;pa.moveTo(p[0]/10,-p[1]/10);for(i=2;i<p.length;i+=2)pa.lineTo(p[i]/10,-p[i+1]/10);r.path=pa;});
+  // search index + items
+  S.G.forEach(function(g){g.kind="gate";g.label=gateLabel(g,s);if(g.no||g.n)P.idx.push({t:g.label+(g.w?" (wanita)":""),o:g,k:"gate",pr:g.m?0:2});});
+  S.P.forEach(function(p){p.kind=p.k;p.cat=KMAP[p.k];P.idx.push({t:p.n,o:p,k:p.cat,pr:p.k==="ibadah"?0:p.k==="hotel"?1:2});});
+  S.A.forEach(function(a){if(a.n&&/Pemakaman|Raudhah|Pelataran|Mataf|Saqifah/.test(a.n)){var o={kind:"area",n:a.n,x:a.cen[0],y:a.cen[1],cat:"ziarah"};a.o=o;P.idx.push({t:a.n,o:o,k:"ziarah",pr:0});}});
+  S.B.forEach(function(b){if(b.n&&(b.k===1||(b.f===2&&/Mas'a|Perluasan/.test(b.n)))){var o={kind:"area",n:b.n,x:b.cen[0],y:b.cen[1],cat:"ziarah"};b.o=o;if(!P.idx.some(function(e){return e.t===b.n;}))P.idx.push({t:b.n,o:o,k:"ziarah",pr:0});}});
+  P.mgates=S.G.filter(function(g){return (g.no||g.n)&&g.t!=="p"&&g.t!=="w"&&g.t!=="r";});
+  P.pgates=S.G.filter(function(g){return g.t==="p";});
+  P.hotelRank=S.P.filter(function(p){return p.k==="hotel";}).sort(function(a,b){return (b.a||0)-(a.a||0);});
+  P.hotelRank.forEach(function(h,i){h.rank=i;});
+  PREP[s]=P;return P;
+}
+function gateLabel(g,s){
+  if(g.t==="p")return "Gerbang pelataran "+g.no;
+  if(g.t==="r"||g.t==="w")return g.n;
+  var t=g.no?"Pintu "+g.no:"";
+  if(g.n)t+=(t?" · ":"")+g.n;
+  return t||"Pintu";
+}
+
+/* ---------- 2D ---------- */
+var cv=$("c2"),ctx=cv.getContext("2d"),V={x:0,y:0,k:1},W=0,H=0,DPR=1,hits=[],raf=0;
+function fit(){var st=$("stage");W=st.clientWidth;H=st.clientHeight;DPR=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(W*DPR);cv.height=Math.round(H*DPR);}
+function home(){var v=SITE[state.site].v;V.x=v.x;V.y=v.y;V.k=Math.min(W,H)/v.span;}
+function w2s(x,y){return [(x-V.x)*V.k+W/2,(V.y-y)*V.k+H/2];}
+function s2w(X,Y){return [(X-W/2)/V.k+V.x,V.y-(Y-H/2)/V.k];}
+function req(){if(!raf)raf=requestAnimationFrame(function(){raf=0;draw();});}
+function drawBase(c,P,k,opt){
+  // areas
+  var ORD=["constr","green","cem","park","plaza","bus","women","mataf","wudu","wc","raudhah","tomb"];
+  var FILL={constr:css("--constr"),green:css("--green"),cem:css("--cem"),park:css("--plaza"),plaza:css("--plaza"),bus:css("--busa"),women:css("--women"),mataf:css("--mosq"),wudu:css("--water"),wc:css("--water"),raudhah:"#2f9e6b",tomb:"#c9a227"};
+  ORD.forEach(function(kk){P.A.forEach(function(a){if(a.k!==kk||!a.path)return;if(opt.base&&(kk==="raudhah"||kk==="tomb"||kk==="women"))return;c.fillStyle=FILL[kk];c.globalAlpha=(kk==="women")?0.55:1;c.fill(a.path,"evenodd");c.globalAlpha=1;});});
+  // roads
+  var lw=function(m,px){return Math.max(m,px/k);};
+  c.lineJoin="round";c.lineCap="round";
+  [[2,7,1.2],[1,10,2],[0,14,2.6]].forEach(function(cf){
+    c.strokeStyle=css("--roadc");c.lineWidth=lw(cf[1]+2,cf[2]+1.2);P.R.forEach(function(r){if(r.c===cf[0]&&!r.t)c.stroke(r.path);});
+    c.strokeStyle=css("--road");c.lineWidth=lw(cf[1],cf[2]);P.R.forEach(function(r){if(r.c===cf[0]&&!r.t)c.stroke(r.path);});});
+  if(k>0.55||opt.base){c.strokeStyle=css("--roadc");c.lineWidth=lw(2,1);c.setLineDash([3/k*1.2,3/k*1.2]);P.R.forEach(function(r){if(r.c===3&&!r.t)c.stroke(r.path);});c.setLineDash([]);}
+  if(!opt.base){c.strokeStyle=css("--tunnel");c.lineWidth=lw(5,1.4);c.setLineDash([8/k,6/k]);c.globalAlpha=.75;P.R.forEach(function(r){if(r.t&&r.c<3)c.stroke(r.path);});c.setLineDash([]);c.globalAlpha=1;}
+}
+function drawBuildings(c,P,k){
+  var FB=[css("--b0"),css("--mosq"),css("--hotel"),"#cdd9c4",css("--water"),"#e7c4c4","#d9d4e6","#111",css("--constr")];
+  var SB=[css("--bs"),css("--mosqs"),css("--hotels"),"#7d9a6c","#6aa3bd","#b97a7a","#8f86b3","#000",css("--bs")];
+  c.lineWidth=Math.max(0.5,0.8/k);
+  P.B.forEach(function(b){if(b.f===2)return;c.fillStyle=FB[b.k]||FB[0];c.fill(b.path,"evenodd");if(k>0.35||b.k===1){c.strokeStyle=SB[b.k]||SB[0];c.lineWidth=(b.k===1?Math.max(1,1.6/k):Math.max(0.4,0.7/k));c.stroke(b.path);}});
+  // named mosque parts overlay
+  P.B.forEach(function(b){if(b.f===2&&b.n&&/Mas'a|Safa|Marwah/.test(b.n)){c.fillStyle="#c9a227";c.globalAlpha=.28;c.fill(b.path,"evenodd");c.globalAlpha=1;}});
+  P.A.forEach(function(a){if(!a.path)return;if(a.k==="raudhah"){c.fillStyle="#2f9e6b";c.fill(a.path);}else if(a.k==="tomb"){c.fillStyle="#c9a227";c.fill(a.path);}else if(a.k==="women"){c.fillStyle=css("--women");c.globalAlpha=.6;c.fill(a.path);c.globalAlpha=1;}else if(a.k==="fence"){c.strokeStyle=css("--mosqs");c.lineWidth=Math.max(0.8,1.4/k);c.setLineDash([6/k,4/k]);c.stroke(a.path);c.setLineDash([]);}else if(a.k==="sdome"&&k>0.8){c.strokeStyle=css("--mosqs");c.lineWidth=0.6/k;c.stroke(a.path);}});
+}
+function draw(){
+  if(state.mode!=="2d")return;
+  var P=prep(state.site),k=V.k,c=ctx;
+  c.setTransform(1,0,0,1,0,0);c.fillStyle=css("--ground");c.fillRect(0,0,cv.width,cv.height);
+  c.setTransform(k*DPR,0,0,k*DPR,(W/2-V.x*k)*DPR,(H/2+V.y*k)*DPR);
+  drawBase(c,P,k,{});drawBuildings(c,P,k);
+  // screen-space overlays
+  c.setTransform(DPR,0,0,DPR,0,0);
+  hits=[];var placed=[],ink=css("--ink"),halo=css("--halo"),muted=css("--muted");
+  function free(x,y,w,h){if(x<2||y<2||x+w>W-2||y+h>H-2)return false;for(var i=0;i<placed.length;i++){var r=placed[i];if(x<r[0]+r[2]&&x+w>r[0]&&y<r[1]+r[3]&&y+h>r[1])return false;}return true;}
+  function label(t,X,Y,o){o=o||{};var fs=o.fs||12;c.font=(o.b?"600 ":"500 ")+fs+"px system-ui,sans-serif";var w=c.measureText(t).width,h=fs+4,x,y;
+    var tries=o.center?[[X-w/2,Y-h/2]]:[[X+(o.dx||9),Y-h/2],[X-w-(o.dx||9),Y-h/2],[X-w/2,Y-h-(o.dx||9)],[X-w/2,Y+(o.dx||9)]];
+    for(var i=0;i<tries.length;i++){x=tries[i][0];y=tries[i][1];if(o.force||free(x-2,y-1,w+4,h+2)){placed.push([x-2,y-1,w+4,h+2]);c.lineWidth=3;c.strokeStyle=halo;c.lineJoin="round";c.strokeText(t,x,y+fs);c.fillStyle=o.col||ink;c.fillText(t,x,y+fs);return true;}}return false;}
+  function vis(p){var s=w2s(p.x,p.y);return (s[0]>-20&&s[1]>-20&&s[0]<W+20&&s[1]<H+20)?s:null;}
+  // selection
+  var sel=state.sel;
+  if(sel){var ss=w2s(sel.x,sel.y);if(sel.near){c.strokeStyle="#dc2626";c.lineWidth=2;c.setLineDash([6,5]);sel.near.forEach(function(g,i){if(i>0)return;var gs=w2s(g.o.x,g.o.y);c.beginPath();c.moveTo(ss[0],ss[1]);c.lineTo(gs[0],gs[1]);c.stroke();});c.setLineDash([]);}
+    c.beginPath();c.arc(ss[0],ss[1],15,0,7);c.strokeStyle="#dc2626";c.lineWidth=3;c.stroke();}
+  // gates
+  if(layers.gate){
+    P.G.forEach(function(g){var s=vis(g);if(!s)return;var col=g.w?"#be185d":CAT.gate.c;
+      if(g.t==="p"){if(k<0.75)return;c.fillStyle=halo;c.strokeStyle=col;c.lineWidth=1.5;c.beginPath();c.rect(s[0]-4,s[1]-4,8,8);c.fill();c.stroke();hits.push([s[0],s[1],g,10]);return;}
+      var r=g.m===2?10:g.m===1?8:(k>=1.5?7:k>=0.7?3.5:2.2);if(!g.m&&k<0.45)return;
+      c.beginPath();c.arc(s[0],s[1],r,0,7);c.fillStyle=col;c.fill();c.lineWidth=g.m?2:1;c.strokeStyle="#fff";c.stroke();placed.push([s[0]-r,s[1]-r,2*r,2*r]);
+      if(g.no&&r>=7){var t=g.no.replace(/–.*/,"");c.font="700 "+(t.length>2?8:9.5)+"px system-ui,sans-serif";c.fillStyle="#fff";c.textAlign="center";c.textBaseline="middle";c.fillText(t,s[0],s[1]+0.5);c.textAlign="start";c.textBaseline="alphabetic";}
+      hits.push([s[0],s[1],g,Math.max(r+5,12)]);});
+  }
+  // big labels
+  P.B.forEach(function(b){if(b.k===1&&b.n&&b.a>50000){var s=w2s(b.cen[0],b.cen[1]);}});
+  P.A.forEach(function(a){if(a.o&&k>0.3){var s=w2s(a.o.x,a.o.y);if((a.k==="raudhah"&&k<1.2)||(a.k==="mataf"&&k<1.6))return;label(a.n,s[0],s[1],{center:true,fs:11.5,col:muted,b:true});}});
+  P.B.forEach(function(b){if(b.o&&b.f===2&&k>0.45){var s=w2s(b.o.x,b.o.y);label(b.n,s[0],s[1],{center:true,fs:11.5,col:muted,b:true});}});
+  if(layers.gate)P.G.forEach(function(g){if(!g.m||(g.m===1&&k<0.85))return;var s=vis(g);if(!s)return;label(g.n||g.label,s[0],s[1],{b:true,fs:12,dx:12,col:g.w?"#be185d":ink});});
+  // POIs
+  var order=["ibadah","bus","museum","hotel","toilet","wudu","zamzam","masjid","medis","aman","info","lift","loker","uang","apotek","belanja","makan"];
+  order.forEach(function(kk){P.POI.forEach(function(p){if(p.k!==kk||!layers[p.cat])return;var s=vis(p);if(!s)return;var col=CAT[p.cat].c;
+    if(kk==="hotel"){var show=k>=0.28||p.rank<40;if(!show)return;var r=k>=0.9?5:3.2;c.beginPath();c.arc(s[0],s[1],r,0,7);c.fillStyle=col;c.fill();c.strokeStyle="#fff";c.lineWidth=1;c.stroke();hits.push([s[0],s[1],p,12]);
+      if(p.rank<(k<0.5?10:k<0.9?30:k<1.6?90:999))label(p.n,s[0],s[1],{fs:11,dx:7});return;}
+    var minK={ibadah:0.25,bus:0.3,museum:0.45,toilet:0.55,wudu:0.7,zamzam:0.6,masjid:0.4}[kk]||0.6;if(k<minK)return;
+    if(kk==="ibadah"){c.beginPath();c.arc(s[0],s[1],5,0,7);c.fillStyle=col;c.fill();c.strokeStyle="#fff";c.lineWidth=1.5;c.stroke();hits.push([s[0],s[1],p,13]);if(k>1.6||!/Rukun|Hajar|Hijr|Maqam|Pintu Ka/.test(p.n))label(p.n,s[0],s[1],{b:true,fs:12,col:col});return;}
+    var g=GLYPH[kk]||"•",w=g.length>1?17:13;if(!free(s[0]-w/2,s[1]-7,w,14))return;placed.push([s[0]-w/2,s[1]-7,w,14]);
+    c.fillStyle=col;c.beginPath();if(c.roundRect)c.roundRect(s[0]-w/2,s[1]-7,w,14,4);else c.rect(s[0]-w/2,s[1]-7,w,14);c.fill();
+    c.font="700 9px system-ui,sans-serif";c.fillStyle="#fff";c.textAlign="center";c.textBaseline="middle";c.fillText(g,s[0],s[1]+0.5);c.textAlign="start";c.textBaseline="alphabetic";
+    hits.push([s[0],s[1],p,13]);
+    if(k>(kk==="bus"||kk==="museum"||kk==="masjid"?0.8:1.8))label(p.n,s[0],s[1],{fs:10.5,dx:10,col:muted});});});
+  // road names
+  if(k>0.9){var seen={};P.R.forEach(function(r){if(!r.n||r.c>1||seen[r.n])return;var p=r.p,m=(p.length>>2)<<1,s=w2s(p[m]/10,p[m+1]/10);if(s[0]<0||s[1]<0||s[0]>W||s[1]>H)return;if(label(r.n,s[0],s[1],{center:true,fs:10,col:muted}))seen[r.n]=1;});}
+  // scale bar
+  var m=[10,20,50,100,200,500,1000].filter(function(v){return v*k>=50;})[0]||1000;$("scale").innerHTML=(m>=1000?m/1000+" km":m+" m")+'<i style="width:'+Math.round(m*k)+'px"></i>';
+}
+function zoomAt(f,X,Y){var nk=Math.min(14,Math.max(0.12,V.k*f));if(X===undefined){X=W/2;Y=H/2;}var w=s2w(X,Y);V.k=nk;V.x=w[0]-(X-W/2)/nk;V.y=w[1]+(Y-H/2)/nk;req();}
+(function(){
+  var Pt={},st=null,pin=null;
+  cv.addEventListener("pointerdown",function(e){cv.setPointerCapture(e.pointerId);Pt[e.pointerId]={x:e.offsetX,y:e.offsetY};var ids=Object.keys(Pt);
+    if(ids.length===1)st={x:e.offsetX,y:e.offsetY,vx:V.x,vy:V.y,moved:false};
+    if(ids.length===2){var a=Pt[ids[0]],b=Pt[ids[1]];pin={d:Math.hypot(a.x-b.x,a.y-b.y)||1};st=null;}});
+  cv.addEventListener("pointermove",function(e){if(!Pt[e.pointerId])return;Pt[e.pointerId]={x:e.offsetX,y:e.offsetY};var ids=Object.keys(Pt);
+    if(ids.length===2&&pin){var a=Pt[ids[0]],b=Pt[ids[1]],d=Math.hypot(a.x-b.x,a.y-b.y)||1;zoomAt(d/pin.d,(a.x+b.x)/2,(a.y+b.y)/2);pin.d=d;return;}
+    if(st){var dx=e.offsetX-st.x,dy=e.offsetY-st.y;if(Math.abs(dx)+Math.abs(dy)>5)st.moved=true;if(st.moved){V.x=st.vx-dx/V.k;V.y=st.vy+dy/V.k;req();}}});
+  function up(e){if(st&&!st.moved)tap(e.offsetX,e.offsetY);delete Pt[e.pointerId];if(Object.keys(Pt).length<2)pin=null;if(!Object.keys(Pt).length)st=null;}
+  cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",function(e){delete Pt[e.pointerId];pin=null;st=null;});
+  cv.addEventListener("wheel",function(e){e.preventDefault();zoomAt(e.deltaY>0?1/1.18:1.18,e.offsetX,e.offsetY);},{passive:false});
+})();
+function tap(X,Y){
+  var best=null,bd=1e9;hits.forEach(function(h){var d=Math.hypot(h[0]-X,h[1]-Y);if(d<h[3]&&d<bd){bd=d;best=h[2];}});
+  if(best){select(best);return;}
+  var P=prep(state.site),k=V.k;ctx.setTransform(k*DPR,0,0,k*DPR,(W/2-V.x*k)*DPR,(H/2+V.y*k)*DPR);
+  for(var i=P.B.length-1;i>=0;i--){var b=P.B[i];if(b.f===2)continue;if(ctx.isPointInPath(b.path,X*DPR,Y*DPR,"evenodd")){
+    var w=s2w(X,Y);
+    if(b.k===1){select({kind:"area",n:b.n||SITE[state.site].name,x:w[0],y:w[1],cat:"ziarah"});return;}
+    if(b.n){var poi=P.POI.filter(function(p){return p.n===b.n;})[0];select(poi||{kind:"bld",n:b.n,x:b.cen[0],y:b.cen[1],b:b});return;}
+    break;}}
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  state.sel=null;$("info").style.display="none";req();
+}
+
+/* ---------- selection & info ---------- */
+function dirName(dx,dy){var a=(Math.atan2(dx,dy)*180/Math.PI+360)%360;return ["utara","timur laut","timur","tenggara","selatan","barat daya","barat","barat laut"][Math.round(a/45)%8];}
+function nearest(list,o,n){return list.map(function(g){return {o:g,d:Math.hypot(g.x-o.x,g.y-o.y)};}).sort(function(a,b){return a.d-b.d;}).slice(0,n);}
+function walk(d){var m=Math.max(1,Math.round(d*1.3/65));return "±"+(Math.round(d/10)*10)+" m garis lurus, sekitar "+m+" menit jalan";}
+function select(o,fly){
+  var P=prep(state.site),s=state.site;state.sel=o;
+  var h="",kind=o.kind,cat=kind==="gate"?"gate":(o.cat||"ziarah"),title=kind==="gate"?o.label:o.n;
+  h+="<h3>"+esc(title)+"</h3><span class='k'><span class='dot' style='background:"+(CAT[cat]||CAT.ziarah).c+"'></span>"+esc(kind==="gate"?(o.t==="p"?"Gerbang pagar pelataran":"Pintu masjid"):kind==="area"?"Area":kind==="bld"?"Bangunan":KNAME[kind]||"")+"</span>";h+="<!--ACT-->";
+  o.near=null;
+  if(kind==="gate"){
+    var nt=GNOTE[s][o.no];if(nt)h+="<p>"+esc(nt)+"</p>";
+    if(o.w)h+="<p>Ditandai sebagai pintu atau jalur wanita di data peta.</p>";
+    if(o.lv)h+="<p>Tercatat di lantai "+esc(o.lv)+" (0 = lantai dasar, angka minus = basemen).</p>";
+    if(o.v)h+="<p>Nomor ini dari daftar resmi otoritas masjid, bukan dari OpenStreetMap.</p>";
+    else if(o.no&&s==="mk"&&!o.m)h+="<p>Nomor pintu menurut OpenStreetMap. Cocokkan dengan papan di lokasi.</p>";
+    var hs=nearest(P.POI.filter(function(p){return p.k==="hotel";}),o,4);
+    h+="<p><b>Hotel terdekat dari pintu ini</b></p><ul>"+hs.map(function(x){return "<li>"+esc(x.o.n)+" · ±"+Math.round(x.d/10)*10+" m ke arah "+dirName(x.o.x-o.x,x.o.y-o.y)+"</li>";}).join("")+"</ul>";
+  }else{
+    var d0=Math.hypot(o.x,o.y);
+    if(kind==="hotel"||kind==="bld"||kind==="bus"||kind==="belanja"||kind==="makan"||kind==="masjid"||kind==="museum"||kind==="medis"){
+      var ng=nearest(P.mgates.filter(function(g){return !g.w;}),o,3);o.near=ng;
+      if(kind==="hotel"&&(o.lv||o.h))h+="<p>"+(o.lv?"Tercatat "+o.lv+" lantai":"")+(o.lv&&o.h?", ":"")+(o.h?"tinggi ±"+Math.round(o.h)+" m":"")+".</p>";
+      h+="<p><b>Akses ke "+SITE[s].name+"</b></p><ul>"+ng.map(function(x){return "<li>"+esc(x.o.label)+": "+walk(x.d)+", arah "+dirName(x.o.x-o.x,x.o.y-o.y)+"</li>";}).join("")+"</ul>";
+      var mg=nearest(P.mgates.filter(function(g){return g.m===2;}),o,1)[0];if(mg&&!ng.some(function(x){return x.o===mg.o;}))h+="<p>Pintu utama terdekat: <b>"+esc(mg.o.label)+"</b> ("+walk(mg.d)+", arah "+dirName(mg.o.x-o.x,mg.o.y-o.y)+").</p>";
+      if(s==="md"){var pg=nearest(P.pgates,o,1)[0],wg=nearest(P.mgates.filter(function(g){return g.w;}),o,1)[0];
+        if(pg&&Math.hypot(o.x+10,o.y-110)>300)h+="<p>Gerbang pelataran terdekat: <b>"+esc(pg.o.no)+"</b> ("+walk(pg.d)+").</p>";
+        if(wg)h+="<p>Pintu wanita terdekat: "+esc(wg.o.label)+" ("+walk(wg.d)+").</p>";}
+      h+="<p>Posisi "+(s==="mk"?"Ka'bah":"Raudhah")+": ±"+Math.round(d0/10)*10+" m ke arah "+dirName(-o.x,-o.y)+".</p>";
+    }else if(kind==="toilet"||kind==="wudu"){var g1=nearest(P.mgates,o,1)[0];if(g1)h+="<p>Pintu terdekat: "+esc(g1.o.label)+" (±"+Math.round(g1.d/10)*10+" m).</p>";}
+    else if(o.n&&/Raudhah/.test(o.n))h+="<p>Area di antara makam Nabi dan mimbar. Masuk wajib pakai izin di aplikasi Nusuk atau tasreh kolektif, dan gratis.</p>";
+    else if(o.n&&/Mataf/.test(o.n))h+="<p>Pelataran tawaf di sekeliling Ka'bah. Lantai dasar khusus jamaah berihram di luar musim haji.</p>";
+    else if(o.n&&/Mas'a/.test(o.n))h+="<p>Jalur sa'i antara Bukit Safa di selatan dan Bukit Marwah di utara.</p>";
+  }
+  h=h.replace("<!--ACT-->","<div class='act' style='margin:6px 0 4px'>"+(kind==="hotel"?"<button class='btn' data-hotel='1' style='font-weight:700'>Jadikan hotel saya</button>":"")+(state.mode!=="2d"?"<button class='btn' data-go='2d'>Lihat di peta 2D</button>":"")+(state.mode!=="3d"?"<button class='btn' data-go='3d'>Lihat di maket 3D</button>":"")+"</div>");
+  $("infoB").innerHTML=h;$("info").style.display="block";
+  $("infoB").querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){setMode(b.getAttribute("data-go"));};});
+  var hb=$("infoB").querySelector("[data-hotel]");if(hb)hb.onclick=function(){var g1=nearest(P.mgates.filter(function(g){return !g.w;}),o,1)[0],g2=nearest(P.mgates.filter(function(g){return g.m===2;}),o,1)[0];
+    try{localStorage.setItem("pu:hotel:"+s,JSON.stringify({n:o.n,x:o.x,y:o.y,d:Math.round(g1.d),gate:g1.o.label,main:g2?g2.o.label:"",dm:g2?Math.round(g2.d):0}));hb.textContent="Tersimpan sebagai hotel saya ✓";renderQuick();}catch(e){hb.textContent="Gagal menyimpan di perangkat ini";}
+    try{if(window.parent!==window)window.parent.postMessage({type:"pu-hotel",site:s},"*");}catch(e){}};
+  if(fly)focus(o);else req();
+}
+function focus(o){
+  if(state.mode==="2d"){V.x=o.x;V.y=o.y-(H*0.18)/Math.max(V.k,1.1);V.k=Math.max(V.k,o.kind==="gate"?1.6:1.1);V.y=o.y-(H*0.16)/V.k;req();}
+  else if(state.mode==="3d"&&T3){T3.orb.tx=o.x;T3.orb.tz=-o.y;T3.orb.r=Math.min(T3.orb.r,520);T3.sel.position.set(o.x,(o.h||(o.lv?o.lv*3.4:0)||(o.kind==="hotel"?70:30))+45,-o.y);T3.sel.visible=true;}
+}
+$("infoX").onclick=function(){$("info").style.display="none";state.sel=null;if(T3)T3.sel.visible=false;req();};
+
+/* ---------- search, chips, quick ---------- */
+function renderChips(){var h="";for(var k in CAT)h+="<span class='chip "+(layers[k]?"on":"off")+"' data-l='"+k+"'><span class='dot' style='background:"+CAT[k].c+"'></span>"+CAT[k].n+"</span>";$("chips").innerHTML=h;
+  $("chips").querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var l=c.getAttribute("data-l");layers[l]=!layers[l];renderChips();req();};});}
+$("q").addEventListener("input",function(){var q=this.value.trim().toLowerCase(),R=$("res");if(q.length<2){R.style.display="none";return;}
+  var P=prep(state.site),out=P.idx.filter(function(e){return e.t&&e.t.toLowerCase().indexOf(q)>=0;}).sort(function(a,b){return a.pr-b.pr||a.t.length-b.t.length;}).slice(0,12);
+  if(!out.length){R.innerHTML="<button disabled>Tidak ketemu di "+SITE[state.site].city+"</button>";R.style.display="block";return;}
+  R.innerHTML=out.map(function(e,i){return "<button data-i='"+i+"'><span class='dot' style='background:"+(CAT[e.k]||CAT.ziarah).c+"'></span>"+esc(e.t)+"</button>";}).join("");R.style.display="block";
+  R.querySelectorAll("button").forEach(function(b){b.onclick=function(){var e=out[+b.getAttribute("data-i")];R.style.display="none";$("q").blur();if(e.k!=="gate"&&e.k!=="ziarah"&&!layers[e.k]){layers[e.k]=true;renderChips();}if(state.mode==="zk")setMode("2d");select(e.o,true);};});});
+document.addEventListener("click",function(e){if(!e.target.closest(".search"))$("res").style.display="none";});
+var QUICK={mk:["Ka'bah","Maqam Ibrahim","Bukit Safa","Bukit Marwah","Pintu 1 ·","Pintu 79","Pintu 100","Pintu 62","Pintu 45","Menara Jam","Terminal Syib Amir","Terminal Ajyad","Terminal 1, Jabal","Lokasi kelahiran Nabi","Pemakaman Ma'la"],
+ md:["Raudhah","Makam Nabi","Pintu 1 ·","Pintu 41","Pintu 37","Pintu 24–26","Pintu 20–22","Pemakaman Baqi","Masjid Ghamama","Masjid Abu Bakr","Masjid Ali ibn","Saqifah","Pasar Kurma","Pengisian air Zamzam","Stasiun kereta Hijaz"]};
+function renderQuick(){var P=prep(state.site),h=[],items=[];
+  try{var sv=JSON.parse(localStorage.getItem("pu:hotel:"+state.site)||"null");if(sv){var ho=P.POI.filter(function(p){return p.k==="hotel"&&p.n===sv.n&&Math.abs(p.x-sv.x)<5;})[0];if(ho){items.push({o:ho,t:ho.n});h.push("<button class='btn' data-i='0' style='border-color:#b45309;font-weight:700'>Hotel saya</button>");}}}catch(e){}QUICK[state.site].forEach(function(q){var e=P.idx.filter(function(x){return x.t.indexOf(q)===0||x.t.indexOf(q)>=0;}).sort(function(a,b){return a.t.indexOf(q)-b.t.indexOf(q)||a.t.length-b.t.length;})[0];if(e){items.push(e);h.push("<button class='btn' data-i='"+(items.length-1)+"'>"+esc(e.t.replace(/ \(.*\)$/,""))+"</button>");}});
+  $("quick").innerHTML=h.join("");$("quick").querySelectorAll("button").forEach(function(b){b.onclick=function(){var e=items[+b.getAttribute("data-i")];if(state.mode==="zk")setMode("2d");select(e.o,true);};});}
+
+/* ---------- tables ---------- */
+function renderTables(){
+  var s=state.site,P=prep(s);
+  $("gH").textContent="Daftar pintu utama "+SITE[s].name;
+  var gs=P.mgates.filter(function(g){return g.m;}).sort(function(a,b){return (parseInt(a.no)||999)-(parseInt(b.no)||999);});
+  $("gT").innerHTML="<tr><th>Pintu</th><th>Posisi dari "+(s==="mk"?"Ka'bah":"Raudhah")+"</th><th>Hotel terdekat</th></tr>"+gs.map(function(g){var hs=nearest(P.POI.filter(function(p){return p.k==="hotel";}),g,2);
+    return "<tr><td><b>"+esc(g.label)+"</b>"+(g.w?" <span style='color:#be185d'>(wanita)</span>":"")+"</td><td class='num'>"+dirName(g.x,g.y)+", ±"+Math.round(Math.hypot(g.x,g.y)/10)*10+" m</td><td>"+hs.map(function(x){return esc(x.o.n)+" (±"+Math.round(x.d/10)*10+" m)";}).join("<br>")+"</td></tr>";}).join("");
+  $("zH").textContent="Tempat ziarah dan patokan di "+SITE[s].city;
+  var c=HD.sites[s].c;
+  $("zT").innerHTML="<tr><th>#</th><th>Tempat</th><th>Dari "+SITE[s].name+"</th><th>Keterangan</th></tr>"+ZK[s].map(function(z,i){var dx=(z[2]-c[1])*111.32*Math.cos(c[0]*Math.PI/180),dy=(z[1]-c[0])*110.574,d=Math.hypot(dx,dy);
+    return "<tr><td class='num'>"+(i+1)+"</td><td><b>"+esc(z[0])+"</b></td><td class='num'>"+(d<1?Math.round(d*100)*10+" m":d.toFixed(1).replace(".",",")+" km")+" "+dirName(dx,dy)+"</td><td>"+esc(z[3])+"</td></tr>";}).join("");
+  $("uH").textContent="Kabar kondisi terbaru: "+SITE[s].name;
+  $("upd").innerHTML=UPD[s].map(function(u){return "<div class='card'><div class='d'>"+esc(u[0])+"</div><p>"+esc(u[1])+"</p><a href='"+u[3]+"' target='_blank' rel='noopener'>Sumber: "+esc(u[2])+" ↗</a></div>";}).join("");
+}
+
+/* ---------- Ziarah kota (SVG) ---------- */
+function renderZK(){
+  var s=state.site,c=HD.sites[s].c,pts=ZK[s].map(function(z,i){return {i:i+1,n:z[0],x:(z[2]-c[1])*111.32*Math.cos(c[0]*Math.PI/180),y:(z[1]-c[0])*110.574,d:z[3],ap:z[4]};});
+  var R=Math.max.apply(null,pts.map(function(p){return Math.hypot(p.x,p.y);}))*1.12,st=$("stage"),w=st.clientWidth,h=st.clientHeight,k=Math.min(w,h)/2/R;
+  var ink=css("--ink"),mu=css("--muted"),ln=css("--line"),g="<svg viewBox='0 0 "+w+" "+h+"' xmlns='http://www.w3.org/2000/svg' font-family='system-ui,sans-serif'>";
+  var step=R>18?5:R>8?2:1;for(var r=step;r<R*1.5;r+=step){g+="<circle cx='"+w/2+"' cy='"+h/2+"' r='"+r*k+"' fill='none' stroke='"+ln+"' stroke-width='1.2'/><text x='"+(w/2+4)+"' y='"+(h/2-r*k-3)+"' font-size='10' fill='"+mu+"'>"+r+" km</text>";}
+  g+="<line x1='"+w/2+"' y1='0' x2='"+w/2+"' y2='"+h+"' stroke='"+ln+"'/><line x1='0' y1='"+h/2+"' x2='"+w+"' y2='"+h/2+"' stroke='"+ln+"'/>";
+  g+="<rect x='"+(w/2-7)+"' y='"+(h/2-7)+"' width='14' height='14' rx='3' fill='#0f766e' stroke='#fff' stroke-width='2'/><text x='"+(w/2+12)+"' y='"+(h/2+16)+"' font-size='12' font-weight='700' fill='"+ink+"'>"+SITE[s].name+"</text>";
+  pts.forEach(function(p){var X=w/2+p.x*k,Y=h/2-p.y*k;g+="<g class='zp' data-i='"+p.i+"' style='cursor:pointer'><circle cx='"+X+"' cy='"+Y+"' r='11' fill='"+(p.ap?"#9ca3af":"#b45309")+"' stroke='#fff' stroke-width='2'/><text x='"+X+"' y='"+(Y+3.5)+"' font-size='10' font-weight='700' fill='#fff' text-anchor='middle'>"+p.i+"</text></g>";});
+  g+="</svg>";$("zk").innerHTML=g;
+  $("zk").querySelectorAll(".zp").forEach(function(e){e.onclick=function(){var p=pts[+e.getAttribute("data-i")-1],d=Math.hypot(p.x,p.y);
+    $("infoB").innerHTML="<h3>"+p.i+". "+esc(p.n)+"</h3><p>"+esc(p.d)+"</p><p>Dari "+SITE[s].name+": "+d.toFixed(1).replace(".",",")+" km garis lurus ke arah "+dirName(p.x,p.y)+".</p>";$("info").style.display="block";};});
+}
+
+/* ---------- 3D ---------- */
+var T3=null;
+function init3D(){
+  if(T3)return true;if(!window.THREE)return false;
+  var host=$("gl"),renderer;try{renderer=new THREE.WebGLRenderer({antialias:true});}catch(e){return false;}
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));host.appendChild(renderer.domElement);
+  var scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,1,2,30000);
+  scene.add(new THREE.HemisphereLight(0xffffff,0xb9b0a0,0.72));var sun=new THREE.DirectionalLight(0xfff4e0,0.34);sun.position.set(-500,900,400);scene.add(sun);
+  var root=new THREE.Group();scene.add(root);
+  var sel=new THREE.Mesh(new THREE.ConeGeometry(14,40,12),new THREE.MeshBasicMaterial({color:0xdc2626}));sel.rotation.x=Math.PI;sel.visible=false;scene.add(sel);
+  T3={renderer:renderer,scene:scene,camera:camera,root:root,pick:[],labels:[],orb:{},orb0:{},ray:new THREE.Raycaster(),sel:sel,built:null};
+  bind3D(renderer.domElement);new ResizeObserver(resize3D).observe(host);
+  (function loop(){requestAnimationFrame(loop);if(state.mode==="3d")draw3D();})();
+  return true;
+}
+function resize3D(){if(!T3)return;var h=$("gl"),w=h.clientWidth,hh=h.clientHeight;if(!w||!hh)return;T3.renderer.setSize(w,hh,false);T3.camera.aspect=w/hh;T3.camera.updateProjectionMatrix();}
+function draw3D(){var o=T3.orb,c=T3.camera;c.position.set(o.tx+o.r*Math.sin(o.ph)*Math.sin(o.th),o.r*Math.cos(o.ph),o.tz+o.r*Math.sin(o.ph)*Math.cos(o.th));c.lookAt(o.tx,0,o.tz);
+  T3.labels.forEach(function(l){l.visible=!l.userData.far||o.r<l.userData.far;});
+  if(T3.sel.visible)T3.sel.rotation.y+=0.03;T3.renderer.render(T3.scene,c);}
+function labelSprite(text,color,big){var cvs=document.createElement("canvas"),x=cvs.getContext("2d"),fs=40;x.font="600 "+fs+"px system-ui,sans-serif";var w=Math.ceil(x.measureText(text).width)+36;cvs.width=w;cvs.height=fs+26;x.font="600 "+fs+"px system-ui,sans-serif";
+  x.fillStyle="rgba(255,255,255,0.93)";x.beginPath();if(x.roundRect)x.roundRect(0,0,w,cvs.height,16);else x.rect(0,0,w,cvs.height);x.fill();x.fillStyle=color||"#1f2328";x.textBaseline="middle";x.fillText(text,18,cvs.height/2+2);
+  var tex=new THREE.CanvasTexture(cvs);tex.minFilter=THREE.LinearFilter;var sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tex,depthTest:false,transparent:true,sizeAttenuation:false}));var hgt=big?0.034:0.027;sp.scale.set(hgt*w/cvs.height,hgt,1);sp.userData={w:hgt*w/cvs.height,h:hgt};sp.renderOrder=10;return sp;}
+function build3D(){
+  var s=state.site,P=prep(s),S=HD.sites[s],root=T3.root;
+  while(root.children.length){var ch=root.children.pop();if(ch.traverse)ch.traverse(function(o){if(o.geometry)o.geometry.dispose();if(o.material){if(o.material.map)o.material.map.dispose();o.material.dispose();}});}
+  T3.pick=[];T3.labels=[];T3.sel.visible=false;T3.scene.background=new THREE.Color(css("--bg"));
+  // ground texture from the 2D base map
+  var E=1300,TS=2048,gc=document.createElement("canvas");gc.width=gc.height=TS;var g=gc.getContext("2d"),kk=TS/(2*E);
+  g.fillStyle=css("--ground");g.fillRect(0,0,TS,TS);g.setTransform(kk,0,0,kk,TS/2,TS/2);drawBase(g,P,kk,{base:true});
+  var gt=new THREE.CanvasTexture(gc);gt.anisotropy=T3.renderer.capabilities.getMaxAnisotropy();
+  var gm=new THREE.Mesh(new THREE.PlaneGeometry(2*E,2*E),new THREE.MeshBasicMaterial({map:gt}));gm.rotation.x=-Math.PI/2;root.add(gm);
+  var skirt=new THREE.Mesh(new THREE.PlaneGeometry(12*E,12*E),new THREE.MeshBasicMaterial({color:new THREE.Color(css("--ground"))}));skirt.rotation.x=-Math.PI/2;skirt.position.y=-0.5;root.add(skirt);
+  // merged buildings
+  var pos=[],nor=[],col=[],tc=new THREE.Color(),m4=new THREE.Matrix4();
+  function push(geo,color,shade){var gg=geo.index?geo.toNonIndexed():geo,p=gg.attributes.position.array,n=gg.attributes.normal.array;tc.set(color);if(shade){var hs={};tc.getHSL(hs);tc.setHSL(hs.h,hs.s,Math.max(0,Math.min(1,hs.l+shade)));}
+    for(var i=0;i<p.length;i+=3){pos.push(p[i],p[i+1],p[i+2]);nor.push(n[i],n[i+1],n[i+2]);col.push(tc.r,tc.g,tc.b);}gg.dispose();if(gg!==geo)geo.dispose();}
+  function shapeOf(p,q){var sh=new THREE.Shape(),i;sh.moveTo(p[0]/10,p[1]/10);for(i=2;i<p.length;i+=2)sh.lineTo(p[i]/10,p[i+1]/10);
+    if(q)q.forEach(function(hh){var ph=new THREE.Path();ph.moveTo(hh[0]/10,hh[1]/10);for(i=2;i<hh.length;i+=2)ph.lineTo(hh[i]/10,hh[i+1]/10);sh.holes.push(ph);});return sh;}
+  function extr(p,q,y0,y1,color,shade){if(y1-y0<0.2)y1=y0+0.2;var ge;try{ge=new THREE.ExtrudeGeometry(shapeOf(p,q),{depth:y1-y0,bevelEnabled:false});}catch(e){return;}ge.rotateX(-Math.PI/2);ge.translate(0,y0,0);push(ge,color,shade);}
+  var DEF={mk:{2:58,0:0},md:{2:46,0:0}}[s],dark=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var C3=["#d8d0c0","#ece6d6","#d9b78a","#cfd9c4","#bcd3de","#dcb8b8","#cfc8e0","#111111","#bdb6a6"];
+  P.B.forEach(function(b){
+    if(b.f===1&&b.k!==7)return;
+    var hsh=hash(b.i),h=b.h;if(h==null){h=b.lv?b.lv*3.4:(b.k===2?DEF[2]*(0.7+hsh*0.5):b.k===1?14:b.k===4?4:b.k===3?10:b.a>3000?20:b.a>800?14+hsh*10:7+hsh*8);}
+    var m=b.m||0,rh=b.r?(b.rh||Math.sqrt(b.a/Math.PI)*0.7):0,top=Math.max(m+0.2,h-rh);
+    var color=b.c||(b.f===2||b.f===3?"#e9e3d3":C3[b.k]||C3[0]);if(color==="#897e62"||color==="#786c57")color="#cdc4ab";
+    extr(b.p,b.q,m,top,color,(b.c||b.k===7)?0:(hsh-0.5)*0.07);
+    b.top=h;
+    if(b.r){var rr=Math.sqrt(b.a/Math.PI),ge;if(b.r===1){ge=new THREE.SphereGeometry(rr,14,7,0,Math.PI*2,0,Math.PI/2);ge.scale(1,rh/rr,1);ge.translate(b.cen[0],top,-b.cen[1]);}
+      else{ge=new THREE.ConeGeometry(rr*1.25,rh,4);ge.rotateY(Math.PI/4);ge.translate(b.cen[0],top+rh/2,-b.cen[1]);}push(ge,b.rc||b.c||"#d8d2c2",0);}
+    if(b.k===7){extr(b.p,null,h*0.66,h*0.74,"#c9a227",0);}
+  });
+  // Madinah extras
+  if(s==="md"){
+    var mosq=P.B.filter(function(b){return b.k===1;})[0],roof=mosq?(mosq.h||14):14;
+    P.A.forEach(function(a){if(a.k==="sdome"){var ge=new THREE.SphereGeometry(8.5,14,6,0,Math.PI*2,0,Math.PI/2);ge.scale(1,0.55,1);ge.translate(a.cen[0],roof,-a.cen[1]);push(ge,"#d7d2c4",0);}
+      if(a.k==="raudhah"){extr(a.p,null,roof,roof+0.4,"#2f9e6b",0);}});
+    var tomb=P.POI.filter(function(p){return /Makam Nabi/.test(p.n);})[0];
+    if(tomb){var dr=new THREE.CylinderGeometry(8,8,6,20);dr.translate(tomb.x,roof+3,-tomb.y);push(dr,"#3c8c5a",0);var dm=new THREE.SphereGeometry(8,20,10,0,Math.PI*2,0,Math.PI/2);dm.scale(1,1.05,1);dm.translate(tomb.x,roof+6,-tomb.y);push(dm,"#2f7d4f",0);}
+    [[-207,268,104],[201,268,104],[-207,50,104],[201,50,104],[-24,270,104],[16,270,104],[-60,-15,70],[52,-15,70],[-60,38,70],[52,38,70]].forEach(function(mn){
+      var a=new THREE.CylinderGeometry(2.6,3.4,mn[2]*0.6,10);a.translate(mn[0],mn[2]*0.3,-mn[1]);push(a,"#e9e3d3",0);
+      var b2=new THREE.CylinderGeometry(1.8,2.4,mn[2]*0.32,10);b2.translate(mn[0],mn[2]*0.76,-mn[1]);push(b2,"#f0ebdd",0);
+      var c2=new THREE.ConeGeometry(2.2,mn[2]*0.08,10);c2.translate(mn[0],mn[2]*0.96,-mn[1]);push(c2,"#c9a227",0);
+      var bal=new THREE.CylinderGeometry(4,4,1.2,10);bal.translate(mn[0],mn[2]*0.6,-mn[1]);push(bal,"#d8d2c2",0);});
+    // umbrellas (illustrative) inside plaza fence
+    var fence=P.A.filter(function(a){return a.k==="fence";})[0],pts=[];
+    if(fence&&mosq){var fp=fence.p,xs=[],ys=[],i;for(i=0;i<fp.length;i+=2){xs.push(fp[i]/10);ys.push(fp[i+1]/10);}
+      var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys),g2=document.createElement("canvas").getContext("2d");
+      for(var x=x0+16;x<x1-10;x+=26)for(var y=y0+16;y<y1-10;y+=26){var blocked=!g2.isPointInPath(fence.path,x,-y);for(i=0;i<P.B.length&&!blocked;i++){var bb=P.B[i];if(Math.abs(bb.cen[0]-x)>260||Math.abs(bb.cen[1]-y)>260)continue;
+        if(g2.isPointInPath(bb.path,x,-y)||g2.isPointInPath(bb.path,x+11,-y)||g2.isPointInPath(bb.path,x-11,-y)||g2.isPointInPath(bb.path,x,-y+11)||g2.isPointInPath(bb.path,x,-y-11))blocked=true;}
+        if(!blocked)pts.push([x,y]);}}
+    if(pts.length){var cone=new THREE.ConeGeometry(12.5,3.2,4,1,true);cone.rotateY(Math.PI/4);cone.rotateX(Math.PI);var pole=new THREE.CylinderGeometry(0.5,0.6,14,6);
+      var im=new THREE.InstancedMesh(cone,new THREE.MeshLambertMaterial({color:0xf4f1ea,side:THREE.DoubleSide}),pts.length),ip=new THREE.InstancedMesh(pole,new THREE.MeshLambertMaterial({color:0xb8b2a4}),pts.length),o3=new THREE.Object3D();
+      im.frustumCulled=false;ip.frustumCulled=false;pts.forEach(function(p,i){o3.position.set(p[0],15.2,-p[1]);o3.updateMatrix();im.setMatrixAt(i,o3.matrix);o3.position.set(p[0],7,-p[1]);o3.updateMatrix();ip.setMatrixAt(i,o3.matrix);});root.add(im);root.add(ip);}
+  }
+  var geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(pos,3));geo.setAttribute("normal",new THREE.Float32BufferAttribute(nor,3));geo.setAttribute("color",new THREE.Float32BufferAttribute(col,3));
+  root.add(new THREE.Mesh(geo,new THREE.MeshLambertMaterial({vertexColors:true})));
+  // markers: gates
+  function pin(o,text,color,y,big,far){var sp=labelSprite(text,color,big);sp.position.set(o.x,y,-o.y);sp.userData.o=o;if(far)sp.userData.far=far;root.add(sp);T3.labels.push(sp);T3.pick.push(sp);
+    var ln=new THREE.Mesh(new THREE.CylinderGeometry(0.7,0.7,y,5),new THREE.MeshBasicMaterial({color:new THREE.Color(color)}));ln.position.set(o.x,y/2,-o.y);root.add(ln);}
+  P.G.forEach(function(g){if(g.m)pin(g,g.no?("Pintu "+g.no.replace(/–.*/,"")+(g.m===2&&g.n?" · "+g.n:"")):g.n,g.w?"#be185d":"#1d4ed8",g.m===2?(s==="mk"?75:48):(s==="mk"?55:34),g.m===2,g.m===2?0:700);});
+  P.hotelRank.slice(0,26).forEach(function(h){if(Math.hypot(h.x,h.y)<1150)pin(h,h.n,"#92400e",(h.h||(h.lv?h.lv*3.4:60))+25,false,h.rank<8?2200:900);});
+  P.POI.forEach(function(p){if(p.k==="ibadah"&&!/Rukun|Hajar|Hijr|Pintu Ka|Maqam/.test(p.n))pin(p,p.n,"#0f766e",s==="mk"?70:60,true,0);if(p.k==="bus"&&/Terminal|Station|Stasiun/.test(p.n)&&Math.hypot(p.x,p.y)<1150)pin(p,p.n,"#6d28d9",40,false,1300);});
+  P.A.forEach(function(a){if(a.o&&/Pemakaman|Raudhah/.test(a.n)&&Math.hypot(a.o.x,a.o.y)<1250)pin(a.o,a.n,"#0f766e",/Raudhah/.test(a.n)?45:30,false,0);});
+  var nl=labelSprite("U ▲ Utara","#b45309",true);nl.position.set(0,12,-E-40);root.add(nl);T3.labels.push(nl);
+  var cm=SITE[s].cam;T3.orb={th:cm.th,ph:cm.ph,r:cm.r,tx:cm.tx,tz:-cm.ty};T3.orb0=JSON.parse(JSON.stringify(T3.orb));T3.built=s;
+}
+function bind3D(el){
+  var Pt={},st=null,pin=null;
+  el.addEventListener("pointerdown",function(e){el.setPointerCapture(e.pointerId);Pt[e.pointerId]={x:e.clientX,y:e.clientY};var ids=Object.keys(Pt);
+    if(ids.length===1)st={x:e.clientX,y:e.clientY,moved:false};if(ids.length===2){var a=Pt[ids[0]],b=Pt[ids[1]];pin={d:Math.hypot(a.x-b.x,a.y-b.y)||1,r:T3.orb.r,mx:(a.x+b.x)/2,my:(a.y+b.y)/2};st=null;}});
+  el.addEventListener("pointermove",function(e){if(!Pt[e.pointerId])return;var prev=Pt[e.pointerId];Pt[e.pointerId]={x:e.clientX,y:e.clientY};var ids=Object.keys(Pt),o=T3.orb;
+    if(ids.length===2&&pin){var a=Pt[ids[0]],b=Pt[ids[1]],d=Math.hypot(a.x-b.x,a.y-b.y)||1;o.r=clampR(pin.r*pin.d/d);var mx=(a.x+b.x)/2,my=(a.y+b.y)/2;pan3D(mx-pin.mx,my-pin.my);pin.mx=mx;pin.my=my;return;}
+    if(st){var dx=e.clientX-prev.x,dy=e.clientY-prev.y;if(Math.abs(e.clientX-st.x)+Math.abs(e.clientY-st.y)>5)st.moved=true;if(e.shiftKey||e.buttons===2)pan3D(dx,dy);else{o.th-=dx*0.006;o.ph=Math.min(1.5,Math.max(0.08,o.ph-dy*0.005));}}});
+  function up(e){if(st&&!st.moved){var r=el.getBoundingClientRect(),v=new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);T3.ray.setFromCamera(v,T3.camera);
+      var hit=T3.ray.intersectObjects(T3.pick.filter(function(p){return p.visible;}),false)[0];if(hit&&hit.object.userData.o){var o=hit.object.userData.o;select(o);T3.sel.position.set(o.x,(o.h||40)+60,-o.y);T3.sel.visible=true;}}
+    delete Pt[e.pointerId];if(Object.keys(Pt).length<2)pin=null;if(!Object.keys(Pt).length)st=null;}
+  el.addEventListener("pointerup",up);el.addEventListener("pointercancel",function(e){delete Pt[e.pointerId];pin=null;st=null;});
+  el.addEventListener("contextmenu",function(e){e.preventDefault();});
+  el.addEventListener("wheel",function(e){e.preventDefault();T3.orb.r=clampR(T3.orb.r*(e.deltaY>0?1.12:1/1.12));},{passive:false});
+}
+function clampR(r){return Math.min(4200,Math.max(70,r));}
+function pan3D(dx,dy){var o=T3.orb,k=o.r/800,c=Math.cos(o.th),s=Math.sin(o.th);o.tx+=(-dx*c-dy*s)*k;o.tz+=(dx*s-dy*c)*k;o.tx=Math.max(-1400,Math.min(1400,o.tx));o.tz=Math.max(-1400,Math.min(1400,o.tz));}
+
+/* ---------- mode / site ---------- */
+function setMode(m){
+  var ok=true;if(m==="3d")ok=init3D();state.mode=m;
+  document.querySelectorAll("#modeSeg button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-m")===m);});
+  cv.style.display=m==="2d"?"block":"none";$("gl").style.display=(m==="3d"&&ok)?"block":"none";$("zk").style.display=m==="zk"?"block":"none";
+  $("err").style.display=(m==="3d"&&!ok)?"flex":"none";$("compass").style.display=m==="3d"?"none":"block";$("scale").style.display=m==="2d"?"block":"none";
+  $("chips").style.display=m==="2d"?"flex":"none";document.querySelector(".ctrls").style.display=m==="zk"?"none":"flex";
+  if(m!=="2d"&&state.sel==null)$("info").style.display="none";
+  if(m==="3d"&&ok){if(T3.built!==state.site)build3D();resize3D();}
+  if(m==="zk"){$("info").style.display="none";renderZK();}
+  if(m==="2d"){fit();req();}
+  if(state.sel&&m!=="zk"){select(state.sel);focus(state.sel);}
+}
+function setSite(s){state.site=s;state.sel=null;$("info").style.display="none";$("q").value="";
+  document.querySelectorAll("#siteSeg button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-s")===s);});
+  prep(s);fit();home();renderQuick();renderTables();
+  if(state.mode==="3d"&&T3){build3D();resize3D();}if(state.mode==="zk")renderZK();req();}
+document.querySelectorAll("#siteSeg button").forEach(function(b){b.onclick=function(){setSite(b.getAttribute("data-s"));};});
+document.querySelectorAll("#modeSeg button").forEach(function(b){b.onclick=function(){setMode(b.getAttribute("data-m"));};});
+$("zin").onclick=function(){if(state.mode==="3d"&&T3)T3.orb.r=clampR(T3.orb.r/1.3);else zoomAt(1.4);};
+$("zout").onclick=function(){if(state.mode==="3d"&&T3)T3.orb.r=clampR(T3.orb.r*1.3);else zoomAt(1/1.4);};
+$("reset").onclick=function(){if(state.mode==="3d"&&T3){T3.orb=JSON.parse(JSON.stringify(T3.orb0));T3.sel.visible=false;}else{home();req();}};
+new ResizeObserver(function(){if(state.mode==="2d"){fit();req();}else if(state.mode==="zk")renderZK();}).observe($("stage"));
+try{window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",function(){req();if(T3&&state.mode==="3d")build3D();if(state.mode==="zk")renderZK();});}catch(e){}
+
+if(!HD){document.body.insertAdjacentHTML("afterbegin","<p style='padding:16px'>Data peta gagal dimuat.</p>");return;}
+if(/embed/.test(location.hash)){document.documentElement.classList.add("embed");var mb=document.querySelectorAll("#modeSeg button");mb[0].textContent="2D";mb[1].textContent="3D";mb[2].textContent="Ziarah";}
+renderChips();setSite(/-md/.test(location.hash)?"md":"mk");
+})();
+</script>
+</body>
+</html>

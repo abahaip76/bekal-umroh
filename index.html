@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bekal Umroh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Tata letak: aplikasi satu layar untuk HP. Kepala gelap seperti kiswah, isi di atas warna marmer, aksen emas hanya untuk hal yang perlu ditindak. */
+:root{
+  --marmer:#f1f2ef; --kartu:#ffffff; --tinta:#161a1c; --redup:#5a6368; --garis:#dcdfda;
+  --kiswah:#15181a; --emas:#9a7420; --emas-isi:#b98a24; --hijau:#0d6b5f; --awas:#b3401f;
+  --f-isi:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-arab:"Noto Naskh Arabic","Amiri","Scheherazade New",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --marmer:#101314; --kartu:#1a1e20; --tinta:#eceeea; --redup:#a0a9ad; --garis:#2c3336;
+  --kiswah:#0a0c0d; --emas:#d8ae4c; --emas-isi:#c79a36; --hijau:#3fc0ae; --awas:#f08a6a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --marmer:#101314; --kartu:#1a1e20; --tinta:#eceeea; --redup:#a0a9ad; --garis:#2c3336;
+  --kiswah:#0a0c0d; --emas:#d8ae4c; --emas-isi:#c79a36; --hijau:#3fc0ae; --awas:#f08a6a; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+html{font-size:16px}
+html.besar{font-size:19px}
+body{margin:0;background:var(--marmer);color:var(--tinta);font-family:var(--f-isi);line-height:1.5;-webkit-text-size-adjust:100%}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--emas-isi);outline-offset:2px}
+a{color:var(--hijau)}
+h1,h2,h3{text-wrap:balance;line-height:1.2;margin:0}
+#app{height:100%;display:none;grid-template-rows:auto 1fr auto;max-width:720px;margin:0 auto;background:var(--marmer)}
+#app.on{display:grid}
+header.atas{background:var(--kiswah);color:#f3efe2;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--emas-isi)}
+header.atas h1{font-size:1.05rem;flex:1;letter-spacing:.01em}
+.ikon-btn{border:1px solid #3a4043;background:none;color:#f3efe2;border-radius:8px;min-width:40px;height:40px;cursor:pointer;font-weight:700}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--emas-isi);color:#15181a;display:grid;place-items:center;font-weight:700;overflow:hidden;border:0;cursor:pointer}
+.avatar img{width:100%;height:100%;object-fit:cover}
+main{position:relative;overflow:hidden}
+#view{position:absolute;inset:0;overflow-y:auto;padding:16px 16px 28px;display:flex;flex-direction:column;gap:14px}
+#petaWrap,#halWrap{position:absolute;inset:0;display:none;background:var(--marmer)}
+#petaWrap iframe,#halWrap iframe{width:100%;height:100%;border:0;display:block}
+nav.bawah{display:grid;grid-template-columns:repeat(5,1fr);background:var(--kartu);border-top:1px solid var(--garis)}
+nav.bawah button{border:0;background:none;padding:8px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.72rem;color:var(--redup);cursor:pointer}
+nav.bawah button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav.bawah button.on{color:var(--tinta);font-weight:700;box-shadow:inset 0 3px 0 var(--emas-isi)}
+.kartu{background:var(--kartu);border:1px solid var(--garis);border-radius:12px;padding:14px 16px}
+.kartu h2{font-size:1.05rem;margin-bottom:6px}
+.kartu h3{font-size:.95rem;margin:10px 0 4px}
+.kartu p{margin:6px 0}
+.kecil{font-size:.86rem;color:var(--redup)}
+.judul-hal{font-size:1.3rem}
+.baris{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tumbuh{flex:1;min-width:0}
+.btn{border:1px solid var(--garis);background:var(--kartu);border-radius:10px;padding:10px 14px;cursor:pointer;text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.btn.utama{background:var(--kiswah);color:#f3efe2;border-color:var(--kiswah)}
+.btn.emas{background:var(--emas-isi);color:#15181a;border-color:var(--emas-isi)}
+.btn.polos{border-color:transparent;background:none;font-weight:400;color:var(--redup);text-decoration:underline}
+.btn.bahaya{color:var(--awas)}
+.skor{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.skor .angka{font-size:2.4rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
+.bar{height:8px;background:var(--garis);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--hijau);border-radius:99px}
+.bar-baris{display:grid;grid-template-columns:5.6rem 1fr 2.6rem;gap:8px;align-items:center;font-size:.86rem;margin-top:6px}
+.bar-baris b{text-align:right;font-variant-numeric:tabular-nums}
+.tugas{display:flex;flex-direction:column;gap:8px}
+.tugas button{text-align:left;border:1px solid var(--garis);background:var(--marmer);border-radius:10px;padding:10px 12px;cursor:pointer;display:flex;gap:10px;align-items:center}
+.tugas .tag{font-size:.72rem;font-weight:700;color:var(--emas);text-transform:uppercase;letter-spacing:.05em;min-width:4.6rem}
+details{background:var(--kartu);border:1px solid var(--garis);border-radius:12px}
+summary{padding:12px 16px;cursor:pointer;font-weight:700;display:flex;gap:10px;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary .hit{margin-left:auto;font-weight:400;font-size:.86rem;color:var(--redup);font-variant-numeric:tabular-nums}
+details .isi{padding:0 16px 12px}
+.cek{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--garis);cursor:pointer}
+.cek input{width:22px;height:22px;margin:1px 0 0;accent-color:var(--hijau);flex:none}
+.cek.sudah span{color:var(--redup);text-decoration:line-through}
+.langkah{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:1px solid var(--garis);background:var(--kartu);border-radius:12px;padding:12px 14px;cursor:pointer}
+.langkah .no{width:34px;height:34px;border-radius:50%;border:2px solid var(--garis);display:grid;place-items:center;font-weight:700;flex:none;font-variant-numeric:tabular-nums}
+.langkah.sudah .no{background:var(--hijau);border-color:var(--hijau);color:#fff}
+.langkah small{display:block;color:var(--redup)}
+.baca{border:1px solid var(--garis);border-radius:12px;padding:12px 14px;background:var(--marmer);margin-top:8px}
+.baca .lb{font-size:.74rem;font-weight:700;color:var(--emas);text-transform:uppercase;letter-spacing:.05em}
+.arab{font-family:var(--f-arab);font-size:1.7rem;line-height:2.1;direction:rtl;text-align:right;margin:6px 0 2px}
+.latin{font-style:italic}
+.dalil{font-size:.86rem;border-top:1px solid var(--garis);padding-top:8px;margin-top:10px;display:flex;flex-direction:column;gap:4px}
+.pil{display:inline-block;font-size:.7rem;font-weight:700;border-radius:99px;padding:1px 8px;border:1px solid currentColor;margin-left:6px;white-space:nowrap}
+.pil.ok{color:var(--hijau)} .pil.cek2{color:var(--awas)}
+ol.kerja{margin:6px 0 0;padding-left:1.3rem;display:flex;flex-direction:column;gap:6px}
+ul.rapi{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:4px}
+.hitung{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hitung .kotak{border:1px solid var(--garis);border-radius:12px;padding:10px;text-align:center;background:var(--marmer)}
+.hitung .n{font-size:2.2rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.hitung .tmb{display:flex;gap:6px;justify-content:center;margin-top:6px}
+.hitung button{border:1px solid var(--garis);background:var(--kartu);border-radius:10px;min-width:48px;height:44px;font-weight:700;cursor:pointer}
+.hitung button.plus{background:var(--kiswah);color:#f3efe2;border-color:var(--kiswah);min-width:84px}
+.grid30{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.grid30 button{aspect-ratio:1;border:1px solid var(--garis);background:var(--marmer);border-radius:8px;cursor:pointer;font-variant-numeric:tabular-nums;font-weight:700}
+.grid30 button.sudah{background:var(--hijau);border-color:var(--hijau);color:#fff}
+.grid30 button.kini{border:2px solid var(--emas-isi)}
+.peringatan{border-left:4px solid var(--awas);background:var(--kartu);border-radius:10px;padding:10px 14px;border-top:1px solid var(--garis);border-right:1px solid var(--garis);border-bottom:1px solid var(--garis)}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.menu-grid button{border:1px solid var(--garis);background:var(--kartu);border-radius:12px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-height:84px}
+.menu-grid button b{font-size:1rem}
+.menu-grid button.emas{border-color:var(--emas-isi)}
+label.isian{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--redup);margin-top:10px}
+label.isian input,label.isian textarea{border:1px solid var(--garis);border-radius:10px;padding:10px 12px;background:var(--marmer);color:var(--tinta);font-size:1rem}
+.kartu-tunjuk{background:#fff;color:#111;border:3px solid #111;border-radius:14px;padding:16px}
+.kartu-tunjuk .arab{font-size:1.5rem;line-height:1.9}
+.kartu-tunjuk dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+.kartu-tunjuk dt{color:#555;font-size:.86rem} .kartu-tunjuk dd{margin:0;font-weight:700;overflow-wrap:anywhere}
+/* masuk */
+#masuk{min-height:100%;display:none;background:var(--kiswah);color:#f3efe2;padding:28px 20px;align-items:center;justify-content:center}
+#masuk.on{display:flex}
+#masuk .dalam{max-width:420px;width:100%;display:flex;flex-direction:column;gap:14px}
+#masuk h1{font-size:2rem}
+#masuk .garis-emas{height:3px;background:var(--emas-isi);width:72px;border-radius:2px}
+#masuk ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;color:#d9d5c8}
+#masuk .btn.tamu{background:none;color:#f3efe2;border-color:#4a5154;justify-content:center}
+#masuk .catat{font-size:.84rem;color:#b9b5a8}
+#gbtn{min-height:44px}
+/* ajakan */
+#ajak{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:16px}
+#ajak.on{display:flex}
+#ajak .lembar{background:var(--kartu);color:var(--tinta);border-radius:16px;padding:18px;max-width:440px;width:100%;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--emas-isi)}
+@media (prefers-reduced-motion:no-preference){#ajak .lembar{animation:naik .22s ease-out}@keyframes naik{from{transform:translateY(14px)}to{transform:none}}}
+</style>
+</head>
+<body>
+<section id="masuk"><div class="dalam">
+  <div class="garis-emas"></div>
+  <h1 id="mNama">Bekal Umroh</h1>
+  <p id="mTag" style="margin:0"></p>
+  <ul>
+    <li>Checklist persiapan dan program latihan jalan 30 hari</li>
+    <li>Manasik langkah demi langkah dengan doa dan dalilnya</li>
+    <li>Peta pintu, hotel, dan toilet di Masjidil Haram dan Masjid Nabawi</li>
+  </ul>
+  <div id="gbtn"></div>
+  <p class="catat" id="gNote"></p>
+  <button class="btn tamu" id="btnTamu">Lanjut tanpa akun</button>
+  <p class="catat">Gratis. Catatan Anda disimpan di perangkat ini saja.</p>
+</div></section>
+
+<div id="app">
+  <header class="atas">
+    <h1 id="aNama">Bekal Umroh</h1>
+    <button class="ikon-btn" id="btnBesar" aria-label="Perbesar huruf">A+</button>
+    <button class="avatar" id="btnAkun" aria-label="Akun"></button>
+  </header>
+  <main><div id="view"></div><div id="petaWrap"></div><div id="halWrap"></div></main>
+  <nav class="bawah" id="nav">
+    <button data-r="beranda"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Beranda</button>
+    <button data-r="persiapan"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/></svg>Persiapan</button>
+    <button data-r="manasik"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v9l-8 4-8-4z"/><path d="M4 11l8 4 8-4"/></svg>Manasik</button>
+    <button data-r="peta"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.800 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Peta</button>
+    <button data-r="menu"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg>Menu</button>
+  </nav>
+</div>
+
+<div id="ajak" role="dialog" aria-modal="true" aria-labelledby="ajakJ"><div class="lembar">
+  <h2 id="ajakJ" style="font-size:1.1rem">Aplikasi ini gratis</h2>
+  <p style="margin:0">Kalau terasa bermanfaat untuk persiapan umroh Anda, Anda bisa mentraktir pengembangnya secangkir kopi. Tidak wajib, dan semua fitur tetap terbuka.</p>
+  <a class="btn emas" id="ajakLink" target="_blank" rel="noopener" style="justify-content:center">Traktir kopi</a>
+  <button class="btn" id="ajakLewati" style="justify-content:center">Lewati dulu</button>
+  <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
+</div></div>
+
+<script src="config.js"></script>
+<script src="content.js"></script>
+<script>
+(function(){
+"use strict";
+var CFG=window.APP_CONFIG||{},M=window.MATERI,$=function(i){return document.getElementById(i);};
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+/* ---------- simpanan di perangkat ---------- */
+var KEY="pu:state",S={tamu:false,user:null,tgl:"",cek:{},lat:{},man:{},kartu:{},hit:{t:0,s:0},aksi:0,traktirLast:0,traktirOff:false,lunakOff:false,hari:[],besar:false,aman:false};
+function muat(){try{var o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)for(var k in o)S[k]=o[k];}catch(e){}}
+function simpan(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function hotel(s){try{return JSON.parse(localStorage.getItem("pu:hotel:"+s)||"null");}catch(e){return null;}}
+muat();
+var hariIni=new Date().toISOString().slice(0,10);if(S.hari.indexOf(hariIni)<0){S.hari.push(hariIni);simpan();}
+/* ---------- hitungan ---------- */
+function pctCek(){var n=0,d=0;M.checklist.forEach(function(g){g.butir.forEach(function(b,i){n++;if(S.cek[g.id+i])d++;});});return n?d/n:0;}
+function pctLat(){var d=0;for(var i=1;i<=30;i++)if(S.lat[i])d++;return d/30;}
+function pctMan(){var d=0;M.manasik.forEach(function(m){if(S.man[m.id])d++;});return d/M.manasik.length;}
+function jalan(s){var h=hotel(s);if(!h)return null;var sekali=h.d*1.3+150;return {h:h,harian:sekali*10,umrah:sekali*2+5000};}
+function km(m){return (m/1000).toFixed(1).replace(".",",")+" km";}
+function targetMenit(){var j=jalan("mk");if(!j)return 60;return Math.max(60,Math.min(120,Math.round(j.umrah/4000*60/5)*5));}
+function sisaHari(){if(!S.tgl)return null;var d=Math.ceil((new Date(S.tgl+"T00:00:00")-new Date(hariIni+"T00:00:00"))/864e5);return d;}
+/* ---------- ajakan traktir ---------- */
+var rute="beranda",sub=null;
+function aksi(){S.aksi=(S.aksi||0)+1;simpan();}
+function cobaAjak(){
+  if(S.traktirOff||!CFG.mayarUrl)return;if(["manasik","darurat","kartu","peta","langkah"].indexOf(rute)>=0)return;
+  if((S.aksi||0)<(CFG.traktirSetelahAksi||12))return;if(Date.now()-(S.traktirLast||0)<(CFG.traktirJedaHari||7)*864e5)return;
+  S.traktirLast=Date.now();S.aksi=0;simpan();$("ajak").classList.add("on");$("ajakLewati").focus();}
+$("ajakLink").href=CFG.mayarUrl||"#";
+$("ajakLink").onclick=function(){$("ajak").classList.remove("on");};
+$("ajakLewati").onclick=function(){$("ajak").classList.remove("on");};
+$("ajakStop").onclick=function(){S.traktirOff=true;simpan();$("ajak").classList.remove("on");};
+/* ---------- tampilan ---------- */
+var V=$("view");
+function dalilHTML(d){return "<div class='dalil'>"+d.map(function(x){return "<div>"+esc(x.t)+": <b>"+esc(x.r)+"</b>"+(x.s==="ok"?"<span class='pil ok'>dicocokkan</span>":"<span class='pil cek2'>perlu dicek</span>")+"</div>";}).join("")+"</div>";}
+function bacaHTML(b){return "<div class='baca'>"+(b.lb?"<div class='lb'>"+esc(b.lb)+"</div>":"")+"<div class='arab' lang='ar'>"+b.ar+"</div><div class='latin'>"+esc(b.lt)+"</div><div>"+esc(b.id)+"</div>"+(b.r?dalilHTML([{t:"Rujukan",r:b.r,s:b.s}]):"")+"</div>";}
+function hotelKartu(s,nama){var j=jalan(s);if(!j)return "<div class='baris'><div class='tumbuh'><b>"+nama+"</b><div class='kecil'>Hotel belum dipilih</div></div><button class='btn' data-peta='"+s+"'>Pilih di peta</button></div>";
+  return "<div><b>"+nama+": "+esc(j.h.n)+"</b><div class='kecil'>"+esc(j.h.gate)+", ±"+Math.round(j.h.d/10)*10+" m garis lurus"+(j.h.main&&j.h.main!==j.h.gate?". Pintu utama terdekat: "+esc(j.h.main):"")+"</div><div class='kecil'>Perkiraan kasar jalan kaki untuk lima waktu salat: "+km(j.harian)+" sehari"+(s==="mk"?", dan sekitar "+km(j.umrah)+" pada hari umrah":"")+".</div></div>";}
+var HAL={};
+HAL.beranda=function(){
+  var c=pctCek(),l=pctLat(),m=pctMan(),sk=Math.round((c+l+m)/3*100),sisa=sisaHari(),nm=S.user?S.user.nama.split(" ")[0]:"";
+  var h="<h2 class='judul-hal'>Assalamu'alaikum"+(nm?", "+esc(nm):"")+"</h2>";
+  h+="<div class='kartu'><div class='baris'><div class='tumbuh'><h2>"+(sisa==null?"Kapan berangkat?":sisa>0?sisa+" hari lagi":sisa===0?"Berangkat hari ini":"Semoga umrohnya mabrur")+"</h2><div class='kecil'>"+(sisa==null?"Isi tanggal supaya hitung mundur dan tugas harian menyesuaikan.":"Tanggal berangkat")+"</div></div><input type='date' id='tgl' value='"+esc(S.tgl)+"' aria-label='Tanggal berangkat' style='border:1px solid var(--garis);border-radius:10px;padding:8px 10px;background:var(--marmer)'></div></div>";
+  h+="<div class='kartu'><div class='skor'><div class='angka'>"+sk+"%</div><div><h2>Kesiapan Anda</h2>"+
+     [["Persiapan",c],["Latihan",l],["Manasik",m]].map(function(x){return "<div class='bar-baris'><span>"+x[0]+"</span><div class='bar'><i style='width:"+Math.round(x[1]*100)+"%'></i></div><b>"+Math.round(x[1]*100)+"%</b></div>";}).join("")+"</div></div></div>";
+  // tugas hari ini
+  var t=[];var nxC=null;M.checklist.some(function(g){return g.butir.some(function(b,i){if(!S.cek[g.id+i]){nxC={g:g,b:b};return true;}});});
+  if(nxC)t.push(["persiapan","Persiapan",nxC.b]);
+  var nl=0;for(var i=1;i<=30;i++)if(!S.lat[i]){nl=i;break;}if(nl)t.push(["latihan","Latihan","Hari ke-"+nl+": "+M.latihan.minggu[Math.min(3,Math.floor((nl-1)/7))].jalan]);
+  var nm2=M.manasik.filter(function(x){return !S.man[x.id];})[0];if(nm2)t.push(["manasik","Manasik","Pelajari: "+nm2.judul]);
+  if(t.length)h+="<div class='kartu'><h2>Tugas hari ini</h2><div class='tugas'>"+t.map(function(x){return "<button data-r='"+x[0]+"'><span class='tag'>"+x[1]+"</span><span>"+esc(x[2])+"</span></button>";}).join("")+"</div></div>";
+  h+="<div class='kartu'><h2>Hotel saya</h2><div style='display:flex;flex-direction:column;gap:12px'>"+hotelKartu("mk","Makkah")+hotelKartu("md","Madinah")+"</div><p class='kecil'>Pilih hotel dari menu Peta: ketuk hotelnya, lalu tekan Jadikan hotel saya.</p></div>";
+  h+="<div class='baris'><button class='btn tumbuh' data-r='darurat'>Bila ada masalah</button><button class='btn tumbuh' data-r='kartu'>Kartu perjalanan</button></div>";
+  if(!S.lunakOff&&S.hari.length>=3&&CFG.mayarUrl)h+="<div class='kartu' style='border-color:var(--emas-isi)'><h2>Terbantu oleh aplikasi ini?</h2><p>Aplikasi ini gratis. Kalau bermanfaat, Anda bisa mentraktir pengembangnya secangkir kopi.</p><div class='baris'><a class='btn emas' href='"+esc(CFG.mayarUrl)+"' target='_blank' rel='noopener'>Traktir kopi</a><button class='btn polos' id='lunakOff'>Lewati</button></div></div>";
+  V.innerHTML=h;
+  $("tgl").onchange=function(){S.tgl=this.value;simpan();buka("beranda");};
+  if($("lunakOff"))$("lunakOff").onclick=function(){S.lunakOff=true;simpan();buka("beranda");};
+};
+HAL.persiapan=function(){
+  var h="<h2 class='judul-hal'>Persiapan</h2><p class='kecil' style='margin:0'>Centang yang sudah siap. Ketentuan visa dan vaksin bisa berubah, jadi pastikan lagi ke travel Anda.</p>";
+  M.checklist.forEach(function(g,gi){var d=g.butir.filter(function(b,i){return S.cek[g.id+i];}).length;
+    h+="<details"+(gi===0||sub===g.id?" open":"")+" data-g='"+g.id+"'><summary>"+esc(g.judul)+"<span class='hit'>"+d+"/"+g.butir.length+"</span></summary><div class='isi'>"+g.butir.map(function(b,i){var k=g.id+i;return "<label class='cek"+(S.cek[k]?" sudah":"")+"'><input type='checkbox' id='c_"+k+"' data-k='"+k+"'"+(S.cek[k]?" checked":"")+"><span>"+esc(b)+"</span></label>";}).join("")+"</div></details>";});
+  V.innerHTML=h;
+  V.querySelectorAll("input[data-k]").forEach(function(c){c.onchange=function(){var k=c.getAttribute("data-k");S.cek[k]=c.checked;simpan();c.parentNode.classList.toggle("sudah",c.checked);
+    var det=c.closest("details"),g=M.checklist.filter(function(x){return x.id===det.getAttribute("data-g");})[0];det.querySelector(".hit").textContent=g.butir.filter(function(b,i){return S.cek[g.id+i];}).length+"/"+g.butir.length;if(c.checked){aksi();cobaAjak();}};});
+};
+HAL.manasik=function(){
+  if(sub){var m=M.manasik.filter(function(x){return x.id===sub;})[0],ix=M.manasik.indexOf(m);
+    var h="<button class='btn' id='balik' style='align-self:flex-start'>← Semua langkah</button><h2 class='judul-hal'>"+(ix+1)+". "+esc(m.judul)+"</h2>";
+    h+="<div class='kartu'><h2>Yang dikerjakan</h2><ol class='kerja'>"+m.kerjakan.map(function(k){return "<li>"+esc(k)+"</li>";}).join("")+"</ol></div>";
+    if(m.baca)h+="<div class='kartu'><h2>Yang dibaca</h2>"+m.baca.map(bacaHTML).join("")+"</div>";
+    if(m.catatan)h+="<div class='peringatan'><b>Perlu diingat.</b> "+esc(m.catatan)+"</div>";
+    h+="<div class='kartu'><h2>Dalil</h2>"+dalilHTML(m.dalil)+"</div>";
+    h+="<div class='baris'><button class='btn "+(S.man[m.id]?"":"utama")+" tumbuh' id='tandai'>"+(S.man[m.id]?"Sudah dipelajari ✓":"Tandai sudah dipelajari")+"</button>"+(ix<M.manasik.length-1?"<button class='btn' id='lanjut'>Langkah berikutnya →</button>":"")+"</div>";
+    V.innerHTML=h;V.scrollTop=0;
+    $("balik").onclick=function(){sub=null;buka("manasik");};
+    $("tandai").onclick=function(){S.man[m.id]=!S.man[m.id];simpan();if(S.man[m.id])aksi();buka("manasik",m.id);};
+    if($("lanjut"))$("lanjut").onclick=function(){buka("manasik",M.manasik[ix+1].id);};
+    return;}
+  var h="<h2 class='judul-hal'>Manasik umrah</h2><p class='kecil' style='margin:0'>Urutannya mengikuti hadits Jabir tentang ibadah Nabi (HR. Muslim no. 1218). "+(CFG.peninjauIbadah?"Ditinjau oleh "+esc(CFG.peninjauIbadah)+".":"Materi ini belum ditinjau pembimbing. Bila berbeda dengan arahan pembimbing Anda, ikuti beliau.")+"</p>";
+  h+="<div class='kartu'><h2>Penghitung putaran</h2><div class='hitung'>"+[["t","Tawaf"],["s","Sa'i"]].map(function(x){return "<div class='kotak'><div class='kecil'>"+x[1]+"</div><div class='n' id='n_"+x[0]+"'>"+(S.hit[x[0]]||0)+"<span style='font-size:1rem;color:var(--redup)'> / 7</span></div><div class='tmb'><button data-h='"+x[0]+"' data-d='-1' aria-label='Kurangi "+x[1]+"'>−</button><button class='plus' data-h='"+x[0]+"' data-d='1'>+ 1</button><button data-h='"+x[0]+"' data-d='0' aria-label='Ulang "+x[1]+"'>↺</button></div></div>";}).join("")+"</div></div>";
+  M.manasik.forEach(function(m,i){h+="<button class='langkah"+(S.man[m.id]?" sudah":"")+"' data-m='"+m.id+"'><span class='no'>"+(S.man[m.id]?"✓":i+1)+"</span><span><b>"+esc(m.judul)+"</b><small>"+esc(m.ringkas)+"</small></span></button>";});
+  var L=M.larangan;h+="<details><summary>Larangan selama ihram</summary><div class='isi'><h3 style='margin:0 0 4px'>Pria dan wanita</h3><ul class='rapi'>"+L.semua.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><h3 style='margin:10px 0 4px'>Khusus pria</h3><ul class='rapi'>"+L.pria.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><h3 style='margin:10px 0 4px'>Khusus wanita</h3><ul class='rapi'>"+L.wanita.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><p class='kecil'>Bila melanggar karena lupa atau tidak tahu, tanyakan hukumnya kepada pembimbing.</p></div></details>";
+  V.innerHTML=h;
+  V.querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){buka("manasik",b.getAttribute("data-m"));};});
+  V.querySelectorAll("[data-h]").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-h"),d=+b.getAttribute("data-d");S.hit[k]=d===0?0:Math.max(0,Math.min(7,(S.hit[k]||0)+d));simpan();$("n_"+k).firstChild.nodeValue=S.hit[k];};});
+};
+HAL.latihan=function(){
+  var L=M.latihan,tm=targetMenit(),j=jalan("mk"),kini=0;for(var i=1;i<=30;i++)if(!S.lat[i]){kini=i;break;}
+  var h="<h2 class='judul-hal'>Latihan fisik 30 hari</h2>";
+  h+="<div class='peringatan'><b>Program umum, bukan saran medis.</b> "+(CFG.peninjauFisik?"Ditinjau oleh "+esc(CFG.peninjauFisik)+". ":"Belum ditinjau tenaga medis. ")+"Periksa ke dokter dulu bila Anda punya salah satu kondisi di bawah.<ul class='rapi'>"+L.konsul.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><p style='margin:8px 0 0'><b>Hentikan latihan dan cari pertolongan</b> bila muncul: "+L.berhenti.map(esc).join("; ").toLowerCase()+".</p></div>";
+  h+="<div class='kartu'><h2>Target jalan panjang Anda: "+tm+" menit</h2><p class='kecil' style='margin:0'>"+(j?"Dihitung dari jarak "+esc(j.h.n)+" ke masjid, ditambah tawaf dan sa'i sekitar 5 km. Hari umrah Anda kira-kira "+km(j.umrah)+".":"Angka bawaan. Pilih hotel Makkah di menu Peta supaya target ini dihitung dari jarak hotel Anda.")+" Jalanlah dengan kecepatan yang masih memungkinkan Anda bercakap-cakap.</p></div>";
+  h+="<div class='kartu'><h2>Catatan 30 hari</h2><p class='kecil' style='margin:0 0 8px'>Ketuk angka setelah latihan hari itu selesai. Bolong sehari tidak apa-apa, usahakan tidak dua hari berturut-turut.</p><div class='grid30'>";
+  for(i=1;i<=30;i++)h+="<button data-l='"+i+"' class='"+(S.lat[i]?"sudah":"")+(i===kini?" kini":"")+"' aria-label='Hari "+i+"'>"+i+"</button>";
+  h+="</div></div>";
+  L.minggu.forEach(function(w,wi){h+="<details"+(Math.floor(((kini||30)-1)/7)===wi||(wi===3&&kini>28)?" open":"")+"><summary>Minggu "+(wi+1)+"<span class='hit'>hari "+(wi*7+1)+" sampai "+(wi===3?30:wi*7+7)+"</span></summary><div class='isi'><p style='margin:0'><b>Jalan kaki tiap hari:</b> "+esc(w.jalan)+".</p><p><b>Gerakan di rumah, "+esc(w.set)+":</b> "+esc(w.rep)+".</p><p style='margin-bottom:0'><b>Ujian mingguan.</b> "+esc(w.khusus.replace("sesuai target dari hotel Anda",tm+" menit"))+"</p></div></details>";});
+  h+="<button class='btn' data-r='langkah'>Lihat gerakan bergambar di Langkah Menuju Umrah</button>";
+  h+="<div class='kartu'><h2>Lima gerakan, cukup kursi dan tembok</h2><ol class='kerja'>"+L.gerakan.map(function(g){return "<li><b>"+esc(g.n)+".</b> "+esc(g.c)+"</li>";}).join("")+"</ol></div>";
+  V.innerHTML=h;
+  V.querySelectorAll("[data-l]").forEach(function(b){b.onclick=function(){var n=b.getAttribute("data-l");S.lat[n]=!S.lat[n];simpan();if(S.lat[n])aksi();var st=V.scrollTop;buka("latihan");V.scrollTop=st;cobaAjak();};});
+};
+HAL.doa=function(){
+  var h="<h2 class='judul-hal'>Doa dan dzikir perjalanan</h2><p class='kecil' style='margin:0'>Doa saat ihram, tawaf, dan sa'i ada di menu Manasik. Di luar bacaan ini, Anda bebas berdoa dengan bahasa sendiri.</p>"+M.doa.map(function(d){return "<div class='kartu' style='padding-top:6px'>"+bacaHTML(d).replace("class='baca'","class='baca' style='border:0;padding:6px 0 0;background:none;margin:0'")+"</div>";}).join("");
+  h+="<div class='kartu'><h2>Tentang Madinah</h2><ul class='rapi'>"+M.madinah.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul></div>";
+  V.innerHTML=h;
+};
+HAL.darurat=function(){
+  V.innerHTML="<h2 class='judul-hal'>Bila ada masalah</h2>"+M.darurat.map(function(d,i){return "<details"+(i===0?" open":"")+"><summary>"+esc(d.judul)+"</summary><div class='isi'><ol class='kerja' style='margin-top:0'>"+d.langkah.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+"</ol></div></details>";}).join("")+"<div class='baris'><button class='btn utama tumbuh' data-r='kartu'>Buka Kartu perjalanan</button><button class='btn tumbuh' data-r='peta'>Buka Peta</button></div>";
+};
+var ISIAN=[["nama","Nama lengkap"],["gol","Golongan darah"],["travel","Nama travel"],["pembimbing","Nama dan nomor pembimbing"],["hmk","Hotel di Makkah"],["hmd","Hotel di Madinah"],["keluarga","Nomor keluarga di Indonesia"],["sakit","Riwayat penyakit"],["obat","Obat rutin"],["alergi","Alergi"]];
+HAL.kartu=function(){
+  var K=S.kartu,a=hotel("mk"),b=hotel("md");if(!K.hmk&&a)K.hmk=a.n;if(!K.hmd&&b)K.hmd=b.n;if(!K.nama&&S.user)K.nama=S.user.nama;
+  var h="<h2 class='judul-hal'>Kartu perjalanan</h2>";
+  if(sub==="tunjuk"){h+="<div class='kartu-tunjuk'><div class='arab' lang='ar'>أنا من إندونيسيا وقد ضللت الطريق. من فضلك ساعدني للوصول إلى فندقي.</div><div style='font-size:.9rem;color:#444'>Saya dari Indonesia dan tersesat. Tolong bantu saya kembali ke hotel.</div><dl>"+ISIAN.filter(function(f){return K[f[0]];}).map(function(f){return "<dt>"+f[1]+"</dt><dd>"+esc(K[f[0]])+"</dd>";}).join("")+"</dl></div><button class='btn' id='ubah'>Ubah isi kartu</button><p class='kecil' style='margin:0'>Tangkap layar kartu ini lalu cetak, dan simpan cetakannya di tas kecil.</p>";
+    V.innerHTML=h;$("ubah").onclick=function(){buka("kartu");};return;}
+  h+="<p class='kecil' style='margin:0'>Diisi sekali, lalu ditunjukkan ke petugas saat tersesat atau sakit. Isinya hanya tersimpan di perangkat ini.</p><div class='kartu'>"+ISIAN.map(function(f){return "<label class='isian' for='k_"+f[0]+"'>"+f[1]+"<input id='k_"+f[0]+"' data-f='"+f[0]+"' value='"+esc(K[f[0]]||"")+"' autocomplete='off'></label>";}).join("")+"</div><button class='btn utama' id='tunjuk'>Tampilkan kartu untuk petugas</button>";
+  V.innerHTML=h;
+  V.querySelectorAll("input[data-f]").forEach(function(i){i.oninput=function(){S.kartu[i.getAttribute("data-f")]=i.value;simpan();};});
+  $("tunjuk").onclick=function(){aksi();buka("kartu","tunjuk");};
+};
+HAL.traktir=function(){
+  V.innerHTML="<h2 class='judul-hal'>Traktir pengembang</h2><div class='kartu'><p style='margin-top:0'>Aplikasi ini dibagikan gratis dan akan tetap gratis. Kalau terasa bermanfaat untuk persiapan umroh Anda atau keluarga, Anda bisa mentraktir pengembangnya secangkir kopi lewat Mayar.</p><p>Traktiran dipakai untuk biaya server dan memperbarui data peta. Tidak ada fitur yang dikunci bagi yang tidak mentraktir.</p><div class='baris'><a class='btn emas' href='"+esc(CFG.mayarUrl||"#")+"' target='_blank' rel='noopener'>Traktir kopi lewat Mayar</a><button class='btn polos' data-r='beranda'>Tidak sekarang</button></div><p class='kecil' style='margin-bottom:0'>Tautan membuka halaman pembayaran Mayar di luar aplikasi: "+esc(CFG.mayarUrl||"")+"</p></div>"+
+  "<div class='kartu'><h2>Ajakan traktir di tengah pemakaian</h2><p class='kecil'>Sesekali aplikasi menampilkan ajakan singkat, paling sering sekali dalam "+(CFG.traktirJedaHari||7)+" hari, dan tidak pernah di halaman Manasik, Peta, Kartu, atau Bila ada masalah.</p><label class='cek' style='border:0;padding:0'><input type='checkbox' id='stopAjak'"+(S.traktirOff?" checked":"")+"><span>Jangan tampilkan ajakan itu lagi</span></label></div>";
+  $("stopAjak").onchange=function(){S.traktirOff=this.checked;simpan();};
+};
+HAL.akun=function(){
+  var u=S.user,h="<h2 class='judul-hal'>Akun dan privasi</h2><div class='kartu'>";
+  if(u)h+="<h2>"+esc(u.nama)+"</h2><p class='kecil'>"+esc(u.email)+" · masuk dengan Google</p><button class='btn' id='keluar'>Keluar</button>";
+  else h+="<h2>Anda memakai aplikasi sebagai tamu</h2><p class='kecil'>"+(CFG.googleClientId?"Masuk dengan Google untuk menampilkan nama Anda di aplikasi.":"Login Google belum diaktifkan pada salinan aplikasi ini.")+"</p>"+(CFG.googleClientId?"<div id='gbtn2'></div>":"");
+  h+="</div><div class='kartu'><h2>Data Anda</h2><ul class='rapi'><li>Centang, catatan latihan, hotel pilihan, dan isi Kartu perjalanan tersimpan di perangkat ini saja.</li><li>Bila Anda masuk dengan Google, aplikasi membaca nama, alamat email, dan foto profil, lalu menyimpannya di perangkat ini untuk sapaan. Data itu tidak dikirim ke server pengembang.</li><li>Ganti HP atau hapus data browser berarti catatan ikut hilang.</li></ul><div id='hapusWrap' style='margin-top:10px'><button class='btn bahaya' id='hapus'>Hapus semua data di perangkat ini</button></div></div>";
+  V.innerHTML=h;
+  if($("keluar"))$("keluar").onclick=function(){S.user=null;S.tamu=false;simpan();try{google.accounts.id.disableAutoSelect();}catch(e){}tampil();};
+  if($("gbtn2"))gambarTombol($("gbtn2"));
+  $("hapus").onclick=function(){$("hapusWrap").innerHTML="<p style='margin:0 0 8px'>Semua centang, catatan, dan isi kartu akan hilang dan tidak bisa dikembalikan.</p><div class='baris'><button class='btn bahaya' id='hapusYa'>Ya, hapus semuanya</button><button class='btn' id='hapusTidak'>Batal</button></div>";
+    $("hapusYa").onclick=function(){try{localStorage.removeItem(KEY);localStorage.removeItem("pu:hotel:mk");localStorage.removeItem("pu:hotel:md");}catch(e){}location.reload();};$("hapusTidak").onclick=function(){buka("akun");};};
+};
+HAL.tentang=function(){
+  V.innerHTML="<h2 class='judul-hal'>Tentang dan sumber</h2><div class='kartu'><h2>Status tinjauan materi</h2><ul class='rapi'><li>Materi ibadah: "+(CFG.peninjauIbadah?"ditinjau oleh "+esc(CFG.peninjauIbadah):"belum ditinjau pembimbing atau ustadz")+".</li><li>Program latihan: "+(CFG.peninjauFisik?"ditinjau oleh "+esc(CFG.peninjauFisik):"belum ditinjau dokter atau fisioterapis")+".</li><li>Dalil berlabel <span class='pil ok'>dicocokkan</span> sudah dicek ke sumbernya. Yang berlabel <span class='pil cek2'>perlu dicek</span> nomor haditsnya masih harus dipastikan.</li></ul></div>"+
+  "<div class='kartu'><h2>Sumber</h2><ul class='rapi'><li>Hadits Jabir tentang ibadah Nabi, Shahih Muslim no. 1218</li><li><a href='https://risala.prh.gov.sa/storage/contents/941/id_sifat_alomrah_harmain.pdf' target='_blank' rel='noopener'>Tata Cara Umrah Disertai Doa-doa Pilihan</a>, terbitan otoritas urusan agama Masjidil Haram dan Masjid Nabawi</li><li><a href='https://islamqa.info/id/answers/34744' target='_blank' rel='noopener'>Tempat dan redaksi doa dalam umrah</a>, IslamQA</li><li><a href='https://sunnah.com/abudawud:1892' target='_blank' rel='noopener'>Sunan Abi Dawud no. 1892</a></li><li>Anjuran jalan kaki 30 menit sehari dari Pusat Kesehatan Haji</li><li>Peta: © kontributor <a href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener'>OpenStreetMap</a>, lisensi ODbL, data 16 November 2026</li></ul></div>"+
+  "<div class='kartu'><p style='margin:0'>Aplikasi ini alat bantu persiapan. Ia tidak menggantikan pembimbing manasik, dokter, atau petugas di lapangan.</p></div>";
+};
+HAL.menu=function(){
+  var it=[["latihan","Latihan fisik","Program jalan 30 hari"],["langkah","Langkah Menuju Umrah","Jadwal 28 hari bergambar"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, haid, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat","emas"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]];
+  V.innerHTML="<h2 class='judul-hal'>Menu</h2><div class='menu-grid'>"+it.map(function(x){return "<button data-r='"+x[0]+"'"+(x[3]?" class='emas'":"")+"><b>"+x[1]+"</b><span class='kecil'>"+x[2]+"</span></button>";}).join("")+"</div>";
+};
+/* ---------- navigasi ---------- */
+var TAB={beranda:1,persiapan:1,manasik:1,peta:1,menu:1},BINGKAI={peta:1,langkah:1},petaSiap=false,halSiap=false;
+function buka(r,s){
+  if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;
+  var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
+  var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
+  try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
+}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-r]");if(b){buka(b.getAttribute("data-r"));return;}var p=e.target.closest("[data-peta]");if(p){petaSiap=false;buka("peta",p.getAttribute("data-peta"));}});
+window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(h&&h!==rute&&(HAL[h]||BINGKAI[h]))buka(h);});
+window.addEventListener("message",function(e){if(e.data&&e.data.type==="pu-hotel"){aksi();if(rute==="beranda")buka("beranda");}});
+window.addEventListener("storage",function(e){if(e.key&&e.key.indexOf("pu:hotel")===0&&rute==="beranda")buka("beranda");});
+$("btnBesar").onclick=function(){S.besar=!S.besar;simpan();document.documentElement.classList.toggle("besar",S.besar);};
+$("btnAkun").onclick=function(){buka("akun");};
+/* ---------- login Google ---------- */
+var gSiap=false;
+function gambarTombol(el){if(!gSiap||!el)return;try{google.accounts.id.renderButton(el,{theme:"filled_blue",size:"large",text:"signin_with",shape:"pill",locale:"id",width:Math.min(380,el.clientWidth||320)});}catch(e){}}
+function kredensial(resp){try{var p=resp.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");var j=JSON.parse(decodeURIComponent(atob(p).split("").map(function(c){return "%"+("00"+c.charCodeAt(0).toString(16)).slice(-2);}).join("")));
+  S.user={nama:j.name||j.email,email:j.email||"",foto:j.picture||"",sub:j.sub};S.tamu=false;simpan();tampil();}catch(e){$("gNote").textContent="Login Google gagal dibaca. Coba lagi, atau lanjut tanpa akun.";}}
+function mulaiGoogle(){
+  if(!CFG.googleClientId){$("gbtn").style.display="none";$("gNote").textContent="Login Google belum diaktifkan pada salinan ini. Pemilik aplikasi perlu mengisi Client ID di config.js.";return;}
+  var s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;
+  s.onload=function(){try{google.accounts.id.initialize({client_id:CFG.googleClientId,callback:kredensial,auto_select:true});gSiap=true;gambarTombol($("gbtn"));}catch(e){$("gNote").textContent="Login Google tidak bisa dimuat di sini.";}};
+  s.onerror=function(){$("gNote").textContent="Login Google tidak bisa dimuat di sini. Anda tetap bisa lanjut tanpa akun.";};
+  document.head.appendChild(s);
+}
+$("btnTamu").onclick=function(){S.tamu=true;simpan();tampil();};
+function tampil(){
+  var masuk=!!(S.user||S.tamu);$("masuk").classList.toggle("on",!masuk);$("app").classList.toggle("on",masuk);
+  var av=$("btnAkun");if(S.user&&S.user.foto){av.innerHTML="<img alt='' referrerpolicy='no-referrer' src='"+esc(S.user.foto)+"'>";av.firstChild.onerror=function(){av.textContent=(S.user.nama||"?").charAt(0).toUpperCase();};}else av.textContent=S.user?(S.user.nama||"?").charAt(0).toUpperCase():"T";
+  if(masuk){var h=location.hash.slice(1);buka(HAL[h]||BINGKAI[h]?h:"beranda");}
+}
+document.title=CFG.name||"Bekal Umroh";$("mNama").textContent=$("aNama").textContent=CFG.name||"Bekal Umroh";$("mTag").textContent=CFG.tagline||"";
+document.documentElement.classList.toggle("besar",!!S.besar);
+mulaiGoogle();tampil();
+})();
+</script>
+</body>
+</html>
