@@ -31,7 +31,20 @@ window.MATERI = {
       "Payung lipat dan kacamata hitam",
       "Pelembap bibir dan kulit tanpa wewangian",
       "Adaptor steker dan power bank",
-      "Tas kecil untuk paspor dan HP"]},
+      "Tas kecil untuk paspor dan HP",
+      "Sajadah lipat dan tas serut kecil untuk sandal",
+      "Botol semprot untuk wudu",
+      "Peralatan mandi dan handuk kecil",
+      "Plastik untuk baju kotor",
+      "Charger HP dan kabelnya",
+      "Kacamata baca atau minus, bila memakai",
+      "Mushaf kecil dan buku doa dan dzikir",
+      "Pulpen untuk mengisi formulir",
+      "Pria: peci atau kopiah, dan tas selempang untuk dokumen",
+      "Wanita: hijab segi empat, legging, kaus kaki, manset tangan, dan pembalut",
+      "Pakaian hangat (jaket, sweater, syal, sarung tangan) bila berangkat di musim dingin",
+      "Makanan kering dari rumah secukupnya, misalnya sambal kemasan atau abon"
+    ]},
     {id:"sht", judul:"Kesehatan", butir:[
       "Periksa ke dokter, terutama bila ada penyakit kronis",
       "Ringkasan riwayat penyakit dan daftar obat sudah ditulis",
@@ -43,13 +56,19 @@ window.MATERI = {
       "Riyal tunai secukupnya",
       "Kartu debit sudah aktif untuk luar negeri",
       "Nomor darurat keluarga tersimpan",
-      "Hotel sudah dipilih di menu Peta"]},
+      "Hotel sudah dipilih di menu Peta",
+      "Kartu debit atau kredit berlogo Visa atau Mastercard",
+      "Sudah bergabung di grup WhatsApp rombongan",
+      "Earphone, dan aplikasi yang diminta travel untuk mendengar penjelasan pembimbing"
+    ]},
     {id:"ilm", judul:"Ilmu", butir:[
       "Seluruh langkah manasik sudah dibaca",
       "Talbiyah sudah hafal",
       "Larangan ihram sudah dipahami",
       "Sudah tahu apa yang dilakukan bila tersesat",
-      "Sudah ikut manasik dari travel"]}
+      "Sudah ikut manasik dari travel",
+      "Sudah membaca halaman Koper dan bagasi serta Info perjalanan di aplikasi ini"
+    ]}
   ],
 
   manasik: [
@@ -129,8 +148,68 @@ window.MATERI = {
     konsul:["Penyakit jantung atau pernah serangan jantung","Tekanan darah tinggi yang belum terkontrol","Diabetes dengan luka di kaki atau kesemutan berat","Cedera lutut, pinggul, atau pinggang yang sedang kambuh","Usia 60 tahun ke atas dan sudah lama tidak berolahraga"]
   },
 
+  koper: {
+    ihram: [
+      "Umrah dulu (mendarat di Jeddah lalu langsung ke Makkah): pakaian ihram masuk tas kabin. Pakai di hotel transit atau bandara sebelum terbang, lalu niat di pesawat sebelum melewati miqat.",
+      "Madinah dulu: pakaian ihram boleh masuk koper bagasi. Ihram dipakai di hotel Madinah dan niat di miqat Bir Ali (Dzul Hulaifah) saat bus menuju Makkah.",
+      "Tanyakan rute rombongan Anda ke travel, karena ini menentukan di mana pakaian ihram disimpan."
+    ],
+    tas: [
+      {judul:"Tas selempang", ket:"Selalu menempel di badan, termasuk saat di pesawat dan bandara", butir:["Paspor","KTP","ID card dari travel","Kartu ATM atau kartu kredit","Dompet berisi riyal","HP","Pulpen","Kacamata"]},
+      {judul:"Tas kabin atau ransel", ket:"Umumnya maksimal 7 kg. Cek angka pasti di tiket Anda", butir:["Pakaian ihram, bila umrah dulu","Pakaian ganti untuk hari keberangkatan","Obat rutin dan vitamin","Power bank","Charger HP dan adaptor colokan kaki tiga","Buku doa dan dzikir","Botol semprot untuk wudu","Peralatan mandi ukuran kecil, cairan di bawah 100 ml","Kaus kaki dan jaket, dipakai di pesawat yang dingin","Plastik untuk baju kotor"]},
+      {judul:"Koper bagasi", ket:"Umumnya 20 sampai 23 kg, tergantung maskapai dan paket", butir:["Pakaian ibadah secukupnya (gamis, baju koko)","Pakaian dalam dan pakaian tidur","Sajadah, botol lipat, dan tas serut","Sandal dan sepatu cadangan","Jaket atau sweater tambahan","Handuk kecil","Sisa peralatan mandi ukuran besar","Makanan kering dari rumah"]}
+    ],
+    pria: ["Kain ihram dua lembar dan sabuk ihram","Peci atau kopiah"],
+    wanita: ["Pakaian ihram longgar berwarna gelap, legging, dan kaus kaki","Hijab segi empat","Manset tangan","Pembalut, walau sedang tidak jadwal haid"],
+    aturan: [
+      ["Cairan di bawah 100 ml per wadah","ya","ya",""],
+      ["Cairan di atas 100 ml","tidak","ya",""],
+      ["Gunting kuku, pisau kecil, benda tajam","tidak","ya",""],
+      ["Parfum atau semprotan ukuran besar","tidak","ya","Ingat, wewangian tidak dipakai selama ihram"],
+      ["Power bank (maksimal 20.000 mAh)","ya","tidak","Dilarang di bagasi. Banyak maskapai juga melarang memakainya selama terbang, ikuti arahan awak kabin"],
+      ["Uang dan perhiasan","ya","sebaiknya tidak","Rawan hilang bila di bagasi"],
+      ["HP, laptop, tablet","ya","sebaiknya tidak","Mudah rusak dan rawan hilang"],
+      ["Pakaian","ya","ya",""],
+      ["Obat pribadi","ya","ya","Obat rutin selalu di kabin, bawa resep atau surat dokter"],
+      ["Makanan kering yang tidak berbau","ya","ya",""],
+      ["Air zamzam","tidak","tidak","Jangan dimasukkan ke koper. Biasanya disediakan atau dibeli dalam galon 5 liter di bandara saat pulang. Tanyakan ke travel"]
+    ],
+    tips: [
+      "Beri tanda khusus pada koper, misalnya pita atau stiker nama, supaya mudah dikenali di antara koper rombongan yang seragam.",
+      "Sebagian travel menjemput koper ke rumah beberapa hari sebelum berangkat. Sisakan pakaian untuk hari-hari itu dan untuk perjalanan ke bandara di tas kabin.",
+      "Timbang koper di rumah. Kelebihan bagasi dikenai biaya di bandara.",
+      "Sisakan ruang di koper untuk oleh-oleh saat pulang."
+    ]
+  },
+  info: {
+    waktu: "Waktu Arab Saudi 4 jam lebih lambat dari WIB, 5 jam dari WITA, dan 6 jam dari WIT. Saudi tidak memakai jam musim panas, jadi selisihnya tetap sepanjang tahun. Contoh: pukul 12.00 WIB sama dengan pukul 08.00 di Makkah.",
+    uang: [
+      "Mata uangnya riyal Saudi (SAR). Kursnya naik turun, jadi cek kurs hari itu sebelum menukar.",
+      "Bawa riyal tunai secukupnya untuk jajan, sedekah, dan oleh-oleh. Toko besar menerima kartu berlogo Visa atau Mastercard.",
+      "Simpan uang di dua tempat, sebagian di tas selempang dan sebagian di hotel."
+    ],
+    cuaca: [
+      {musim:"Desember sampai Februari", bulan:[12,1,2], mk:"siang sekitar 30°C, malam sekitar 19°C", md:"siang sekitar 24°C, malam bisa 11 sampai 13°C", saran:"Madinah dingin di malam dan subuh hari. Bawa jaket, kaus kaki, syal, dan sarung tangan."},
+      {musim:"Maret sampai Mei", bulan:[3,4,5], mk:"siang 33 sampai 40°C, malam 22 sampai 28°C", md:"siang 28 sampai 38°C, malam 16 sampai 25°C", saran:"Mulai panas. Bawa payung dan kacamata hitam, banyak minum."},
+      {musim:"Juni sampai Agustus", bulan:[6,7,8], mk:"siang 42 sampai 45°C, malam sekitar 30°C", md:"siang sekitar 42°C, malam sekitar 29°C", saran:"Sangat panas. Hindari berjalan di luar pada siang hari, minum sedikit-sedikit tapi sering, dan pilih waktu tawaf malam hari."},
+      {musim:"September sampai November", bulan:[9,10,11], mk:"siang 33 sampai 40°C, malam 23 sampai 29°C", md:"siang 28 sampai 39°C, malam 16 sampai 26°C", saran:"Panas di awal, mulai sejuk di akhir November. Siapkan jaket tipis."}
+    ],
+    hp: [
+      "Paket roaming umroh, eSIM, atau rencana membeli SIM lokal setibanya di sana.",
+      "Aplikasi Nusuk terpasang dan akunnya aktif. Izin masuk Raudhah dipesan lewat aplikasi ini atau lewat rombongan.",
+      "Masuk grup WhatsApp rombongan. Pengumuman jadwal dan titik kumpul biasanya dikirim di sana.",
+      "Earphone, ditambah aplikasi yang diminta travel (misalnya Zoom) bila pembimbing menjelaskan lewat HP saat di dalam masjid.",
+      "Simpan nomor tour leader, muthawif, dan kantor travel. Isi juga di Kartu perjalanan."
+    ],
+    adab: [
+      "Selalu kenakan ID card dari travel selama di Tanah Suci. Isinya nama, rombongan, dan nomor yang bisa dihubungi petugas.",
+      "Pakai seragam rombongan saat berangkat dan pulang supaya mudah dikenali di bandara.",
+      "Wanita yang ke Raudhah memakai pakaian longgar dan tertutup, tanpa wewangian. Rombongan biasanya menentukan warna seragamnya.",
+      "Benda tajam, bahan mudah terbakar, dan yang sejenisnya dilarang dibawa ke kabin pesawat."
+    ]
+  },
   darurat: [
-    {judul:"Tersesat atau terpisah dari rombongan", langkah:["Berhenti dan menepi. Jangan terus berjalan sambil panik.","Lihat nomor pintu atau nomor toilet terdekat. Catat atau foto.","Buka menu Peta, cari nomor itu, lalu lihat arah ke hotel Anda.","Cari petugas berseragam atau pos jamaah tersesat, lalu tunjukkan Kartu perjalanan.","Kalau baterai hampir habis, tunggu di titik kumpul yang sudah disepakati rombongan."]},
+    {judul:"Tersesat atau terpisah dari rombongan", langkah:["Berhenti dan menepi. Jangan terus berjalan sambil panik.","Lihat nomor pintu atau nomor toilet terdekat. Catat atau foto.","Buka menu Peta, cari nomor itu, lalu lihat arah ke hotel Anda.","Telepon tour leader atau muthawif, atau tulis posisi Anda di grup WhatsApp rombongan.","Cari petugas berseragam atau pos jamaah tersesat, lalu tunjukkan Kartu perjalanan dan ID card dari travel.","Kalau baterai hampir habis, tunggu di titik kumpul yang sudah disepakati rombongan."]},
     {judul:"Sakit atau sangat lelah", langkah:["Istirahat dulu. Ibadah boleh ditunda sampai badan pulih.","Minum air dan cari tempat teduh.","Hubungi pembimbing. Minta diantar ke pos kesehatan atau klinik terdekat.","Tunjukkan catatan riwayat penyakit dan obat di Kartu perjalanan.","Nyeri dada, sesak berat, atau pingsan adalah keadaan gawat. Minta tolong orang terdekat memanggil petugas saat itu juga."]},
     {judul:"Datang haid", langkah:["Niat ihram, talbiyah, dzikir, dan doa tetap boleh dikerjakan.","Tawaf menunggu sampai suci. Sa'i dikerjakan setelah tawaf.","Kalau jadwal pulang mepet, tanyakan jalan keluarnya kepada pembimbing sebelum mengambil keputusan sendiri."]},
     {judul:"Paspor atau barang hilang", langkah:["Segera kabari pembimbing dan pihak travel.","Tunjukkan fotokopi atau foto paspor yang tersimpan terpisah.","Travel akan mengurus laporan dan dokumen pengganti lewat perwakilan Indonesia."]},

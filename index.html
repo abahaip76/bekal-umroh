@@ -123,6 +123,10 @@ label.isian input,label.isian textarea{border:1px solid var(--garis);border-radi
 #ajak.on{display:flex}
 #ajak .lembar{background:var(--kartu);color:var(--tinta);border-radius:16px;padding:18px;max-width:440px;width:100%;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--emas-isi)}
 @media (prefers-reduced-motion:no-preference){#ajak .lembar{animation:naik .22s ease-out}@keyframes naik{from{transform:translateY(14px)}to{transform:none}}}
+.pilihjk{display:flex;gap:8px}.pilihjk button{flex:1;padding:10px;border:1px solid var(--garis);border-radius:10px;background:var(--kartu);color:var(--tinta);font:inherit;cursor:pointer}.pilihjk button.on{background:var(--kiswah);color:#fff;border-color:var(--kiswah)}
+table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan th,table.aturan td{padding:8px 6px;border-bottom:1px solid var(--garis);text-align:left;vertical-align:top}table.aturan th:nth-child(n+2),table.aturan td:nth-child(n+2){text-align:center;width:56px}
+.tanda{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:700}.tanda.ya{background:#2e7d32}.tanda.tidak{background:#c62828}.tanda.jangan{background:#d18b00}
+.musim{border:1px solid var(--garis);border-radius:10px;padding:10px;margin-top:8px}.musim.on{border-color:var(--emas-isi,#c9a227);background:rgba(201,162,39,.08)}
 </style>
 </head>
 <body>
@@ -282,7 +286,7 @@ HAL.doa=function(){
 HAL.darurat=function(){
   V.innerHTML="<h2 class='judul-hal'>Bila ada masalah</h2>"+M.darurat.map(function(d,i){return "<details"+(i===0?" open":"")+"><summary>"+esc(d.judul)+"</summary><div class='isi'><ol class='kerja' style='margin-top:0'>"+d.langkah.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+"</ol></div></details>";}).join("")+"<div class='baris'><button class='btn utama tumbuh' data-r='kartu'>Buka Kartu perjalanan</button><button class='btn tumbuh' data-r='peta'>Buka Peta</button></div>";
 };
-var ISIAN=[["nama","Nama lengkap"],["gol","Golongan darah"],["travel","Nama travel"],["pembimbing","Nama dan nomor pembimbing"],["hmk","Hotel di Makkah"],["hmd","Hotel di Madinah"],["keluarga","Nomor keluarga di Indonesia"],["sakit","Riwayat penyakit"],["obat","Obat rutin"],["alergi","Alergi"]];
+var ISIAN=[["nama","Nama lengkap"],["gol","Golongan darah"],["travel","Nama travel"],["pembimbing","Nama dan nomor pembimbing"],["tl","Nomor tour leader atau muthawif"],["kantor","Nomor kantor travel"],["hmk","Hotel di Makkah"],["hmd","Hotel di Madinah"],["keluarga","Nomor keluarga di Indonesia"],["sakit","Riwayat penyakit"],["obat","Obat rutin"],["alergi","Alergi"]];
 HAL.kartu=function(){
   var K=S.kartu,a=hotel("mk"),b=hotel("md");if(!K.hmk&&a)K.hmk=a.n;if(!K.hmd&&b)K.hmd=b.n;if(!K.nama&&S.user)K.nama=S.user.nama;
   var h="<h2 class='judul-hal'>Kartu perjalanan</h2>";
@@ -292,6 +296,32 @@ HAL.kartu=function(){
   V.innerHTML=h;
   V.querySelectorAll("input[data-f]").forEach(function(i){i.oninput=function(){S.kartu[i.getAttribute("data-f")]=i.value;simpan();};});
   $("tunjuk").onclick=function(){aksi();buka("kartu","tunjuk");};
+};
+HAL.koper=function(){
+  var K=M.koper,jk=S.jk||"pria",li=function(a){return "<ul class='rapi'>"+a.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>";};
+  var ikon={ya:"<span class='tanda ya' aria-label='boleh'>✓</span>",tidak:"<span class='tanda tidak' aria-label='tidak boleh'>✕</span>","sebaiknya tidak":"<span class='tanda jangan' aria-label='sebaiknya tidak'>!</span>"};
+  var h="<h2 class='judul-hal'>Koper dan bagasi</h2><p class='kecil' style='margin:0'>Batas berat dan aturan bisa berbeda tiap maskapai dan paket. Yang tertulis di tiket dan arahan travel Anda yang dipakai.</p>";
+  h+="<div class='kartu'><h2>Di mana pakaian ihram disimpan?</h2>"+li(K.ihram)+"</div>";
+  h+="<div class='pilihjk'><button data-jk='pria' class='"+(jk==="pria"?"on":"")+"'>Laki-laki</button><button data-jk='wanita' class='"+(jk==="wanita"?"on":"")+"'>Perempuan</button></div>";
+  h+="<div class='kartu'><h2>Khusus "+(jk==="pria"?"laki-laki":"perempuan")+"</h2>"+li(K[jk])+"</div>";
+  K.tas.forEach(function(t){h+="<div class='kartu'><h2>"+esc(t.judul)+"</h2><p class='kecil' style='margin:0 0 6px'>"+esc(t.ket)+"</p>"+li(t.butir)+"</div>";});
+  h+="<div class='kartu'><h2>Boleh di kabin atau bagasi?</h2><table class='aturan'><thead><tr><th>Barang</th><th>Kabin</th><th>Bagasi</th></tr></thead><tbody>"+K.aturan.map(function(r){return "<tr><td>"+esc(r[0])+(r[3]?"<div class='kecil'>"+esc(r[3])+"</div>":"")+"</td><td>"+ikon[r[1]]+"</td><td>"+ikon[r[2]]+"</td></tr>";}).join("")+"</tbody></table><p class='kecil' style='margin:8px 0 0'>✓ boleh · ✕ tidak boleh · ! boleh, tapi sebaiknya jangan</p></div>";
+  h+="<div class='kartu'><h2>Tips</h2>"+li(K.tips)+"</div><button class='btn' data-r='persiapan'>Centang perlengkapan di Persiapan</button>";
+  V.innerHTML=h;
+  V.querySelectorAll("[data-jk]").forEach(function(b){b.onclick=function(){S.jk=b.getAttribute("data-jk");simpan();var st=V.scrollTop;buka("koper");V.scrollTop=st;};});
+};
+HAL.info=function(){
+  var I=M.info,li=function(a){return "<ul class='rapi'>"+a.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>";};
+  var bl=S.tgl?(+S.tgl.split("-")[1]):0;
+  var h="<h2 class='judul-hal'>Info perjalanan</h2>";
+  h+="<div class='kartu'><h2>Perbedaan waktu</h2><p style='margin:0'>"+esc(I.waktu)+"</p></div>";
+  h+="<div class='kartu'><h2>Uang</h2>"+li(I.uang)+"</div>";
+  h+="<div class='kartu'><h2>Cuaca</h2><p class='kecil' style='margin:0 0 8px'>Kisaran rata-rata. Cek prakiraan cuaca seminggu sebelum berangkat."+(bl?" Musim keberangkatan Anda ditandai.":" Isi tanggal berangkat di Beranda supaya musim Anda ditandai.")+"</p>"+
+     I.cuaca.map(function(c){var on=c.bulan.indexOf(bl)>=0;return "<div class='musim"+(on?" on":"")+"'><b>"+esc(c.musim)+(on?" · musim keberangkatan Anda":"")+"</b><div class='kecil'>Makkah: "+esc(c.mk)+"</div><div class='kecil'>Madinah: "+esc(c.md)+"</div><div style='margin-top:4px'>"+esc(c.saran)+"</div></div>";}).join("")+"</div>";
+  h+="<div class='kartu'><h2>Siapkan di HP</h2>"+li(I.hp)+"</div>";
+  h+="<div class='kartu'><h2>Selama perjalanan</h2>"+li(I.adab)+"</div>";
+  h+="<div class='baris'><button class='btn tumbuh' data-r='koper'>Koper dan bagasi</button><button class='btn tumbuh' data-r='kartu'>Kartu perjalanan</button></div>";
+  V.innerHTML=h;
 };
 HAL.traktir=function(){
   V.innerHTML="<h2 class='judul-hal'>Traktir pengembang</h2><div class='kartu'><p style='margin-top:0'>Aplikasi ini dibagikan gratis dan akan tetap gratis. Kalau terasa bermanfaat untuk persiapan umroh Anda atau keluarga, Anda bisa mentraktir pengembangnya secangkir kopi lewat Mayar.</p><p>Traktiran dipakai untuk biaya server dan memperbarui data peta. Tidak ada fitur yang dikunci bagi yang tidak mentraktir.</p><div class='baris'><a class='btn emas' href='"+esc(CFG.mayarUrl||"#")+"' target='_blank' rel='noopener'>Traktir kopi lewat Mayar</a><button class='btn polos' data-r='beranda'>Tidak sekarang</button></div><p class='kecil' style='margin-bottom:0'>Tautan membuka halaman pembayaran Mayar di luar aplikasi: "+esc(CFG.mayarUrl||"")+"</p></div>"+
@@ -315,7 +345,7 @@ HAL.tentang=function(){
   "<div class='kartu'><p style='margin:0'>Aplikasi ini alat bantu persiapan. Ia tidak menggantikan pembimbing manasik, dokter, atau petugas di lapangan.</p></div>";
 };
 HAL.menu=function(){
-  var it=[["latihan","Latihan fisik","Program jalan 30 hari"],["langkah","Langkah Menuju Umrah","Jadwal 28 hari bergambar"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, haid, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat","emas"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]];
+  var it=[["latihan","Latihan fisik","Program jalan 30 hari"],["langkah","Langkah Menuju Umrah","Jadwal 28 hari bergambar"],["koper","Koper dan bagasi","Isi tas, kabin, dan bagasi"],["info","Info perjalanan","Waktu, uang, cuaca, HP"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, haid, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat","emas"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]];
   V.innerHTML="<h2 class='judul-hal'>Menu</h2><div class='menu-grid'>"+it.map(function(x){return "<button data-r='"+x[0]+"'"+(x[3]?" class='emas'":"")+"><b>"+x[1]+"</b><span class='kecil'>"+x[2]+"</span></button>";}).join("")+"</div>";
 };
 /* ---------- navigasi ---------- */
