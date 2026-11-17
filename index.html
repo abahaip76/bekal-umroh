@@ -208,6 +208,11 @@ var HAL={};
 HAL.beranda=function(){
   var c=pctCek(),l=pctLat(),m=pctMan(),sk=Math.round((c+l+m)/3*100),sisa=sisaHari(),nm=S.user?S.user.nama.split(" ")[0]:"";
   var h="<h2 class='judul-hal'>Assalamu'alaikum"+(nm?", "+esc(nm):"")+"</h2>";
+  if(!S.prologTutup)h+="<div class='kartu prolog'><h2>Selamat datang di "+esc(CFG.name||"Bekal Umroh")+"</h2>"+
+    "<p>Aplikasi ini menemani persiapan umroh Anda sejak masih di rumah sampai tiba di Tanah Suci. Isinya daftar persiapan dokumen dan perlengkapan, latihan jalan kaki bertahap supaya badan kuat menjalani tawaf dan sa'i, serta tuntunan manasik langkah demi langkah dengan doa dan dalil yang mengikuti sunnah. Ada juga peta Masjidil Haram dan Masjid Nabawi untuk mencari pintu, toilet, dan jarak dari hotel.</p>"+
+    "<p>Mulailah dengan mengisi tanggal berangkat di bawah ini. Setelah itu cukup kerjakan tugas harian yang muncul. Semua catatan tersimpan di HP ini saja.</p>"+
+    "<div class='baris'><button class='btn polos' id='prologTutup'>Sembunyikan</button></div></div>";
+  else h+="<button class='btn polos kecil' id='prologBuka' style='margin:-4px 0 10px'>Tentang aplikasi ini</button>";
   h+="<div class='kartu'><div class='baris'><div class='tumbuh'><h2>"+(sisa==null?"Kapan berangkat?":sisa>0?sisa+" hari lagi":sisa===0?"Berangkat hari ini":"Semoga umrohnya mabrur")+"</h2><div class='kecil'>"+(sisa==null?"Isi tanggal supaya hitung mundur dan tugas harian menyesuaikan.":"Tanggal berangkat")+"</div></div><input type='date' id='tgl' value='"+esc(S.tgl)+"' aria-label='Tanggal berangkat' style='border:1px solid var(--garis);border-radius:10px;padding:8px 10px;background:var(--marmer)'></div></div>";
   h+="<div class='kartu'><div class='skor'><div class='angka'>"+sk+"%</div><div><h2>Kesiapan Anda</h2>"+
      [["Persiapan",c],["Latihan",l],["Manasik",m]].map(function(x){return "<div class='bar-baris'><span>"+x[0]+"</span><div class='bar'><i style='width:"+Math.round(x[1]*100)+"%'></i></div><b>"+Math.round(x[1]*100)+"%</b></div>";}).join("")+"</div></div></div>";
@@ -223,6 +228,8 @@ HAL.beranda=function(){
   V.innerHTML=h;
   $("tgl").onchange=function(){S.tgl=this.value;simpan();buka("beranda");};
   if($("lunakOff"))$("lunakOff").onclick=function(){S.lunakOff=true;simpan();buka("beranda");};
+  if($("prologTutup"))$("prologTutup").onclick=function(){S.prologTutup=true;simpan();buka("beranda");};
+  if($("prologBuka"))$("prologBuka").onclick=function(){S.prologTutup=false;simpan();buka("beranda");};
 };
 HAL.persiapan=function(){
   var h="<h2 class='judul-hal'>Persiapan</h2><p class='kecil' style='margin:0'>Centang yang sudah siap. Ketentuan visa dan vaksin bisa berubah, jadi pastikan lagi ke travel Anda.</p>";
