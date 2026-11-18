@@ -153,6 +153,10 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 .kisi-menu .mkartu:last-child:nth-child(odd){grid-column:1/-1;flex-direction:row;justify-content:flex-start;text-align:left;min-height:0;gap:12px;padding:12px 16px}
 .kisi-menu .mkartu:last-child:nth-child(odd) img{width:72px;height:72px;margin:0}
 .mkartu .teks{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
+.judul-atas{flex:1;display:flex;flex-direction:column;line-height:1.15;min-width:0}
+.judul-atas h1{flex:none}
+.versi-atas{font-size:.72rem;color:var(--redup-kiswah,#9DBDB3);letter-spacing:.02em}
+.versi-masuk{margin:-4px 0 0;font-size:.8rem;color:#9DBDB3}
 </style>
 </head>
 <body>
@@ -160,6 +164,7 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <img src="ikon/logo.svg" alt="" class="logo-masuk" width="88" height="88">
   <div class="garis-emas"></div>
   <h1 id="mNama">Bekal Umroh</h1>
+  <p class="versi-masuk" id="mVersi"></p>
   <p id="mTag" style="margin:0"></p>
   <ul>
     <li>Checklist persiapan dan program latihan jalan 30 hari</li>
@@ -175,7 +180,7 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 <div id="app">
   <header class="atas">
     <img src="ikon/logo.svg" alt="" class="logo-atas" width="30" height="30">
-    <h1 id="aNama">Bekal Umroh</h1>
+    <div class="judul-atas"><h1 id="aNama">Bekal Umroh</h1><span class="versi-atas" id="aVersi"></span></div>
     <button class="ikon-btn" id="btnBesar" aria-label="Perbesar huruf">A+</button>
     <button class="avatar" id="btnAkun" aria-label="Akun"></button>
   </header>
@@ -197,8 +202,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118c"></script>
-<script src="content.js?v=20261118c"></script>
+<script src="config.js?v=20261118d"></script>
+<script src="content.js?v=20261118d"></script>
 <script>
 (function(){
 "use strict";
@@ -392,6 +397,7 @@ HAL.akun=function(){
 HAL.tentang=function(){
   V.innerHTML="<h2 class='judul-hal'>Tentang dan sumber</h2><div class='kartu'><h2>Status tinjauan materi</h2><ul class='rapi'><li>Materi ibadah: "+(CFG.peninjauIbadah?"ditinjau oleh "+esc(CFG.peninjauIbadah):"belum ditinjau pembimbing atau ustadz")+".</li><li>Program latihan: "+(CFG.peninjauFisik?"ditinjau oleh "+esc(CFG.peninjauFisik):"belum ditinjau dokter atau fisioterapis")+".</li><li>Dalil berlabel <span class='pil ok'>dicocokkan</span> sudah dicek ke sumbernya. Yang berlabel <span class='pil cek2'>perlu dicek</span> nomor haditsnya masih harus dipastikan.</li></ul></div>"+
   "<div class='kartu'><h2>Sumber</h2><ul class='rapi'><li>Hadits Jabir tentang ibadah Nabi, Shahih Muslim no. 1218</li><li><a href='https://risala.prh.gov.sa/storage/contents/941/id_sifat_alomrah_harmain.pdf' target='_blank' rel='noopener'>Tata Cara Umrah Disertai Doa-doa Pilihan</a>, terbitan otoritas urusan agama Masjidil Haram dan Masjid Nabawi</li><li><a href='https://islamqa.info/id/answers/34744' target='_blank' rel='noopener'>Tempat dan redaksi doa dalam umrah</a>, IslamQA</li><li><a href='https://sunnah.com/abudawud:1892' target='_blank' rel='noopener'>Sunan Abi Dawud no. 1892</a></li><li>Anjuran jalan kaki 30 menit sehari dari Pusat Kesehatan Haji</li><li>Peta: © kontributor <a href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener'>OpenStreetMap</a>, lisensi ODbL, data 16 November 2026</li></ul></div>"+
+  "<div class='kartu'><h2>Versi "+esc(CFG.versi||"")+"</h2>"+(CFG.riwayat||[]).map(function(r){return "<h3 style='margin:10px 0 2px;font-size:1rem'>"+esc(r.v)+" · <span class='kecil' style='font-weight:400'>"+esc(r.tgl)+"</span></h3><ul class='rapi'>"+r.isi.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>";}).join("")+"</div>"+
   "<div class='kartu'><p style='margin:0'>Aplikasi ini alat bantu persiapan. Ia tidak menggantikan pembimbing manasik, dokter, atau petugas di lapangan.</p></div>";
 };
 HAL.menu=function(){
@@ -436,7 +442,7 @@ function tampil(){
   var av=$("btnAkun");if(S.user&&S.user.foto){av.innerHTML="<img alt='' referrerpolicy='no-referrer' src='"+esc(S.user.foto)+"'>";av.firstChild.onerror=function(){av.textContent=(S.user.nama||"?").charAt(0).toUpperCase();};}else av.textContent=S.user?(S.user.nama||"?").charAt(0).toUpperCase():"T";
   if(masuk){var h=location.hash.slice(1);buka(HAL[h]||BINGKAI[h]?h:"beranda");}
 }
-document.title=CFG.name||"Bekal Umroh";$("mNama").textContent=$("aNama").textContent=CFG.name||"Bekal Umroh";$("mTag").textContent=CFG.tagline||"";
+document.title=CFG.name||"Bekal Umroh";$("mNama").textContent=$("aNama").textContent=CFG.name||"Bekal Umroh";$("mTag").textContent=CFG.tagline||"";$("mVersi").textContent=$("aVersi").textContent=CFG.versi?"Versi "+CFG.versi:"";
 document.documentElement.classList.toggle("besar",!!S.besar);
 mulaiGoogle();tampil();
 })();

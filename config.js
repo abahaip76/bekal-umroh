@@ -2,6 +2,12 @@
 window.APP_CONFIG = {
   name: "Bekal Umroh",
   tagline: "Persiapan, manasik, dan peta dalam satu aplikasi",
+  /* Naikkan angka versi setiap kali ada pembaruan, lalu tambahkan catatannya di bagian paling atas riwayat. */
+  versi: "1.1.0",
+  riwayat: [
+    {v: "1.1.0", tgl: "18 November 2026", isi: ["Palet warna baru dan logo berlatar amber", "Kartu menu bergambar di Beranda dan Menu", "Ilustrasi latihan dengan tokoh laki-laki", "Halaman Koper dan bagasi serta Info perjalanan", "Nomor versi tampil di bawah nama aplikasi"]},
+    {v: "1.0.0", tgl: "17 November 2026", isi: ["Rilis pertama: persiapan, manasik, latihan, doa, peta, kartu perjalanan, dan login Google"]}
+  ],
   /* Isi dengan Client ID dari Google Cloud Console (jenis: Web application).
      Selama kosong, tombol Google tidak tampil dan pengguna masuk sebagai tamu. */
   googleClientId: "352862920731-21qfohbl9h0mjrnlhpe4r8a8s41280u7.apps.googleusercontent.com",

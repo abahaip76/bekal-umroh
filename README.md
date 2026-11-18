@@ -47,3 +47,7 @@ Naikkan angka `?v=` pada baris `<script src="config.js?v=...">` dan `<script src
 ## Logo dan ikon
 
 Logo ada di `ikon/logo.svg` (vektor, bisa diperbesar tanpa pecah). Versi PNG untuk ikon HP dan tab browser ada di folder yang sama, dan `manifest.webmanifest` membuat aplikasi bisa dipasang ke layar utama HP dengan ikon ini.
+
+## Nomor versi
+
+Nomor versi tampil di bawah nama aplikasi dan di halaman Tentang dan sumber. Setiap kali ada pembaruan, ubah `versi` di `config.js`, tambahkan catatan baru di urutan paling atas `riwayat`, lalu naikkan angka `?v=` di `index.html`. Patokan sederhananya: angka terakhir untuk perbaikan kecil (1.1.0 ke 1.1.1), angka tengah untuk fitur atau materi baru (1.1.0 ke 1.2.0), dan angka depan untuk perubahan besar (ke 2.0.0).
