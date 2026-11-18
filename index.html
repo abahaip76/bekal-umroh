@@ -202,8 +202,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118g"></script>
-<script src="content.js?v=20261118g"></script>
+<script src="config.js?v=20261118h"></script>
+<script src="content.js?v=20261118h"></script>
 <script>
 (function(){
 "use strict";
@@ -387,7 +387,7 @@ HAL.akun=function(){
   var u=S.user,h="<h2 class='judul-hal'>Akun dan privasi</h2><div class='kartu'>";
   if(u)h+="<h2>"+esc(u.nama)+"</h2><p class='kecil'>"+esc(u.email)+" · masuk dengan Google</p><button class='btn' id='keluar'>Keluar</button>";
   else h+="<h2>Anda memakai aplikasi sebagai tamu</h2><p class='kecil'>"+(CFG.googleClientId?"Masuk dengan Google untuk menampilkan nama Anda di aplikasi.":"Login Google belum diaktifkan pada salinan aplikasi ini.")+"</p>"+(CFG.googleClientId?"<div id='gbtn2'></div>":"");
-  h+="</div><div class='kartu'><h2>Data Anda</h2><ul class='rapi'><li>Centang, catatan latihan, hotel pilihan, dan isi Kartu perjalanan tersimpan di perangkat ini saja.</li><li>Bila Anda masuk dengan Google, aplikasi membaca nama, alamat email, dan foto profil, lalu menyimpannya di perangkat ini untuk sapaan. Data itu tidak dikirim ke server pengembang.</li>"+(CFG.goatcounterKode?"<li>Aplikasi menghitung jumlah kunjungan dan halaman yang dibuka lewat GoatCounter, tanpa cookie dan tanpa nama atau email. Pengembang hanya melihat angka total.</li>":"")+"<li>Ganti HP atau hapus data browser berarti catatan ikut hilang.</li></ul><div id='hapusWrap' style='margin-top:10px'><button class='btn bahaya' id='hapus'>Hapus semua data di perangkat ini</button></div></div>";
+  h+="</div><div class='kartu'><h2>Data Anda</h2><ul class='rapi'><li>Centang, catatan latihan, hotel pilihan, dan isi Kartu perjalanan tersimpan di perangkat ini saja.</li><li>Bila Anda masuk dengan Google, aplikasi membaca nama, alamat email, dan foto profil, lalu menyimpannya di perangkat ini untuk sapaan. Data itu tidak dikirim ke server pengembang.</li>"+(CFG.goatcounterKode?"<li>Aplikasi menghitung jumlah kunjungan dan halaman yang dibuka lewat GoatCounter, tanpa cookie dan tanpa nama atau email. Pengembang hanya melihat angka total, termasuk berapa akun Google yang pernah login, tanpa tahu akun yang mana.</li>":"")+"<li>Ganti HP atau hapus data browser berarti catatan ikut hilang.</li></ul><div id='hapusWrap' style='margin-top:10px'><button class='btn bahaya' id='hapus'>Hapus semua data di perangkat ini</button></div></div>";
   V.innerHTML=h;
   if($("keluar"))$("keluar").onclick=function(){S.user=null;S.tamu=false;simpan();try{google.accounts.id.disableAutoSelect();}catch(e){}tampil();};
   if($("gbtn2"))gambarTombol($("gbtn2"));
@@ -409,13 +409,17 @@ HAL.menu=function(){
 };
 /* ---------- navigasi ---------- */
 var TAB={beranda:1,persiapan:1,manasik:1,peta:1,menu:1},BINGKAI={peta:1,langkah:1},petaSiap=false,halSiap=false;
+var antreAcara=[];
+function acara(path,judul){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:path,title:judul,event:true});else if(CFG.goatcounterKode)antreAcara.push([path,judul]);}catch(e){}}
+function sekali(kunci,path,judul){try{if(localStorage.getItem(kunci))return;localStorage.setItem(kunci,"1");}catch(e){return;}acara(path,judul);}
+function sidik(t){var h=5381;for(var i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return (h>>>0).toString(36);}
 function hitung(r){try{if(window.goatcounter&&window.goatcounter.count&&hitung.akhir!==r){hitung.akhir=r;window.goatcounter.count({path:"/"+r,title:r});}}catch(e){}}
 function buka(r,s){
   if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;hitung(r);
   var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
   var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
-  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118g' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
-  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118g#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118h' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118h#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
   else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
   try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
 }
@@ -429,7 +433,7 @@ $("btnAkun").onclick=function(){buka("akun");};
 var gSiap=false;
 function gambarTombol(el){if(!gSiap||!el)return;try{google.accounts.id.renderButton(el,{theme:"filled_blue",size:"large",text:"signin_with",shape:"pill",locale:"id",width:Math.min(380,el.clientWidth||320)});}catch(e){}}
 function kredensial(resp){try{var p=resp.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");var j=JSON.parse(decodeURIComponent(atob(p).split("").map(function(c){return "%"+("00"+c.charCodeAt(0).toString(16)).slice(-2);}).join("")));
-  S.user={nama:j.name||j.email,email:j.email||"",foto:j.picture||"",sub:j.sub};S.tamu=false;simpan();tampil();}catch(e){$("gNote").textContent="Login Google gagal dibaca. Coba lagi, atau lanjut tanpa akun.";}}
+  S.user={nama:j.name||j.email,email:j.email||"",foto:j.picture||"",sub:j.sub};S.tamu=false;simpan();sekali("pu:gc:akun:"+sidik(String(j.sub||j.email||"")),"akun-google-baru","Akun Google baru login");tampil();}catch(e){$("gNote").textContent="Login Google gagal dibaca. Coba lagi, atau lanjut tanpa akun.";}}
 function mulaiGoogle(){
   if(!CFG.googleClientId){$("gbtn").style.display="none";$("gNote").textContent="Login Google belum diaktifkan pada salinan ini. Pemilik aplikasi perlu mengisi Client ID di config.js.";return;}
   var s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;
@@ -437,13 +441,13 @@ function mulaiGoogle(){
   s.onerror=function(){$("gNote").textContent="Login Google tidak bisa dimuat di sini. Anda tetap bisa lanjut tanpa akun.";};
   document.head.appendChild(s);
 }
-$("btnTamu").onclick=function(){S.tamu=true;simpan();tampil();};
+$("btnTamu").onclick=function(){S.tamu=true;simpan();sekali("pu:gc:tamu","tamu-baru","Pengguna baru tanpa akun");tampil();};
 function tampil(){
   var masuk=!!(S.user||S.tamu);$("masuk").classList.toggle("on",!masuk);$("app").classList.toggle("on",masuk);
   var av=$("btnAkun");if(S.user&&S.user.foto){av.innerHTML="<img alt='' referrerpolicy='no-referrer' src='"+esc(S.user.foto)+"'>";av.firstChild.onerror=function(){av.textContent=(S.user.nama||"?").charAt(0).toUpperCase();};}else av.textContent=S.user?(S.user.nama||"?").charAt(0).toUpperCase():"T";
   if(masuk){var h=location.hash.slice(1);buka(HAL[h]||BINGKAI[h]?h:"beranda");}
 }
-(function(){var k=(CFG.goatcounterKode||"").trim();if(!k||!/^[a-z0-9-]+$/i.test(k))return;window.goatcounter={no_onload:true};var sc=document.createElement("script");sc.async=true;sc.src="https://gc.zgo.at/count.js";sc.setAttribute("data-goatcounter","https://"+k+".goatcounter.com/count");sc.onload=function(){hitung(rute||"beranda");};document.head.appendChild(sc);})();
+(function(){var k=(CFG.goatcounterKode||"").trim();if(!k||!/^[a-z0-9-]+$/i.test(k))return;window.goatcounter={no_onload:true};var sc=document.createElement("script");sc.async=true;sc.src="https://gc.zgo.at/count.js";sc.setAttribute("data-goatcounter","https://"+k+".goatcounter.com/count");sc.onload=function(){hitung(rute||"beranda");antreAcara.splice(0).forEach(function(a){acara(a[0],a[1]);});};document.head.appendChild(sc);})();
 document.title=CFG.name||"Bekal Umroh";$("mNama").textContent=$("aNama").textContent=CFG.name||"Bekal Umroh";$("mTag").textContent=CFG.tagline||"";$("mVersi").textContent=$("aVersi").textContent=CFG.versi?"Versi "+CFG.versi:"";
 document.documentElement.classList.toggle("besar",!!S.besar);
 mulaiGoogle();tampil();
