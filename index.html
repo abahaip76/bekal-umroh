@@ -3,89 +3,106 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#183F46">
+<meta name="theme-color" content="#183F46" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A2125" media="(prefers-color-scheme: dark)">
 <title>Bekal Umroh</title>
 <link rel="icon" href="ikon/logo.svg" type="image/svg+xml">
 <link rel="icon" href="ikon/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="ikon/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,500&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
 <style>
-/* Palet: Hangar Teal #183F46, Runway Amber #E8AD62, Ivory #F7F2E8, Ink #0F2529, Sage #9DBDB3, Brass #97601F, Terracotta #B44A31. */
+/* Palet: Hangar Teal #183F46, Runway Amber #E8AD62, Ivory #F7F2E8, Ink #0F2529, Sage #9DBDB3, Brass #97601F, Terracotta #B44A31.
+   Tampilan 1.3: tema gelap dan terang ikut pengaturan HP, judul memakai huruf serif Fraunces. */
 :root{
-  --marmer:#F7F2E8; --kartu:#FFFDF8; --tinta:#0F2529; --redup:#4E6266; --garis:#E4DCCB;
-  --kiswah:#183F46; --emas:#97601F; --emas-isi:#E8AD62; --hijau:#2E6E68; --di-hijau:#ffffff; --awas:#B44A31;
-  --di-kiswah:#F7F2E8; --redup-kiswah:#9DBDB3; --sage:#9DBDB3;
+  --marmer:#F5EFE3; --kartu:#FFFDF8; --kartu2:#FBF7EE; --tinta:#0F2529; --redup:#526569; --garis:#E6DDCB;
+  --kiswah:#183F46; --kiswah2:#0F2E34; --emas:#97601F; --emas-isi:#E8AD62; --hijau:#2E6E68; --di-hijau:#ffffff; --awas:#B44A31;
+  --di-kiswah:#F7F2E8; --redup-kiswah:#A8C6BD; --sage:#9DBDB3; --kiswah-bar:#2E6E68;
+  --bayang:0 1px 2px rgba(15,37,41,.05),0 8px 24px -12px rgba(15,37,41,.18);
+  --sudut:18px;
   --f-isi:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-judul:"Fraunces","Iowan Old Style","Palatino Linotype",Georgia,serif;
   --f-arab:"Noto Naskh Arabic","Amiri","Scheherazade New",serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --marmer:#0B1C1F; --kartu:#132A2E; --tinta:#F1ECE2; --redup:#A9BDB7; --garis:#24403F;
-  --kiswah:#0E2529; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; --kiswah-bar:#9DBDB3; color-scheme:dark}}
+  --marmer:#081619; --kartu:#0F2428; --kartu2:#132C31; --tinta:#F1ECE2; --redup:#A3B9B3; --garis:#1E3A3E;
+  --kiswah:#0F2D32; --kiswah2:#0A2125; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; --kiswah-bar:#9DBDB3;
+  --bayang:0 1px 2px rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.6); color-scheme:dark}}
 :root[data-theme="dark"]{
-  --marmer:#0B1C1F; --kartu:#132A2E; --tinta:#F1ECE2; --redup:#A9BDB7; --garis:#24403F;
-  --kiswah:#0E2529; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; --kiswah-bar:#9DBDB3; color-scheme:dark}
+  --marmer:#081619; --kartu:#0F2428; --kartu2:#132C31; --tinta:#F1ECE2; --redup:#A3B9B3; --garis:#1E3A3E;
+  --kiswah:#0F2D32; --kiswah2:#0A2125; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; --kiswah-bar:#9DBDB3;
+  --bayang:0 1px 2px rgba(0,0,0,.3),0 10px 28px -14px rgba(0,0,0,.6); color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 html{font-size:16px}
 html.besar{font-size:19px}
-body{margin:0;background:var(--marmer);color:var(--tinta);font-family:var(--f-isi);line-height:1.5;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--marmer);color:var(--tinta);font-family:var(--f-isi);line-height:1.5;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 button,input,textarea,select{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--emas-isi);outline-offset:2px}
 a{color:var(--hijau)}
 h1,h2,h3{text-wrap:balance;line-height:1.2;margin:0}
+em{font-style:italic}
 #app{height:100%;display:none;grid-template-rows:auto 1fr auto;max-width:720px;margin:0 auto;background:var(--marmer)}
 #app.on{display:grid}
-header.atas{background:var(--kiswah);color:var(--di-kiswah);padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--emas-isi)}
-header.atas h1{font-size:1.05rem;flex:1;letter-spacing:.01em}
-.ikon-btn{border:1px solid #3d6168;background:none;color:var(--di-kiswah);border-radius:8px;min-width:40px;height:40px;cursor:pointer;font-weight:700}
-.avatar{width:36px;height:36px;border-radius:50%;background:var(--emas-isi);color:#0F2529;display:grid;place-items:center;font-weight:700;overflow:hidden;border:0;cursor:pointer}
+/* kepala */
+header.atas{background:linear-gradient(180deg,var(--kiswah) 0%,var(--kiswah2) 100%);color:var(--di-kiswah);padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top));display:flex;align-items:center;gap:8px;position:relative}
+header.atas::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--emas-isi) 30%,var(--emas-isi) 70%,transparent);opacity:.75}
+header.atas h1{font-family:var(--f-judul);font-weight:600;font-size:1.15rem;flex:1;letter-spacing:.005em}
+.ikon-btn{border:1px solid rgba(232,173,98,.28);background:rgba(255,255,255,.04);color:var(--di-kiswah);border-radius:12px;min-width:42px;height:42px;cursor:pointer;font-weight:700;display:inline-grid;place-items:center;padding:0 10px}
+.ikon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--emas-isi);color:#0F2529;display:grid;place-items:center;font-weight:700;overflow:hidden;border:2px solid rgba(232,173,98,.45);cursor:pointer}
 .avatar img{width:100%;height:100%;object-fit:cover}
 main{position:relative;overflow:hidden}
-#view{position:absolute;inset:0;overflow-y:auto;padding:16px 16px 28px;display:flex;flex-direction:column;gap:14px}
+#view{position:absolute;inset:0;overflow-y:auto;padding:18px 16px 32px;display:flex;flex-direction:column;gap:14px}
+#view>*{flex-shrink:0}
 #petaWrap,#halWrap{position:absolute;inset:0;display:none;background:var(--marmer)}
 #petaWrap iframe,#halWrap iframe{width:100%;height:100%;border:0;display:block}
-nav.bawah{display:grid;grid-template-columns:repeat(5,1fr);background:var(--kartu);border-top:1px solid var(--garis)}
-nav.bawah button{border:0;background:none;padding:8px 2px 9px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.72rem;color:var(--redup);cursor:pointer}
-nav.bawah button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-nav.bawah button.on{color:var(--tinta);font-weight:700;box-shadow:inset 0 3px 0 var(--emas-isi)}
-.kartu{background:var(--kartu);border:1px solid var(--garis);border-radius:12px;padding:14px 16px}
-.kartu h2{font-size:1.05rem;margin-bottom:6px}
+/* navigasi bawah */
+nav.bawah{display:grid;grid-template-columns:repeat(5,1fr);background:var(--kartu);border-top:1px solid var(--garis);padding:6px 6px max(6px,env(safe-area-inset-bottom))}
+nav.bawah button{border:0;background:none;padding:4px 2px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:.72rem;color:var(--redup);cursor:pointer}
+nav.bawah button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;box-sizing:content-box;padding:4px 16px;border-radius:999px;transition:background .2s}
+nav.bawah button.on{color:var(--tinta);font-weight:700}
+nav.bawah button.on svg{background:rgba(232,173,98,.28);color:var(--tinta)}
+/* dasar */
+.kartu{background:var(--kartu);border:1px solid var(--garis);border-radius:var(--sudut);padding:16px 18px;box-shadow:var(--bayang)}
+.kartu h2{font-size:1.06rem;margin-bottom:6px}
 .kartu h3{font-size:.95rem;margin:10px 0 4px}
 .kartu p{margin:6px 0}
 .kecil{font-size:.86rem;color:var(--redup)}
-.judul-hal{font-size:1.3rem}
+.judul-hal{font-family:var(--f-judul);font-weight:600;font-size:1.65rem;letter-spacing:-.01em}
+.judul-hal em{color:var(--emas)}
+.alis{font-size:.74rem;letter-spacing:.2em;text-transform:uppercase;color:var(--emas);font-weight:700;margin:0}
 .baris{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .tumbuh{flex:1;min-width:0}
-.btn{border:1px solid var(--garis);background:var(--kartu);border-radius:10px;padding:10px 14px;cursor:pointer;text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.btn{border:1px solid var(--garis);background:var(--kartu);border-radius:12px;padding:11px 16px;cursor:pointer;text-decoration:none;color:var(--tinta);display:inline-flex;align-items:center;gap:8px;font-weight:700;min-height:44px}
 .btn.utama{background:var(--kiswah);color:var(--di-kiswah);border-color:var(--kiswah)}
 .btn.emas{background:var(--emas-isi);color:#0F2529;border-color:var(--emas-isi)}
-.btn.polos{border-color:transparent;background:none;font-weight:400;color:var(--redup);text-decoration:underline}
+.btn.polos{border-color:transparent;background:none;font-weight:400;color:var(--redup);text-decoration:underline;min-height:0}
 .btn.bahaya{color:var(--awas)}
-.skor{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
-.skor .angka{font-size:2.4rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1}
 .bar{height:8px;background:var(--garis);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--hijau);border-radius:99px}
-.bar-baris{display:grid;grid-template-columns:5.6rem 1fr 2.6rem;gap:8px;align-items:center;font-size:.86rem;margin-top:6px}
-.bar-baris b{text-align:right;font-variant-numeric:tabular-nums}
 .tugas{display:flex;flex-direction:column;gap:8px}
-.tugas button{text-align:left;border:1px solid var(--garis);background:var(--marmer);border-radius:10px;padding:10px 12px;cursor:pointer;display:flex;gap:10px;align-items:center}
-.tugas .tag{font-size:.72rem;font-weight:700;color:var(--emas);text-transform:uppercase;letter-spacing:.05em;min-width:4.6rem}
-details{background:var(--kartu);border:1px solid var(--garis);border-radius:12px}
-summary{padding:12px 16px;cursor:pointer;font-weight:700;display:flex;gap:10px;align-items:center;list-style:none}
+.tugas button{text-align:left;border:1px solid var(--garis);background:var(--kartu2);border-radius:14px;padding:12px 14px;cursor:pointer;display:flex;gap:12px;align-items:center}
+.tugas button::after{content:"›";margin-left:auto;font-size:1.4rem;color:var(--redup);line-height:1}
+.tugas .tag{font-size:.7rem;font-weight:700;color:var(--emas);text-transform:uppercase;letter-spacing:.08em;min-width:4.8rem}
+details{background:var(--kartu);border:1px solid var(--garis);border-radius:var(--sudut);box-shadow:var(--bayang)}
+summary{padding:14px 18px;cursor:pointer;font-weight:700;display:flex;gap:10px;align-items:center;list-style:none}
 summary::-webkit-details-marker{display:none}
+summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--redup);border-bottom:2px solid var(--redup);transform:rotate(45deg);margin-left:6px;transition:transform .2s;flex:none}
+details[open] summary::after{transform:rotate(-135deg)}
 summary .hit{margin-left:auto;font-weight:400;font-size:.86rem;color:var(--redup);font-variant-numeric:tabular-nums}
-details .isi{padding:0 16px 12px}
-.cek{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--garis);cursor:pointer}
+details .isi{padding:0 18px 14px}
+.cek{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--garis);cursor:pointer}
 .cek input{width:22px;height:22px;margin:1px 0 0;accent-color:var(--hijau);flex:none}
 .cek.sudah span{color:var(--redup);text-decoration:line-through}
-.langkah{display:flex;gap:12px;align-items:center;text-align:left;width:100%;border:1px solid var(--garis);background:var(--kartu);border-radius:12px;padding:12px 14px;cursor:pointer}
-.langkah .no{width:34px;height:34px;border-radius:50%;border:2px solid var(--garis);display:grid;place-items:center;font-weight:700;flex:none;font-variant-numeric:tabular-nums}
+.cek.sorot{background:rgba(232,173,98,.22);border-radius:10px;margin:0 -8px;padding-left:8px;padding-right:8px;transition:background 1.2s}
+.langkah{display:flex;gap:14px;align-items:center;text-align:left;width:100%;border:1px solid var(--garis);background:var(--kartu);border-radius:var(--sudut);padding:13px 16px;cursor:pointer;box-shadow:var(--bayang)}
+.langkah .no{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--emas-isi);color:var(--emas);display:grid;place-items:center;font-family:var(--f-judul);font-weight:600;font-size:1.05rem;flex:none;font-variant-numeric:tabular-nums}
 .langkah.sudah .no{background:var(--hijau);border-color:var(--hijau);color:var(--di-hijau)}
 .langkah small{display:block;color:var(--redup)}
-.baca{border:1px solid var(--garis);border-radius:12px;padding:12px 14px;background:var(--marmer);margin-top:8px}
-.baca .lb{font-size:.74rem;font-weight:700;color:var(--emas);text-transform:uppercase;letter-spacing:.05em}
+.baca{border:1px solid var(--garis);border-radius:14px;padding:12px 14px;background:var(--kartu2);margin-top:8px}
+.baca .lb{font-size:.74rem;font-weight:700;color:var(--emas);text-transform:uppercase;letter-spacing:.06em}
 .arab{font-family:var(--f-arab);font-size:1.7rem;line-height:2.1;direction:rtl;text-align:right;margin:6px 0 2px}
 .latin{font-style:italic}
 .dalil{font-size:.86rem;border-top:1px solid var(--garis);padding-top:8px;margin-top:10px;display:flex;flex-direction:column;gap:4px}
@@ -93,57 +110,82 @@ details .isi{padding:0 16px 12px}
 .pil.ok{color:var(--hijau)} .pil.cek2{color:var(--awas)}
 ol.kerja{margin:6px 0 0;padding-left:1.3rem;display:flex;flex-direction:column;gap:6px}
 ul.rapi{margin:6px 0 0;padding-left:1.2rem;display:flex;flex-direction:column;gap:4px}
-.hitung{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hitung .kotak{border:1px solid var(--garis);border-radius:12px;padding:10px;text-align:center;background:var(--marmer)}
-.hitung .n{font-size:2.2rem;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
-.hitung .tmb{display:flex;gap:6px;justify-content:center;margin-top:6px}
-.hitung button{border:1px solid var(--garis);background:var(--kartu);border-radius:10px;min-width:48px;height:44px;font-weight:700;cursor:pointer}
-.hitung button.plus{background:var(--kiswah);color:var(--di-kiswah);border-color:var(--kiswah);min-width:84px}
+.hitung{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.hitung .kotak{border:1px solid var(--garis);border-radius:14px;padding:12px 6px;text-align:center;background:var(--kartu2)}
+.hitung .n{font-family:var(--f-judul);font-size:2.4rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.1}
+.hitung .tmb{display:flex;gap:4px;justify-content:center;margin-top:6px}
+.hitung button{border:1px solid var(--garis);background:var(--kartu);border-radius:12px;min-width:40px;height:46px;font-weight:700;cursor:pointer;padding:0 6px}
+.hitung button.plus{background:var(--kiswah);color:var(--di-kiswah);border-color:var(--kiswah);flex:1;max-width:84px;min-width:56px}
 .grid30{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
-.grid30 button{aspect-ratio:1;border:1px solid var(--garis);background:var(--marmer);border-radius:8px;cursor:pointer;font-variant-numeric:tabular-nums;font-weight:700}
+.grid30 button{aspect-ratio:1;border:1px solid var(--garis);background:var(--kartu2);border-radius:10px;cursor:pointer;font-variant-numeric:tabular-nums;font-weight:700}
 .grid30 button.sudah{background:var(--hijau);border-color:var(--hijau);color:var(--di-hijau)}
 .grid30 button.kini{border:2px solid var(--emas-isi)}
-.peringatan{border-left:4px solid var(--awas);background:var(--kartu);border-radius:10px;padding:10px 14px;border-top:1px solid var(--garis);border-right:1px solid var(--garis);border-bottom:1px solid var(--garis)}
-.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.menu-grid button{border:1px solid var(--garis);background:var(--kartu);border-radius:12px;padding:14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:2px;min-height:84px}
-.menu-grid button b{font-size:1rem}
-.menu-grid button.emas{border-color:var(--emas-isi)}
+.peringatan{border:1px solid var(--garis);border-left:4px solid var(--awas);background:var(--kartu);border-radius:14px;padding:12px 16px}
 label.isian{display:flex;flex-direction:column;gap:4px;font-size:.86rem;color:var(--redup);margin-top:10px}
-label.isian input,label.isian textarea{border:1px solid var(--garis);border-radius:10px;padding:10px 12px;background:var(--marmer);color:var(--tinta);font-size:1rem}
+label.isian input,label.isian textarea{border:1px solid var(--garis);border-radius:12px;padding:11px 12px;background:var(--kartu2);color:var(--tinta);font-size:1rem}
 .kartu-tunjuk{background:#fff;color:#111;border:3px solid #111;border-radius:14px;padding:16px}
 .kartu-tunjuk .arab{font-size:1.5rem;line-height:1.9}
 .kartu-tunjuk dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
 .kartu-tunjuk dt{color:#555;font-size:.86rem} .kartu-tunjuk dd{margin:0;font-weight:700;overflow-wrap:anywhere}
-/* masuk */
-#masuk{min-height:100%;display:none;background:var(--kiswah);color:var(--di-kiswah);padding:28px 20px;align-items:center;justify-content:center}
+/* layar depan */
+#masuk{min-height:100%;display:none;position:relative;overflow:hidden;background:radial-gradient(120% 70% at 85% 0%,#245760 0%,rgba(36,87,96,0) 60%),linear-gradient(180deg,#123239 0%,#0B2227 55%,#081A1E 100%);color:var(--di-kiswah);padding:max(28px,env(safe-area-inset-top)) 20px max(28px,env(safe-area-inset-bottom));justify-content:center}
 #masuk.on{display:flex}
-#masuk .dalam{max-width:420px;width:100%;display:flex;flex-direction:column;gap:14px}
-#masuk h1{font-size:2rem}
-#masuk .garis-emas{height:3px;background:var(--emas-isi);width:72px;border-radius:2px}
-#masuk ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;color:#C9D8D2}
-#masuk .btn.tamu{background:none;color:var(--di-kiswah);border-color:#3d6168;justify-content:center}
-#masuk .catat{font-size:.84rem;color:#9DBDB3}
-#gbtn{min-height:44px}
-/* ajakan */
-#ajak{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:16px}
-#ajak.on{display:flex}
-#ajak .lembar{background:var(--kartu);color:var(--tinta);border-radius:16px;padding:18px;max-width:440px;width:100%;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--emas-isi)}
-@media (prefers-reduced-motion:no-preference){#ajak .lembar{animation:naik .22s ease-out}@keyframes naik{from{transform:translateY(14px)}to{transform:none}}}
-.pilihjk{display:flex;gap:8px}.pilihjk button{flex:1;padding:10px;border:1px solid var(--garis);border-radius:10px;background:var(--kartu);color:var(--tinta);font:inherit;cursor:pointer}.pilihjk button.on{background:var(--kiswah);color:var(--di-kiswah);border-color:var(--kiswah)}
-table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan th,table.aturan td{padding:8px 6px;border-bottom:1px solid var(--garis);text-align:left;vertical-align:top}table.aturan th:nth-child(n+2),table.aturan td:nth-child(n+2){text-align:center;width:56px}
-.tanda{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:700}.tanda.ya{background:#2E6E68}.tanda.tidak{background:#B44A31}.tanda.jangan{background:#97601F}
-.musim{border:1px solid var(--garis);border-radius:10px;padding:10px;margin-top:8px}.musim.on{border-color:var(--emas-isi,#c9a227);background:rgba(232,173,98,.14)}
-.logo-masuk{display:block;width:88px;height:88px;margin:0 0 14px;border-radius:20px}.logo-atas{width:30px;height:30px;border-radius:8px;flex:none}
+.masuk-latar{position:absolute;inset:0;pointer-events:none;opacity:.5;background:
+  radial-gradient(circle at 50% 0,rgba(232,173,98,.16),transparent 45%),
+  repeating-linear-gradient(90deg,rgba(232,173,98,.05) 0 1px,transparent 1px 44px)}
+.masuk-latar::after{content:"";position:absolute;right:-90px;top:120px;width:280px;height:380px;border:1px solid rgba(232,173,98,.22);border-radius:140px 140px 0 0;border-bottom:0}
+.masuk-latar::before{content:"";position:absolute;right:-50px;top:160px;width:200px;height:340px;border:1px solid rgba(232,173,98,.14);border-radius:100px 100px 0 0;border-bottom:0}
+#masuk .dalam{position:relative;max-width:440px;width:100%;display:flex;flex-direction:column;gap:16px}
+.merek{display:flex;align-items:center;gap:12px}
+.merek img{width:48px;height:48px;border-radius:14px;flex:none;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.merek b{display:block;font-family:var(--f-judul);font-weight:600;font-size:1.2rem}
+.merek span{font-size:.8rem;color:var(--redup-kiswah)}
+#masuk .alis{color:var(--emas-isi);margin-top:14px}
+.hero-judul{font-family:var(--f-judul);font-weight:600;font-size:2.55rem;line-height:1.08;letter-spacing:-.02em}
+.hero-judul em{color:var(--emas-isi);font-weight:500}
+.hero-sub{margin:0;color:#C9D8D2;font-size:1.05rem;max-width:30ch}
+.statistik{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 2px}
+.statistik div{border:1px solid rgba(232,173,98,.22);background:rgba(255,255,255,.035);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.statistik b{font-family:var(--f-judul);font-style:italic;font-weight:500;font-size:1.9rem;line-height:1.05;color:var(--emas-isi)}
+.statistik span{font-size:.84rem;color:#C9D8D2;line-height:1.3}
+#masuk .btn.mulai{background:var(--emas-isi);color:#0F2529;border-color:var(--emas-isi);justify-content:center;font-size:1.05rem;min-height:52px;border-radius:14px;box-shadow:0 10px 24px -10px rgba(232,173,98,.6)}
+.atau{display:flex;align-items:center;gap:10px;color:#9DBDB3;font-size:.84rem}
+.atau::before,.atau::after{content:"";flex:1;height:1px;background:rgba(157,189,179,.25)}
+#masuk .catat{font-size:.84rem;color:#9DBDB3;margin:0}
+#gbtn{min-height:44px;display:flex;justify-content:center}
+/* beranda */
+.sapa{display:flex;flex-direction:column;gap:2px;margin-bottom:-2px}
+.hero-kartu{position:relative;overflow:hidden;border-radius:22px;padding:18px 18px 16px;color:#F7F2E8;background:radial-gradient(90% 80% at 100% 0%,#2B6670 0%,rgba(43,102,112,0) 60%),linear-gradient(160deg,#1C4950 0%,#143840 55%,#0E2B31 100%);box-shadow:0 14px 30px -18px rgba(15,37,41,.7);border:1px solid rgba(232,173,98,.2)}
+.hero-atas{display:flex;gap:14px;align-items:center;position:relative;z-index:1}
+.hero-hitung{flex:1;min-width:0}
+.hero-hitung .angka{font-family:var(--f-judul);font-weight:600;font-size:3rem;line-height:1;letter-spacing:-.02em;color:#F7F2E8}
+.hero-hitung .angka em{font-size:1.15rem;font-weight:500;color:var(--emas-isi);letter-spacing:0;margin-left:6px}
+.hero-hitung .ket{font-size:.9rem;color:#B9CFC8;margin-top:4px}
+.cincin{width:96px;height:96px;flex:none;position:relative}
+.cincin svg{width:100%;height:100%;transform:rotate(-90deg)}
+.cincin .nilai{position:absolute;inset:0;display:grid;place-items:center;text-align:center;line-height:1.05}
+.cincin .nilai b{font-family:var(--f-judul);font-weight:600;font-size:1.45rem}
+.cincin .nilai small{display:block;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#B9CFC8}
+.hero-tgl{display:flex;align-items:center;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(247,242,232,.14);position:relative;z-index:1}
+.hero-tgl label{font-size:.84rem;color:#B9CFC8;flex:1}
+.hero-tgl input{border:1px solid rgba(232,173,98,.35);border-radius:12px;padding:8px 10px;background:rgba(255,255,255,.06);color:#F7F2E8;color-scheme:dark;min-height:42px}
+.tiga{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;position:relative;z-index:1}
+.tiga button{border:1px solid rgba(247,242,232,.14);background:rgba(255,255,255,.05);border-radius:14px;padding:10px;color:#F7F2E8;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px}
+.tiga span{font-size:.78rem;color:#B9CFC8}
+.tiga b{font-family:var(--f-judul);font-weight:600;font-size:1.25rem;line-height:1}
+.tiga .bar{height:5px;background:rgba(247,242,232,.14)}
+.tiga .bar i{background:var(--emas-isi)}
+/* kartu menu bergambar */
 .grup{display:flex;flex-direction:column;gap:8px}
-.grup-judul{display:flex;align-items:center;gap:12px;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--emas);font-weight:700}
+.grup-judul{display:flex;align-items:center;gap:12px;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--emas);font-weight:700;margin-top:4px}
 .grup-judul::after{content:"";flex:1;height:1px;background:var(--garis)}
 .rel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;margin:0 -16px;padding:4px 16px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .rel::-webkit-scrollbar{display:none}
-.mkartu{position:relative;flex:0 0 60%;max-width:230px;min-height:206px;scroll-snap-align:center;border:1px solid rgba(232,173,98,.28);border-radius:22px;padding:14px 12px 16px;background:linear-gradient(155deg,#245760 0%,#183F46 55%,#123239 100%);color:#F7F2E8;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;text-align:center;cursor:pointer;overflow:hidden;transition:transform .25s ease;box-shadow:0 6px 16px rgba(15,37,41,.18);font:inherit}
+.mkartu{position:relative;flex:0 0 60%;max-width:230px;min-height:206px;scroll-snap-align:center;border:1px solid rgba(232,173,98,.28);border-radius:22px;padding:14px 12px 16px;background:linear-gradient(155deg,#245760 0%,#183F46 55%,#123239 100%);color:#F7F2E8;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;text-align:center;cursor:pointer;overflow:hidden;transition:transform .25s ease;box-shadow:0 10px 22px -14px rgba(15,37,41,.6);font:inherit}
 .mkartu::after{content:"";position:absolute;right:-34px;bottom:-34px;width:110px;height:110px;border-radius:50%;background:rgba(157,189,179,.12)}
 .mkartu img{width:112px;height:112px;margin-bottom:4px;position:relative;z-index:1}
 .mkartu b{font-size:1.02rem;position:relative;z-index:1}
-.mkartu small{color:#9DBDB3;font-size:.84rem;position:relative;z-index:1}
+.mkartu small{color:#A8C6BD;font-size:.84rem;position:relative;z-index:1}
 .mkartu .lencana{position:absolute;top:10px;right:10px;background:rgba(15,37,41,.55);color:#F7F2E8;border:1px solid rgba(232,173,98,.35);border-radius:999px;padding:2px 9px;font-size:.78rem;font-family:ui-monospace,Menlo,monospace;z-index:1}
 .mkartu:active{transform:scale(.96)!important}
 @media (min-width:600px){.mkartu{flex-basis:42%}}
@@ -156,37 +198,65 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 .judul-atas{flex:1;display:flex;flex-direction:column;line-height:1.15;min-width:0}
 .judul-atas h1{flex:none}
 .versi-atas{font-size:.72rem;color:var(--redup-kiswah,#9DBDB3);letter-spacing:.02em}
-.versi-masuk{margin:-4px 0 0;font-size:.8rem;color:#9DBDB3}
+.logo-atas{width:34px;height:34px;border-radius:10px;flex:none}
+/* ajakan traktir */
+#ajak{position:fixed;inset:0;background:rgba(4,14,16,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:16px}
+#ajak.on{display:flex}
+#ajak .lembar{background:var(--kartu);color:var(--tinta);border-radius:22px;padding:20px;max-width:440px;width:100%;display:flex;flex-direction:column;gap:10px;border-top:4px solid var(--emas-isi);box-shadow:var(--bayang)}
+#ajak h2{font-family:var(--f-judul);font-weight:600;font-size:1.3rem}
+@media (prefers-reduced-motion:no-preference){#ajak .lembar,#cari .lembar{animation:naik .22s ease-out}@keyframes naik{from{transform:translateY(14px);opacity:.6}to{transform:none;opacity:1}}}
+/* pencarian cepat */
+#cari{position:fixed;inset:0;z-index:60;display:none;background:rgba(4,14,16,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:max(12px,env(safe-area-inset-top)) 12px 12px;justify-content:center;align-items:flex-start}
+#cari.on{display:flex}
+#cari .lembar{width:100%;max-width:640px;max-height:100%;display:flex;flex-direction:column;background:var(--kartu);color:var(--tinta);border-radius:22px;border:1px solid var(--garis);box-shadow:0 20px 50px -20px rgba(0,0,0,.6);overflow:hidden}
+.cari-kepala{display:flex;align-items:center;gap:10px;padding:12px 12px 12px 16px;border-bottom:1px solid var(--garis)}
+.cari-kepala svg{width:20px;height:20px;stroke:var(--redup);fill:none;stroke-width:2;stroke-linecap:round;flex:none}
+.cari-kepala input{flex:1;min-width:0;border:0;background:none;font-size:1.08rem;padding:8px 0;outline:none}
+.cari-kepala input::placeholder{color:var(--redup)}
+.cari-kepala input::-webkit-search-cancel-button{display:none}
+.cari-kepala button{border:1px solid var(--garis);background:var(--kartu2);border-radius:10px;padding:6px 10px;font-size:.8rem;color:var(--redup);cursor:pointer;min-height:36px}
+.cari-isi{overflow-y:auto;padding:12px 12px 16px;display:flex;flex-direction:column;gap:10px}
+.chip-baris{display:flex;flex-wrap:wrap;gap:8px}
+.chip-baris button{border:1px solid var(--garis);background:var(--kartu2);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:.92rem;min-height:38px}
+.chip-baris button:hover{border-color:var(--emas-isi)}
+.hasil{display:flex;flex-direction:column;gap:2px}
+.hasil button{display:flex;gap:12px;align-items:flex-start;text-align:left;border:0;background:none;border-radius:12px;padding:10px;cursor:pointer;width:100%}
+.hasil button:hover,.hasil button:focus-visible,.hasil button.aktif{background:var(--kartu2)}
+.hasil .jenis{flex:none;font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--emas);border:1px solid rgba(232,173,98,.45);border-radius:999px;padding:2px 8px;margin-top:2px;min-width:5.6rem;text-align:center}
+.hasil b{display:block;font-weight:700}
+.hasil small{display:block;color:var(--redup);font-size:.84rem;line-height:1.35}
+.hasil mark{background:rgba(232,173,98,.35);color:inherit;border-radius:3px;padding:0 1px}
+.pilihjk{display:flex;gap:8px}.pilihjk button{flex:1;padding:10px;border:1px solid var(--garis);border-radius:12px;background:var(--kartu);color:var(--tinta);font:inherit;cursor:pointer;min-height:44px}.pilihjk button.on{background:var(--kiswah);color:var(--di-kiswah);border-color:var(--kiswah)}
+table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan th,table.aturan td{padding:8px 6px;border-bottom:1px solid var(--garis);text-align:left;vertical-align:top}table.aturan th:nth-child(n+2),table.aturan td:nth-child(n+2){text-align:center;width:56px}
+.tanda{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:700}.tanda.ya{background:#2E6E68}.tanda.tidak{background:#B44A31}.tanda.jangan{background:#97601F}
+.musim{border:1px solid var(--garis);border-radius:12px;padding:10px;margin-top:8px}.musim.on{border-color:var(--emas-isi,#c9a227);background:rgba(232,173,98,.14)}
 .grafik svg{width:100%;height:auto;display:block}
 .batang-baris{display:grid;grid-template-columns:118px 1fr 40px;align-items:center;gap:8px;padding:5px 0;font-size:.92rem}
 .batang-jalur{height:12px;background:var(--marmer);border-radius:6px;overflow:hidden}
 .batang-isi{display:block;height:100%;width:0;background:var(--kiswah-bar);border-radius:6px;transition:width .5s ease}
 .batang-angka{text-align:right;font-variant-numeric:tabular-nums}
-:root{--kiswah-bar:#2E6E68}
+.prolog{border-color:rgba(232,173,98,.45)}
 </style>
 </head>
 <body>
-<section id="masuk"><div class="dalam">
-  <img src="ikon/logo.svg" alt="" class="logo-masuk" width="88" height="88">
-  <div class="garis-emas"></div>
-  <h1 id="mNama">Bekal Umroh</h1>
-  <p class="versi-masuk" id="mVersi"></p>
-  <p id="mTag" style="margin:0"></p>
-  <ul>
-    <li>Checklist persiapan dan program latihan jalan 30 hari</li>
-    <li>Manasik langkah demi langkah dengan doa dan dalilnya</li>
-    <li>Peta pintu, hotel, dan toilet di Masjidil Haram dan Masjid Nabawi</li>
-  </ul>
+<section id="masuk"><div class="masuk-latar" aria-hidden="true"></div><div class="dalam">
+  <div class="merek"><img src="ikon/logo.svg" alt="" width="48" height="48"><div><b id="mNama">Bekal Umroh</b><span id="mVersi"></span></div></div>
+  <p class="alis">Panduan umroh berbahasa Indonesia</p>
+  <h1 class="hero-judul">Bekal dari rumah sampai <em>Tanah Suci</em></h1>
+  <p class="hero-sub" id="mTag"></p>
+  <div class="statistik" id="mStat"></div>
+  <button class="btn mulai" id="btnTamu">Mulai tanpa akun →</button>
+  <div class="atau">atau masuk dengan Google</div>
   <div id="gbtn"></div>
   <p class="catat" id="gNote"></p>
-  <button class="btn tamu" id="btnTamu">Lanjut tanpa akun</button>
-  <p class="catat">Gratis. Catatan Anda disimpan di perangkat ini saja.</p>
+  <p class="catat">Gratis. Catatan Anda disimpan di HP ini saja.</p>
 </div></section>
 
 <div id="app">
   <header class="atas">
-    <img src="ikon/logo.svg" alt="" class="logo-atas" width="30" height="30">
+    <img src="ikon/logo.svg" alt="" class="logo-atas" width="34" height="34">
     <div class="judul-atas"><h1 id="aNama">Bekal Umroh</h1><span class="versi-atas" id="aVersi"></span></div>
+    <button class="ikon-btn" id="btnCari" aria-label="Cari materi"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
     <button class="ikon-btn" id="btnBesar" aria-label="Perbesar huruf">A+</button>
     <button class="avatar" id="btnAkun" aria-label="Akun"></button>
   </header>
@@ -208,8 +278,13 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118j"></script>
-<script src="content.js?v=20261118j"></script>
+<div id="cari" role="dialog" aria-modal="true" aria-label="Cari materi"><div class="lembar">
+  <div class="cari-kepala"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input id="cariIsi" type="search" placeholder="Cari miqat, tawaf, paspor…" autocomplete="off" enterkeyhint="search"><button id="cariTutup">Tutup</button></div>
+  <div class="cari-isi" id="cariHasil"></div>
+</div></div>
+
+<script src="config.js?v=20261118k"></script>
+<script src="content.js?v=20261118k"></script>
 <script>
 (function(){
 "use strict";
@@ -231,7 +306,7 @@ function km(m){return (m/1000).toFixed(1).replace(".",",")+" km";}
 function targetMenit(){var j=jalan("mk");if(!j)return 60;return Math.max(60,Math.min(120,Math.round(j.umrah/4000*60/5)*5));}
 function sisaHari(){if(!S.tgl)return null;var d=Math.ceil((new Date(S.tgl+"T00:00:00")-new Date(hariIni+"T00:00:00"))/864e5);return d;}
 /* ---------- ajakan traktir ---------- */
-var rute="beranda",sub=null;
+var rute="beranda",sub=null,sorotK=null;
 function aksi(){S.aksi=(S.aksi||0)+1;simpan();}
 function cobaAjak(){
   if(S.traktirOff||!CFG.mayarUrl)return;if(["manasik","darurat","kartu","peta","langkah"].indexOf(rute)>=0)return;
@@ -271,22 +346,30 @@ function pasangRel(){
 var HAL={};
 HAL.beranda=function(){
   var c=pctCek(),l=pctLat(),m=pctMan(),sk=Math.round((c+l+m)/3*100),sisa=sisaHari(),nm=S.user?S.user.nama.split(" ")[0]:"";
-  var h="<h2 class='judul-hal'>Assalamu'alaikum"+(nm?", "+esc(nm):"")+"</h2>";
+  var bln=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  function tglIndo(t){if(!t)return "";var x=t.split("-");return (+x[2])+" "+bln[+x[1]-1]+" "+x[0];}
+  var h="<div class='sapa'><p class='alis'>"+(sisa==null?"Mulai persiapan":sisa>0?"Menuju Baitullah":"Bekal Umroh")+"</p><h2 class='judul-hal'>Assalamu'alaikum"+(nm?", <em>"+esc(nm)+"</em>":"")+"</h2></div>";
   if(!S.prologTutup)h+="<div class='kartu prolog'><h2>Selamat datang di "+esc(CFG.name||"Bekal Umroh")+"</h2>"+
     "<p>Aplikasi ini menemani persiapan umroh Anda sejak masih di rumah sampai tiba di Tanah Suci. Isinya daftar persiapan dokumen dan perlengkapan, latihan jalan kaki bertahap supaya badan kuat menjalani tawaf dan sa'i, serta tuntunan manasik langkah demi langkah dengan doa dan dalil yang mengikuti sunnah. Ada juga peta Masjidil Haram dan Masjid Nabawi untuk mencari pintu, toilet, dan jarak dari hotel.</p>"+
     "<p>Mulailah dengan mengisi tanggal berangkat di bawah ini. Setelah itu cukup kerjakan tugas harian yang muncul. Semua catatan tersimpan di HP ini saja.</p>"+
     "<div class='baris'><button class='btn polos' id='prologTutup'>Sembunyikan</button></div></div>";
-  else h+="<button class='btn polos kecil' id='prologBuka' style='margin:-4px 0 10px'>Tentang aplikasi ini</button>";
-  h+="<div class='kartu'><div class='baris'><div class='tumbuh'><h2>"+(sisa==null?"Kapan berangkat?":sisa>0?sisa+" hari lagi":sisa===0?"Berangkat hari ini":"Semoga umrohnya mabrur")+"</h2><div class='kecil'>"+(sisa==null?"Isi tanggal supaya hitung mundur dan tugas harian menyesuaikan.":"Tanggal berangkat")+"</div></div><input type='date' id='tgl' value='"+esc(S.tgl)+"' aria-label='Tanggal berangkat' style='border:1px solid var(--garis);border-radius:10px;padding:8px 10px;background:var(--marmer)'></div></div>";
-  h+="<div class='kartu'><div class='skor'><div class='angka'>"+sk+"%</div><div><h2>Kesiapan Anda</h2>"+
-     [["Persiapan",c],["Latihan",l],["Manasik",m]].map(function(x){return "<div class='bar-baris'><span>"+x[0]+"</span><div class='bar'><i style='width:"+Math.round(x[1]*100)+"%'></i></div><b>"+Math.round(x[1]*100)+"%</b></div>";}).join("")+"</div></div></div>";
-  h+=menuKartu();
+  var R=40,K=2*Math.PI*R;
+  var judulHitung=sisa==null?"<div class='angka' style='font-size:2rem'>Kapan <em style='margin:0'>berangkat?</em></div><div class='ket'>Isi tanggal supaya hitung mundur dan tugas harian menyesuaikan.</div>":
+    sisa>0?"<div class='angka'>"+sisa+"<em>hari lagi</em></div><div class='ket'>Berangkat "+tglIndo(S.tgl)+"</div>":
+    sisa===0?"<div class='angka' style='font-size:2rem'>Berangkat <em style='margin:0'>hari ini</em></div><div class='ket'>Semoga Allah mudahkan perjalanan Anda.</div>":
+    "<div class='angka' style='font-size:2rem'>Semoga <em style='margin:0'>mabrur</em></div><div class='ket'>Berangkat "+tglIndo(S.tgl)+"</div>";
+  h+="<section class='hero-kartu' aria-label='Hitung mundur dan kesiapan'><div class='hero-atas'><div class='hero-hitung'>"+judulHitung+"</div>"+
+     "<div class='cincin' role='img' aria-label='Kesiapan "+sk+" persen'><svg viewBox='0 0 100 100'><circle cx='50' cy='50' r='"+R+"' fill='none' stroke='rgba(247,242,232,.14)' stroke-width='9'/><circle cx='50' cy='50' r='"+R+"' fill='none' stroke='#E8AD62' stroke-width='9' stroke-linecap='round' stroke-dasharray='"+(K*sk/100).toFixed(1)+" "+K.toFixed(1)+"'/></svg><div class='nilai'><div><b>"+sk+"%</b><small>Siap</small></div></div></div></div>"+
+     "<div class='tiga'>"+[["persiapan","Persiapan",c],["latihan","Latihan",l],["manasik","Manasik",m]].map(function(x){var p=Math.round(x[2]*100);return "<button data-r='"+x[0]+"'><span>"+x[1]+"</span><b>"+p+"%</b><div class='bar'><i style='width:"+p+"%'></i></div></button>";}).join("")+"</div>"+
+     "<div class='hero-tgl'><label for='tgl'>Tanggal berangkat</label><input type='date' id='tgl' value='"+esc(S.tgl)+"'></div></section>";
+  if(S.prologTutup)h+="<button class='btn polos kecil' id='prologBuka' style='margin:-6px 0 0;align-self:flex-start;padding:4px 2px'>Tentang aplikasi ini</button>";
   // tugas hari ini
   var t=[];var nxC=null;M.checklist.some(function(g){return g.butir.some(function(b,i){if(!S.cek[g.id+i]){nxC={g:g,b:b};return true;}});});
   if(nxC)t.push(["persiapan","Persiapan",nxC.b]);
   var nl=0;for(var i=1;i<=30;i++)if(!S.lat[i]){nl=i;break;}if(nl)t.push(["latihan","Latihan","Hari ke-"+nl+": "+M.latihan.minggu[Math.min(3,Math.floor((nl-1)/7))].jalan]);
   var nm2=M.manasik.filter(function(x){return !S.man[x.id];})[0];if(nm2)t.push(["manasik","Manasik","Pelajari: "+nm2.judul]);
   if(t.length)h+="<div class='kartu'><h2>Tugas hari ini</h2><div class='tugas'>"+t.map(function(x){return "<button data-r='"+x[0]+"'><span class='tag'>"+x[1]+"</span><span>"+esc(x[2])+"</span></button>";}).join("")+"</div></div>";
+  h+=menuKartu();
   h+="<div class='kartu'><h2>Hotel saya</h2><div style='display:flex;flex-direction:column;gap:12px'>"+hotelKartu("mk","Makkah")+hotelKartu("md","Madinah")+"</div><p class='kecil'>Pilih hotel dari menu Peta: ketuk hotelnya, lalu tekan Jadikan hotel saya.</p></div>";
   if(!S.lunakOff&&S.hari.length>=3&&CFG.mayarUrl)h+="<div class='kartu' style='border-color:var(--emas-isi)'><h2>Terbantu oleh aplikasi ini?</h2><p>Aplikasi ini gratis. Kalau bermanfaat, Anda bisa mentraktir pengembangnya secangkir kopi.</p><div class='baris'><a class='btn emas' href='"+esc(CFG.mayarUrl)+"' target='_blank' rel='noopener'>Traktir kopi</a><button class='btn polos' id='lunakOff'>Lewati</button></div></div>";
   V.innerHTML=h;
@@ -301,6 +384,7 @@ HAL.persiapan=function(){
   M.checklist.forEach(function(g,gi){var d=g.butir.filter(function(b,i){return S.cek[g.id+i];}).length;
     h+="<details"+(gi===0||sub===g.id?" open":"")+" data-g='"+g.id+"'><summary>"+esc(g.judul)+"<span class='hit'>"+d+"/"+g.butir.length+"</span></summary><div class='isi'>"+g.butir.map(function(b,i){var k=g.id+i;return "<label class='cek"+(S.cek[k]?" sudah":"")+"'><input type='checkbox' id='c_"+k+"' data-k='"+k+"'"+(S.cek[k]?" checked":"")+"><span>"+esc(b)+"</span></label>";}).join("")+"</div></details>";});
   V.innerHTML=h;
+  if(sorotK!=null){var el=$("c_"+sorotK);sorotK=null;if(el){var lb=el.parentNode;lb.classList.add("sorot");setTimeout(function(){lb.scrollIntoView({block:"center"});},30);setTimeout(function(){lb.classList.remove("sorot");},1800);}}
   V.querySelectorAll("input[data-k]").forEach(function(c){c.onchange=function(){var k=c.getAttribute("data-k");S.cek[k]=c.checked;simpan();c.parentNode.classList.toggle("sudah",c.checked);
     var det=c.closest("details"),g=M.checklist.filter(function(x){return x.id===det.getAttribute("data-g");})[0];det.querySelector(".hit").textContent=g.butir.filter(function(b,i){return S.cek[g.id+i];}).length+"/"+g.butir.length;if(c.checked){aksi();cobaAjak();}};});
 };
@@ -345,7 +429,7 @@ HAL.doa=function(){
   V.innerHTML=h;
 };
 HAL.darurat=function(){
-  V.innerHTML="<h2 class='judul-hal'>Bila ada masalah</h2>"+M.darurat.map(function(d,i){return "<details"+(i===0?" open":"")+"><summary>"+esc(d.judul)+"</summary><div class='isi'><ol class='kerja' style='margin-top:0'>"+d.langkah.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+"</ol></div></details>";}).join("")+"<div class='baris'><button class='btn utama tumbuh' data-r='kartu'>Buka Kartu perjalanan</button><button class='btn tumbuh' data-r='peta'>Buka Peta</button></div>";
+  V.innerHTML="<h2 class='judul-hal'>Bila ada masalah</h2>"+M.darurat.map(function(d,i){return "<details"+((sub==null?i===0:String(i)===String(sub))?" open":"")+"><summary>"+esc(d.judul)+"</summary><div class='isi'><ol class='kerja' style='margin-top:0'>"+d.langkah.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+"</ol></div></details>";}).join("")+"<div class='baris'><button class='btn utama tumbuh' data-r='kartu'>Buka Kartu perjalanan</button><button class='btn tumbuh' data-r='peta'>Buka Peta</button></div>";
 };
 var ISIAN=[["nama","Nama lengkap"],["gol","Golongan darah"],["travel","Nama travel"],["pembimbing","Nama dan nomor pembimbing"],["tl","Nomor tour leader atau muthawif"],["kantor","Nomor kantor travel"],["hmk","Hotel di Makkah"],["hmd","Hotel di Madinah"],["keluarga","Nomor keluarga di Indonesia"],["sakit","Riwayat penyakit"],["obat","Obat rutin"],["alergi","Alergi"]];
 HAL.kartu=function(){
@@ -465,8 +549,8 @@ function buka(r,s){
   if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;hitung(r);
   var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
   var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
-  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118j' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
-  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118j#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118k' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118k#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
   else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
   try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
 }
@@ -476,16 +560,55 @@ window.addEventListener("message",function(e){if(e.data&&e.data.type==="pu-hotel
 window.addEventListener("storage",function(e){if(e.key&&e.key.indexOf("pu:hotel")===0&&rute==="beranda")buka("beranda");});
 $("btnBesar").onclick=function(){S.besar=!S.besar;simpan();document.documentElement.classList.toggle("besar",S.besar);};
 $("btnAkun").onclick=function(){buka("akun");};
+/* ---------- pencarian cepat ---------- */
+function polos(t){return String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[’'`]/g,"").replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();}
+var INDEKS=null;
+function bangunIndeks(){var X=[];function t(j,judul,ket,go,isi){X.push({j:j,judul:judul,ket:ket||"",go:go,cari:polos(judul+" "+(ket||"")+" "+(isi||""))});}
+  [["persiapan","Checklist persiapan","Dokumen sampai perlengkapan"],["koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","Latihan fisik 30 hari","Program jalan kaki bertahap"],["langkah","Langkah 28 hari","Jadwal latihan bergambar"],["manasik","Manasik umrah","Langkah demi langkah, penghitung tawaf dan sa'i"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","Info perjalanan","Waktu, uang, cuaca"],["peta","Peta dan maket","Pintu, hotel, toilet, terminal bus"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]].forEach(function(x){t("Halaman",x[1],x[2],[x[0]]);});
+  M.manasik.forEach(function(m,i){t("Manasik",(i+1)+". "+m.judul,m.ringkas,["manasik",m.id],(m.kerjakan||[]).join(" ")+" "+(m.catatan||"")+" "+(m.baca||[]).map(function(b){return (b.lb||"")+" "+(b.lt||"")+" "+(b.id||"");}).join(" "));});
+  var L=M.larangan;t("Manasik","Larangan selama ihram","Pria dan wanita, khusus pria, khusus wanita",["manasik"],L.semua.concat(L.pria,L.wanita).join(" "));
+  M.checklist.forEach(function(g){g.butir.forEach(function(b,i){t("Persiapan",b,g.judul,["persiapan",g.id,g.id+i]);});});
+  M.doa.forEach(function(d){t("Doa",d.lb||"Doa",d.id,["doa"],d.lt);});
+  M.madinah.forEach(function(x){t("Madinah",x.split(". ")[0].replace(/\.$/,""),"Doa dan dzikir, bagian Tentang Madinah",["doa"],x);});
+  M.darurat.forEach(function(d,i){t("Darurat",d.judul,d.langkah[0],["darurat",i],d.langkah.join(" "));});
+  var K=M.koper;K.tas.forEach(function(x){t("Koper",x.judul,x.ket,["koper"],x.butir.join(" "));});K.aturan.forEach(function(r){t("Koper",r[0],"Kabin: "+r[1]+", bagasi: "+r[2],["koper"],r[3]||"");});
+  t("Koper","Di mana pakaian ihram disimpan?","Tas kabin atau koper bagasi",["koper"],K.ihram.join(" "));
+  var I=M.info;t("Info","Perbedaan waktu",I.waktu,["info"]);I.uang.forEach(function(x){t("Info",x.split(". ")[0],"Uang",["info"],x);});(I.hp||[]).forEach(function(x){t("Info",x.split(". ")[0],"Siapkan di HP",["info"],x);});
+  M.latihan.gerakan.forEach(function(g){t("Latihan",g.n,g.c,["latihan"]);});
+  ISIAN.forEach(function(f){t("Kartu",f[1],"Isian Kartu perjalanan",["kartu"]);});
+  return X;}
+var CHIP=["Miqat","Talbiyah","Tawaf","Sa'i","Tahallul","Larangan ihram","Raudhah","Paspor","Power bank","Tersesat","Pintu","Hotel"];
+function sorotTeks(teks,kata){var e=esc(teks);kata.forEach(function(k){if(k.length<2)return;var re=new RegExp("("+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");e=e.replace(re,"<mark>$1</mark>");});return e;}
+function cariJalan(q){var box=$("cariHasil"),qp=polos(q);if(!INDEKS)INDEKS=bangunIndeks();
+  if(!qp){box.innerHTML="<p class='alis'>Pencarian populer</p><div class='chip-baris'>"+CHIP.map(function(c){return "<button data-chip='"+esc(c)+"'>"+esc(c)+"</button>";}).join("")+"</div><p class='kecil' style='margin:4px 2px 0'>Mencari di checklist, manasik, doa, koper, info perjalanan, dan panduan darurat. Nama pintu dan hotel dicari di menu Peta.</p>";return;}
+  var kata=qp.split(" "),hasil=INDEKS.map(function(x){var sk=0,jd=polos(x.judul);for(var i=0;i<kata.length;i++){var k=kata[i];if(x.cari.indexOf(k)<0)return null;sk+=jd.indexOf(k)===0?6:jd.indexOf(k)>=0?4:1;}if(x.j==="Halaman")sk+=2;return {x:x,sk:sk};}).filter(Boolean).sort(function(a,b){return b.sk-a.sk;}).slice(0,30);
+  var asli=q.trim().split(/\s+/);
+  var h=hasil.length?"<div class='hasil'>"+hasil.map(function(r,i){return "<button data-hasil='"+i+"'><span class='jenis'>"+esc(r.x.j)+"</span><span><b>"+sorotTeks(r.x.judul,asli)+"</b>"+(r.x.ket?"<small>"+sorotTeks(r.x.ket.length>110?r.x.ket.slice(0,108)+"…":r.x.ket,asli)+"</small>":"")+"</span></button>";}).join("")+"</div>":"<p style='margin:4px 2px'>Tidak ada materi yang cocok dengan “"+esc(q)+"”.</p>";
+  h+="<div class='hasil'><button data-hasil='peta'><span class='jenis'>Peta</span><span><b>Cari “"+esc(q)+"” di peta</b><small>Pintu, hotel, toilet, terminal, dan tempat ziarah</small></span></button></div>";
+  box.innerHTML=h;box._hasil=hasil;}
+function bukaCari(){$("cari").classList.add("on");var i=$("cariIsi");i.value="";cariJalan("");setTimeout(function(){i.focus();},30);}
+function tutupCari(){$("cari").classList.remove("on");}
+$("btnCari").onclick=bukaCari;$("cariTutup").onclick=tutupCari;
+$("cari").addEventListener("click",function(e){if(e.target.id==="cari"){tutupCari();return;}
+  var c=e.target.closest("[data-chip]");if(c){$("cariIsi").value=c.getAttribute("data-chip");cariJalan($("cariIsi").value);return;}
+  var r=e.target.closest("[data-hasil]");if(!r)return;var k=r.getAttribute("data-hasil");tutupCari();
+  if(k==="peta"){petaSiap=false;try{sessionStorage.setItem("pu:cariPeta",$("cariIsi").value.trim());}catch(er){}buka("peta");return;}
+  var g=$("cariHasil")._hasil[+k].x.go;if(g[0]==="persiapan"){sorotK=g[2];buka("persiapan",g[1]);}else buka(g[0],g[1]);});
+$("cariIsi").addEventListener("input",function(){cariJalan(this.value);});
+$("cariIsi").addEventListener("keydown",function(e){if(e.key==="Enter"){var b=$("cariHasil").querySelector("[data-hasil]");if(b)b.click();}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&$("cari").classList.contains("on")){tutupCari();return;}
+  if(!$("app").classList.contains("on"))return;var tg=(e.target.tagName||"").toLowerCase();
+  if(((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k")||(e.key==="/"&&tg!=="input"&&tg!=="textarea")){e.preventDefault();bukaCari();}});
 /* ---------- login Google ---------- */
 var gSiap=false;
 function gambarTombol(el){if(!gSiap||!el)return;try{google.accounts.id.renderButton(el,{theme:"filled_blue",size:"large",text:"signin_with",shape:"pill",locale:"id",width:Math.min(380,el.clientWidth||320)});}catch(e){}}
 function kredensial(resp){try{var p=resp.credential.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");var j=JSON.parse(decodeURIComponent(atob(p).split("").map(function(c){return "%"+("00"+c.charCodeAt(0).toString(16)).slice(-2);}).join("")));
   S.user={nama:j.name||j.email,email:j.email||"",foto:j.picture||"",sub:j.sub};S.tamu=false;simpan();sekali("pu:gc:akun:"+sidik(String(j.sub||j.email||"")),"akun-google-baru","Akun Google baru login");tampil();}catch(e){$("gNote").textContent="Login Google gagal dibaca. Coba lagi, atau lanjut tanpa akun.";}}
 function mulaiGoogle(){
-  if(!CFG.googleClientId){$("gbtn").style.display="none";$("gNote").textContent="Login Google belum diaktifkan pada salinan ini. Pemilik aplikasi perlu mengisi Client ID di config.js.";return;}
+  if(!CFG.googleClientId){$("gbtn").style.display="none";document.querySelector(".atau").style.display="none";$("gNote").textContent="Login Google belum diaktifkan pada salinan ini. Pemilik aplikasi perlu mengisi Client ID di config.js.";return;}
   var s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.async=true;
   s.onload=function(){try{google.accounts.id.initialize({client_id:CFG.googleClientId,callback:kredensial,auto_select:true});gSiap=true;gambarTombol($("gbtn"));}catch(e){$("gNote").textContent="Login Google tidak bisa dimuat di sini.";}};
-  s.onerror=function(){$("gNote").textContent="Login Google tidak bisa dimuat di sini. Anda tetap bisa lanjut tanpa akun.";};
+  s.onerror=function(){document.querySelector(".atau").style.display="none";$("gNote").textContent="Login Google tidak bisa dimuat di sini. Anda tetap bisa lanjut tanpa akun.";};
   document.head.appendChild(s);
 }
 $("btnTamu").onclick=function(){S.tamu=true;simpan();sekali("pu:gc:tamu","tamu-baru","Pengguna baru tanpa akun");tampil();};
@@ -497,6 +620,7 @@ function tampil(){
 (function(){var k=(CFG.goatcounterKode||"").trim();if(!k||!/^[a-z0-9-]+$/i.test(k))return;window.goatcounter={no_onload:true};var sc=document.createElement("script");sc.async=true;sc.src="https://gc.zgo.at/count.js";sc.setAttribute("data-goatcounter","https://"+k+".goatcounter.com/count");sc.onload=function(){hitung(rute||"beranda");antreAcara.splice(0).forEach(function(a){acara(a[0],a[1]);});};document.head.appendChild(sc);})();
 document.title=CFG.name||"Bekal Umroh";$("mNama").textContent=$("aNama").textContent=CFG.name||"Bekal Umroh";$("mTag").textContent=CFG.tagline||"";$("mVersi").textContent=$("aVersi").textContent=CFG.versi?"Versi "+CFG.versi:"";
 document.documentElement.classList.toggle("besar",!!S.besar);
+(function(){var n=0;M.checklist.forEach(function(g){n+=g.butir.length;});$("mStat").innerHTML=[[n,"butir checklist dokumen dan perlengkapan"],["30","hari latihan jalan kaki bertahap"],[M.manasik.length,"langkah manasik dengan doa dan dalil"],["2D·3D","peta pintu, hotel, dan toilet"]].map(function(x){return "<div><b>"+x[0]+"</b><span>"+x[1]+"</span></div>";}).join("");})();
 mulaiGoogle();tampil();
 })();
 </script>
