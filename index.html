@@ -202,8 +202,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118f"></script>
-<script src="content.js?v=20261118f"></script>
+<script src="config.js?v=20261118g"></script>
+<script src="content.js?v=20261118g"></script>
 <script>
 (function(){
 "use strict";
@@ -414,8 +414,8 @@ function buka(r,s){
   if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;hitung(r);
   var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
   var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
-  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118f' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
-  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118f#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118g' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118g#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
   else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
   try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
 }

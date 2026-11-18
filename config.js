@@ -15,7 +15,7 @@ window.APP_CONFIG = {
   googleClientId: "352862920731-21qfohbl9h0mjrnlhpe4r8a8s41280u7.apps.googleusercontent.com",
   /* Statistik pengunjung anonim lewat GoatCounter. Isi dengan kode akun GoatCounter,
      misalnya "bekalumroh" untuk bekalumroh.goatcounter.com. Selama kosong, tidak ada yang dihitung. */
-  goatcounterKode: "",
+  goatcounterKode: "bekalumroh",
   /* Halaman checkout Mayar untuk traktir. */
   mayarUrl: "https://abahdigital-36985.myr.id/pl/traktir-kopi-34630",
   /* Nama peninjau materi. Selama kosong, aplikasi menampilkan label "belum ditinjau". */
