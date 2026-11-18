@@ -22,10 +22,10 @@
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --marmer:#0B1C1F; --kartu:#132A2E; --tinta:#F1ECE2; --redup:#A9BDB7; --garis:#24403F;
-  --kiswah:#0E2529; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; color-scheme:dark}}
+  --kiswah:#0E2529; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; --kiswah-bar:#9DBDB3; color-scheme:dark}}
 :root[data-theme="dark"]{
   --marmer:#0B1C1F; --kartu:#132A2E; --tinta:#F1ECE2; --redup:#A9BDB7; --garis:#24403F;
-  --kiswah:#0E2529; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; color-scheme:dark}
+  --kiswah:#0E2529; --emas:#E8AD62; --emas-isi:#E8AD62; --hijau:#9DBDB3; --di-hijau:#0F2529; --awas:#E58A6F; --kiswah-bar:#9DBDB3; color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 html{font-size:16px}
@@ -157,6 +157,12 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 .judul-atas h1{flex:none}
 .versi-atas{font-size:.72rem;color:var(--redup-kiswah,#9DBDB3);letter-spacing:.02em}
 .versi-masuk{margin:-4px 0 0;font-size:.8rem;color:#9DBDB3}
+.grafik svg{width:100%;height:auto;display:block}
+.batang-baris{display:grid;grid-template-columns:118px 1fr 40px;align-items:center;gap:8px;padding:5px 0;font-size:.92rem}
+.batang-jalur{height:12px;background:var(--marmer);border-radius:6px;overflow:hidden}
+.batang-isi{display:block;height:100%;width:0;background:var(--kiswah-bar);border-radius:6px;transition:width .5s ease}
+.batang-angka{text-align:right;font-variant-numeric:tabular-nums}
+:root{--kiswah-bar:#2E6E68}
 </style>
 </head>
 <body>
@@ -202,8 +208,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118i"></script>
-<script src="content.js?v=20261118i"></script>
+<script src="config.js?v=20261118j"></script>
+<script src="content.js?v=20261118j"></script>
 <script>
 (function(){
 "use strict";
@@ -404,14 +410,35 @@ HAL.statistik=function(){
   var h="<h2 class='judul-hal'>Statistik</h2><p class='kecil' style='margin:0'>Hanya tampil untuk akun admin. Angka diambil dari GoatCounter dan tidak memuat nama atau email.</p>";
   h+="<div class='pilihjk'>"+rentang.map(function(r){return "<button data-rentang='"+r[0]+"' class='"+(r[0]===pilih?"on":"")+"'>"+r[1]+"</button>";}).join("")+"</div>";
   h+="<div class='kartu'><h2>Ringkasan</h2><table class='aturan'><tbody>"+baris.map(function(b,i){return "<tr><td>"+esc(b[1])+"</td><td id='st"+i+"' style='width:90px;text-align:right'>…</td></tr>";}).join("")+"</tbody></table></div>";
-  h+="<div class='kartu'><h2>Halaman yang dibuka</h2><table class='aturan'><tbody>"+hal.map(function(b,i){return "<tr><td>"+esc(b[1])+"</td><td id='sh"+i+"' style='width:90px;text-align:right'>…</td></tr>";}).join("")+"</tbody></table></div>";
+  var nHari=pilih==="week"?7:pilih==="month"?30:14;
+  h+="<div class='kartu'><h2>Kunjungan per hari</h2><p class='kecil' style='margin:0 0 6px'>"+nHari+" hari terakhir. Pergantian hari mengikuti pukul 07.00 WIB.</p><div id='grafikHari' class='grafik'>Memuat…</div></div>";
+  h+="<div class='kartu'><h2>Halaman yang dibuka</h2><div id='grafikHal'>"+hal.map(function(b,i){return "<div class='batang-baris'><span class='batang-label'>"+esc(b[1])+"</span><span class='batang-jalur'><span class='batang-isi' id='bh"+i+"'></span></span><span class='batang-angka' id='sh"+i+"'>…</span></div>";}).join("")+"</div></div>";
   h+="<div class='kartu'><p style='margin:0 0 8px'>Rincian lengkap seperti asal kota, jenis HP, dan sumber kunjungan ada di dasbor GoatCounter.</p><a class='btn' href='"+dasar+"' target='_blank' rel='noopener'>Buka dasbor GoatCounter</a></div><p class='kecil' id='stCatatan'></p>";
   V.innerHTML=h;
   V.querySelectorAll("[data-rentang]").forEach(function(b){b.onclick=function(){buka("statistik",b.getAttribute("data-rentang"));};});
   var gagal=0;
   function ambil(path,el){var u=dasar+"/counter/"+encodeURIComponent(path)+".json"+(pilih?"?start="+pilih:"");
     fetch(u).then(function(r){if(r.status===404)return {count:"0"};if(!r.ok)throw r.status;return r.json();}).then(function(j){$(el).textContent=j.count||"0";}).catch(function(){$(el).textContent="–";if(!gagal++)$("stCatatan").textContent="Sebagian angka belum bisa diambil. Pastikan pilihan “Allow adding visitor counts on your website” sudah dinyalakan di Settings GoatCounter.";});}
-  baris.forEach(function(b,i){ambil(b[0],"st"+i);});hal.forEach(function(b,i){ambil(b[0],"sh"+i);});
+  function angka(v){return parseInt(String(v||"0").replace(/[^0-9]/g,""),10)||0;}
+  function json(path,q){return fetch(dasar+"/counter/"+encodeURIComponent(path)+".json"+q).then(function(r){if(r.status===404)return {count:"0"};if(!r.ok)throw r.status;return r.json();});}
+  baris.forEach(function(b,i){ambil(b[0],"st"+i);});
+  Promise.all(hal.map(function(b,i){return json(b[0],pilih?"?start="+pilih:"").then(function(j){return angka(j.count);}).catch(function(){return null;});})).then(function(v){
+    var maks=Math.max.apply(null,v.map(function(x){return x||0;}).concat([1]));
+    v.forEach(function(x,i){$("sh"+i).textContent=x===null?"–":x;$("bh"+i).style.width=(x?Math.max(2,x/maks*100):0)+"%";});});
+  var hari=[],kini=new Date(),u0=Date.UTC(kini.getUTCFullYear(),kini.getUTCMonth(),kini.getUTCDate());
+  function iso(t){return new Date(t).toISOString().slice(0,10);}
+  for(var d=nHari-1;d>=0;d--){var t=u0-d*864e5;hari.push({a:iso(t),b:iso(t+864e5),t:t});}
+  Promise.all(hari.map(function(x){return json("TOTAL","?start="+x.a+"&end="+x.b).then(function(j){return angka(j.count);}).catch(function(){return null;});})).then(function(v){
+    if(v.every(function(x){return x===null;})){$("grafikHari").textContent="Data belum bisa diambil.";return;}
+    var W=340,H=150,pb=22,pt=14,maks=Math.max.apply(null,v.map(function(x){return x||0;}).concat([1])),bw=W/v.length,bl=["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+    var g="<svg viewBox='0 0 "+W+" "+H+"' role='img' aria-label='Grafik kunjungan per hari'>";
+    g+="<line x1='0' y1='"+(H-pb)+"' x2='"+W+"' y2='"+(H-pb)+"' stroke='var(--garis)'/>";
+    v.forEach(function(x,i){var hh=x?Math.max(2,x/maks*(H-pb-pt)):0,xx=i*bw+bw*0.15,ww=bw*0.7,yy=H-pb-hh,dt=new Date(hari[i].t),akhir=i===v.length-1;
+      g+="<rect x='"+xx.toFixed(1)+"' y='"+yy.toFixed(1)+"' width='"+ww.toFixed(1)+"' height='"+hh.toFixed(1)+"' rx='2' fill='"+(akhir?"var(--emas-isi)":"var(--kiswah-bar)")+"'><title>"+dt.getUTCDate()+"/"+(dt.getUTCMonth()+1)+": "+(x===null?"–":x)+" kunjungan</title></rect>";
+      if(x&&(v.length<=14||x===maks))g+="<text x='"+(xx+ww/2).toFixed(1)+"' y='"+(yy-3).toFixed(1)+"' text-anchor='middle' font-size='9' fill='var(--redup)'>"+x+"</text>";
+      var tiap=v.length<=7?1:v.length<=14?2:5;if((v.length-1-i)%tiap===0)g+="<text x='"+(xx+ww/2).toFixed(1)+"' y='"+(H-8)+"' text-anchor='middle' font-size='9' fill='var(--redup)'>"+(v.length<=7?bl[dt.getUTCDay()]:dt.getUTCDate()+"/"+(dt.getUTCMonth()+1))+"</text>";});
+    g+="</svg>";var tot=v.reduce(function(a,b){return a+(b||0);},0);
+    $("grafikHari").innerHTML=g+"<p class='kecil' style='margin:4px 0 0'>Total "+tot+" kunjungan, rata-rata "+(tot/v.length).toFixed(1)+" per hari. Batang amber adalah hari ini.</p>";});
 };
 HAL.tentang=function(){
   V.innerHTML="<h2 class='judul-hal'>Tentang dan sumber</h2><div class='kartu'><h2>Status tinjauan materi</h2><ul class='rapi'><li>Materi ibadah: "+(CFG.peninjauIbadah?"ditinjau oleh "+esc(CFG.peninjauIbadah):"belum ditinjau pembimbing atau ustadz")+".</li><li>Program latihan: "+(CFG.peninjauFisik?"ditinjau oleh "+esc(CFG.peninjauFisik):"belum ditinjau dokter atau fisioterapis")+".</li><li>Dalil berlabel <span class='pil ok'>dicocokkan</span> sudah dicek ke sumbernya. Yang berlabel <span class='pil cek2'>perlu dicek</span> nomor haditsnya masih harus dipastikan.</li></ul></div>"+
@@ -438,8 +465,8 @@ function buka(r,s){
   if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;hitung(r);
   var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
   var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
-  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118i' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
-  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118i#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118j' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118j#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
   else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
   try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
 }
