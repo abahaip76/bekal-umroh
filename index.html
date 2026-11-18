@@ -134,6 +134,19 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 .tanda{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;color:#fff;font-weight:700}.tanda.ya{background:#2E6E68}.tanda.tidak{background:#B44A31}.tanda.jangan{background:#97601F}
 .musim{border:1px solid var(--garis);border-radius:10px;padding:10px;margin-top:8px}.musim.on{border-color:var(--emas-isi,#c9a227);background:rgba(232,173,98,.14)}
 .logo-masuk{display:block;width:88px;height:88px;margin:0 0 14px;border-radius:20px}.logo-atas{width:30px;height:30px;border-radius:8px;flex:none}
+.grup{display:flex;flex-direction:column;gap:8px}
+.grup-judul{display:flex;align-items:center;gap:12px;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--emas);font-weight:700}
+.grup-judul::after{content:"";flex:1;height:1px;background:var(--garis)}
+.rel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;margin:0 -16px;padding:4px 16px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.rel::-webkit-scrollbar{display:none}
+.mkartu{position:relative;flex:0 0 60%;max-width:230px;min-height:206px;scroll-snap-align:center;border:1px solid rgba(232,173,98,.28);border-radius:22px;padding:14px 12px 16px;background:linear-gradient(155deg,#245760 0%,#183F46 55%,#123239 100%);color:#F7F2E8;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:2px;text-align:center;cursor:pointer;overflow:hidden;transition:transform .25s ease;box-shadow:0 6px 16px rgba(15,37,41,.18);font:inherit}
+.mkartu::after{content:"";position:absolute;right:-34px;bottom:-34px;width:110px;height:110px;border-radius:50%;background:rgba(157,189,179,.12)}
+.mkartu img{width:112px;height:112px;margin-bottom:4px;position:relative;z-index:1}
+.mkartu b{font-size:1.02rem;position:relative;z-index:1}
+.mkartu small{color:#9DBDB3;font-size:.84rem;position:relative;z-index:1}
+.mkartu .lencana{position:absolute;top:10px;right:10px;background:rgba(15,37,41,.55);color:#F7F2E8;border:1px solid rgba(232,173,98,.35);border-radius:999px;padding:2px 9px;font-size:.78rem;font-family:ui-monospace,Menlo,monospace;z-index:1}
+.mkartu:active{transform:scale(.96)!important}
+@media (min-width:600px){.mkartu{flex-basis:42%}}
 </style>
 </head>
 <body>
@@ -178,8 +191,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118a"></script>
-<script src="content.js?v=20261118a"></script>
+<script src="config.js?v=20261118b"></script>
+<script src="content.js?v=20261118b"></script>
 <script>
 (function(){
 "use strict";
@@ -217,6 +230,27 @@ function dalilHTML(d){return "<div class='dalil'>"+d.map(function(x){return "<di
 function bacaHTML(b){return "<div class='baca'>"+(b.lb?"<div class='lb'>"+esc(b.lb)+"</div>":"")+"<div class='arab' lang='ar'>"+b.ar+"</div><div class='latin'>"+esc(b.lt)+"</div><div>"+esc(b.id)+"</div>"+(b.r?dalilHTML([{t:"Rujukan",r:b.r,s:b.s}]):"")+"</div>";}
 function hotelKartu(s,nama){var j=jalan(s);if(!j)return "<div class='baris'><div class='tumbuh'><b>"+nama+"</b><div class='kecil'>Hotel belum dipilih</div></div><button class='btn' data-peta='"+s+"'>Pilih di peta</button></div>";
   return "<div><b>"+nama+": "+esc(j.h.n)+"</b><div class='kecil'>"+esc(j.h.gate)+", ±"+Math.round(j.h.d/10)*10+" m garis lurus"+(j.h.main&&j.h.main!==j.h.gate?". Pintu utama terdekat: "+esc(j.h.main):"")+"</div><div class='kecil'>Perkiraan kasar jalan kaki untuk lima waktu salat: "+km(j.harian)+" sehari"+(s==="mk"?", dan sekitar "+km(j.umrah)+" pada hari umrah":"")+".</div></div>";}
+var GRUP_MENU=[
+  ["Persiapan",[["persiapan","persiapan","Checklist persiapan","Dokumen sampai perlengkapan","cek"],["koper","koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","latihan","Latihan fisik","Program jalan 30 hari","lat"],["langkah","langkah","Langkah 28 hari","Jadwal latihan bergambar"]]],
+  ["Ilmu dan panduan",[["manasik","manasik","Manasik umrah","Langkah demi langkah","man"],["doa","doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","info","Info perjalanan","Waktu, uang, cuaca"]]],
+  ["Di sana",[["peta","peta","Peta dan maket","Pintu, hotel, toilet"],["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]]
+];
+function lencana(k){if(k==="cek"){var n=0,d=0;M.checklist.forEach(function(g){g.butir.forEach(function(b,i){n++;if(S.cek[g.id+i])d++;});});return d+"/"+n;}
+  if(k==="lat"){var d2=0;for(var i=1;i<=30;i++)if(S.lat[i])d2++;return d2+"/30";}
+  if(k==="man"){var d3=0;M.manasik.forEach(function(m){if(S.man[m.id])d3++;});return d3+"/"+M.manasik.length;}return "";}
+function menuKartu(){return GRUP_MENU.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='rel' data-rel>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='112' height='112' loading='lazy'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></button>";}).join("")+"</div></section>";}).join("");}
+var relGerak={aktif:false};
+function pasangRel(){
+  var gerak=!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var rels=[].slice.call(V.querySelectorAll("[data-rel]"));
+  function skala(r){var rr=r.getBoundingClientRect(),cx=rr.left+rr.width/2;[].forEach.call(r.children,function(k){var kr=k.getBoundingClientRect(),dx=Math.abs(kr.left+kr.width/2-cx)/rr.width;k.style.transform=gerak?"scale("+(1-Math.min(dx,1)*0.08).toFixed(3)+")":"";});}
+  rels.forEach(function(r){r._sentuh=0;["pointerdown","touchstart","wheel"].forEach(function(ev){r.addEventListener(ev,function(){r._sentuh=Date.now();},{passive:true});});r.addEventListener("scroll",function(){requestAnimationFrame(function(){skala(r);});},{passive:true});skala(r);});
+  if(!gerak)return;
+  function ikut(){var vr=V.getBoundingClientRect();rels.forEach(function(r){if(Date.now()-r._sentuh<2500)return;var rr=r.getBoundingClientRect(),maks=r.scrollWidth-r.clientWidth;if(maks<=0)return;
+    var p=(vr.bottom-rr.top)/(vr.height+rr.height);p=Math.max(0,Math.min(1,(p-0.15)/0.7));r.scrollLeft=p*maks;});}
+  if(!relGerak.aktif){V.addEventListener("scroll",function(){if(rute!=="beranda")return;if(!relGerak.t){relGerak.t=requestAnimationFrame(function(){relGerak.t=0;relGerak.f&&relGerak.f();});}},{passive:true});relGerak.aktif=true;}
+  relGerak.f=ikut;ikut();
+}
 var HAL={};
 HAL.beranda=function(){
   var c=pctCek(),l=pctLat(),m=pctMan(),sk=Math.round((c+l+m)/3*100),sisa=sisaHari(),nm=S.user?S.user.nama.split(" ")[0]:"";
@@ -229,6 +263,7 @@ HAL.beranda=function(){
   h+="<div class='kartu'><div class='baris'><div class='tumbuh'><h2>"+(sisa==null?"Kapan berangkat?":sisa>0?sisa+" hari lagi":sisa===0?"Berangkat hari ini":"Semoga umrohnya mabrur")+"</h2><div class='kecil'>"+(sisa==null?"Isi tanggal supaya hitung mundur dan tugas harian menyesuaikan.":"Tanggal berangkat")+"</div></div><input type='date' id='tgl' value='"+esc(S.tgl)+"' aria-label='Tanggal berangkat' style='border:1px solid var(--garis);border-radius:10px;padding:8px 10px;background:var(--marmer)'></div></div>";
   h+="<div class='kartu'><div class='skor'><div class='angka'>"+sk+"%</div><div><h2>Kesiapan Anda</h2>"+
      [["Persiapan",c],["Latihan",l],["Manasik",m]].map(function(x){return "<div class='bar-baris'><span>"+x[0]+"</span><div class='bar'><i style='width:"+Math.round(x[1]*100)+"%'></i></div><b>"+Math.round(x[1]*100)+"%</b></div>";}).join("")+"</div></div></div>";
+  h+=menuKartu();
   // tugas hari ini
   var t=[];var nxC=null;M.checklist.some(function(g){return g.butir.some(function(b,i){if(!S.cek[g.id+i]){nxC={g:g,b:b};return true;}});});
   if(nxC)t.push(["persiapan","Persiapan",nxC.b]);
@@ -236,9 +271,9 @@ HAL.beranda=function(){
   var nm2=M.manasik.filter(function(x){return !S.man[x.id];})[0];if(nm2)t.push(["manasik","Manasik","Pelajari: "+nm2.judul]);
   if(t.length)h+="<div class='kartu'><h2>Tugas hari ini</h2><div class='tugas'>"+t.map(function(x){return "<button data-r='"+x[0]+"'><span class='tag'>"+x[1]+"</span><span>"+esc(x[2])+"</span></button>";}).join("")+"</div></div>";
   h+="<div class='kartu'><h2>Hotel saya</h2><div style='display:flex;flex-direction:column;gap:12px'>"+hotelKartu("mk","Makkah")+hotelKartu("md","Madinah")+"</div><p class='kecil'>Pilih hotel dari menu Peta: ketuk hotelnya, lalu tekan Jadikan hotel saya.</p></div>";
-  h+="<div class='baris'><button class='btn tumbuh' data-r='darurat'>Bila ada masalah</button><button class='btn tumbuh' data-r='kartu'>Kartu perjalanan</button></div>";
   if(!S.lunakOff&&S.hari.length>=3&&CFG.mayarUrl)h+="<div class='kartu' style='border-color:var(--emas-isi)'><h2>Terbantu oleh aplikasi ini?</h2><p>Aplikasi ini gratis. Kalau bermanfaat, Anda bisa mentraktir pengembangnya secangkir kopi.</p><div class='baris'><a class='btn emas' href='"+esc(CFG.mayarUrl)+"' target='_blank' rel='noopener'>Traktir kopi</a><button class='btn polos' id='lunakOff'>Lewati</button></div></div>";
   V.innerHTML=h;
+  pasangRel();
   $("tgl").onchange=function(){S.tgl=this.value;simpan();buka("beranda");};
   if($("lunakOff"))$("lunakOff").onclick=function(){S.lunakOff=true;simpan();buka("beranda");};
   if($("prologTutup"))$("prologTutup").onclick=function(){S.prologTutup=true;simpan();buka("beranda");};
