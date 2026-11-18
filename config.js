@@ -3,8 +3,9 @@ window.APP_CONFIG = {
   name: "Bekal Umroh",
   tagline: "Persiapan, manasik, dan peta dalam satu aplikasi",
   /* Naikkan angka versi setiap kali ada pembaruan, lalu tambahkan catatannya di bagian paling atas riwayat. */
-  versi: "1.1.0",
+  versi: "1.1.1",
   riwayat: [
+    {v: "1.1.1", tgl: "18 November 2026", isi: ["Peta: Maysan Al Mashaer Hotel bisa dicari (di OpenStreetMap masih bernama Rayyana Ajyad Hotel)", "Pencarian peta lebih longgar: urutan kata dan tanda hubung tidak lagi berpengaruh"]},
     {v: "1.1.0", tgl: "18 November 2026", isi: ["Palet warna baru dan logo berlatar amber", "Kartu menu bergambar di Beranda dan Menu", "Ilustrasi latihan dengan tokoh laki-laki", "Halaman Koper dan bagasi serta Info perjalanan", "Nomor versi tampil di bawah nama aplikasi"]},
     {v: "1.0.0", tgl: "17 November 2026", isi: ["Rilis pertama: persiapan, manasik, latihan, doa, peta, kartu perjalanan, dan login Google"]}
   ],

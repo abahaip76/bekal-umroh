@@ -199,7 +199,7 @@ function prep(s){
   S.R.forEach(function(r){var pa=new Path2D(),i,p=r.p;pa.moveTo(p[0]/10,-p[1]/10);for(i=2;i<p.length;i+=2)pa.lineTo(p[i]/10,-p[i+1]/10);r.path=pa;});
   // search index + items
   S.G.forEach(function(g){g.kind="gate";g.label=gateLabel(g,s);if(g.no||g.n)P.idx.push({t:g.label+(g.w?" (wanita)":""),o:g,k:"gate",pr:g.m?0:2});});
-  S.P.forEach(function(p){p.kind=p.k;p.cat=KMAP[p.k];P.idx.push({t:p.n,o:p,k:p.cat,pr:p.k==="ibadah"?0:p.k==="hotel"?1:2});});
+  S.P.forEach(function(p){var nb=(NAMA_BARU[s]||{})[p.n];if(nb&&!p.lama){p.lama=p.n;p.n=nb;}p.kind=p.k;p.cat=KMAP[p.k];P.idx.push({t:p.n,cari:p.n+(p.lama?" "+p.lama:""),o:p,k:p.cat,pr:p.k==="ibadah"?0:p.k==="hotel"?1:2});});
   S.A.forEach(function(a){if(a.n&&/Pemakaman|Raudhah|Pelataran|Mataf|Saqifah/.test(a.n)){var o={kind:"area",n:a.n,x:a.cen[0],y:a.cen[1],cat:"ziarah"};a.o=o;P.idx.push({t:a.n,o:o,k:"ziarah",pr:0});}});
   S.B.forEach(function(b){if(b.n&&(b.k===1||(b.f===2&&/Mas'a|Perluasan/.test(b.n)))){var o={kind:"area",n:b.n,x:b.cen[0],y:b.cen[1],cat:"ziarah"};b.o=o;if(!P.idx.some(function(e){return e.t===b.n;}))P.idx.push({t:b.n,o:o,k:"ziarah",pr:0});}});
   P.mgates=S.G.filter(function(g){return (g.no||g.n)&&g.t!=="p"&&g.t!=="w"&&g.t!=="r";});
@@ -208,6 +208,9 @@ function prep(s){
   P.hotelRank.forEach(function(h,i){h.rank=i;});
   PREP[s]=P;return P;
 }
+/* Hotel yang sudah ganti nama tetapi di OpenStreetMap masih memakai nama lama. Kiri: nama di OSM, kanan: nama sekarang. */
+var NAMA_BARU={mk:{"Rayyana Ajyad Hotel":"Maysan Al Mashaer Hotel"},md:{}};
+function cocok(teks,q){teks=teks.toLowerCase().replace(/[-'’.]/g," ");return q.replace(/[-'’.]/g," ").split(/\s+/).filter(Boolean).every(function(w){return teks.indexOf(w)>=0;});}
 function gateLabel(g,s){
   if(g.t==="p")return "Gerbang pelataran "+g.no;
   if(g.t==="r"||g.t==="w")return g.n;
@@ -330,6 +333,7 @@ function select(o,fly){
   var h="",kind=o.kind,cat=kind==="gate"?"gate":(o.cat||"ziarah"),title=kind==="gate"?o.label:o.n;
   h+="<h3>"+esc(title)+"</h3><span class='k'><span class='dot' style='background:"+(CAT[cat]||CAT.ziarah).c+"'></span>"+esc(kind==="gate"?(o.t==="p"?"Gerbang pagar pelataran":"Pintu masjid"):kind==="area"?"Area":kind==="bld"?"Bangunan":KNAME[kind]||"")+"</span>";h+="<!--ACT-->";
   o.near=null;
+  if(o.lama)h+="<p class='k'>Dulu bernama "+esc(o.lama)+". Di OpenStreetMap masih tercatat dengan nama lama itu.</p>";
   if(kind==="gate"){
     var nt=GNOTE[s][o.no];if(nt)h+="<p>"+esc(nt)+"</p>";
     if(o.w)h+="<p>Ditandai sebagai pintu atau jalur wanita di data peta.</p>";
@@ -372,7 +376,7 @@ $("infoX").onclick=function(){$("info").style.display="none";state.sel=null;if(T
 function renderChips(){var h="";for(var k in CAT)h+="<span class='chip "+(layers[k]?"on":"off")+"' data-l='"+k+"'><span class='dot' style='background:"+CAT[k].c+"'></span>"+CAT[k].n+"</span>";$("chips").innerHTML=h;
   $("chips").querySelectorAll(".chip").forEach(function(c){c.onclick=function(){var l=c.getAttribute("data-l");layers[l]=!layers[l];renderChips();req();};});}
 $("q").addEventListener("input",function(){var q=this.value.trim().toLowerCase(),R=$("res");if(q.length<2){R.style.display="none";return;}
-  var P=prep(state.site),out=P.idx.filter(function(e){return e.t&&e.t.toLowerCase().indexOf(q)>=0;}).sort(function(a,b){return a.pr-b.pr||a.t.length-b.t.length;}).slice(0,12);
+  var P=prep(state.site),out=P.idx.filter(function(e){return e.t&&cocok(e.cari||e.t,q);}).sort(function(a,b){return a.pr-b.pr||a.t.length-b.t.length;}).slice(0,12);
   if(!out.length){R.innerHTML="<button disabled>Tidak ketemu di "+SITE[state.site].city+"</button>";R.style.display="block";return;}
   R.innerHTML=out.map(function(e,i){return "<button data-i='"+i+"'><span class='dot' style='background:"+(CAT[e.k]||CAT.ziarah).c+"'></span>"+esc(e.t)+"</button>";}).join("");R.style.display="block";
   R.querySelectorAll("button").forEach(function(b){b.onclick=function(){var e=out[+b.getAttribute("data-i")];R.style.display="none";$("q").blur();if(e.k!=="gate"&&e.k!=="ziarah"&&!layers[e.k]){layers[e.k]=true;renderChips();}if(state.mode==="zk")setMode("2d");select(e.o,true);};});});
@@ -380,7 +384,7 @@ document.addEventListener("click",function(e){if(!e.target.closest(".search"))$(
 var QUICK={mk:["Ka'bah","Maqam Ibrahim","Bukit Safa","Bukit Marwah","Pintu 1 ·","Pintu 79","Pintu 100","Pintu 62","Pintu 45","Menara Jam","Terminal Syib Amir","Terminal Ajyad","Terminal 1, Jabal","Lokasi kelahiran Nabi","Pemakaman Ma'la"],
  md:["Raudhah","Makam Nabi","Pintu 1 ·","Pintu 41","Pintu 37","Pintu 24–26","Pintu 20–22","Pemakaman Baqi","Masjid Ghamama","Masjid Abu Bakr","Masjid Ali ibn","Saqifah","Pasar Kurma","Pengisian air Zamzam","Stasiun kereta Hijaz"]};
 function renderQuick(){var P=prep(state.site),h=[],items=[];
-  try{var sv=JSON.parse(localStorage.getItem("pu:hotel:"+state.site)||"null");if(sv){var ho=P.POI.filter(function(p){return p.k==="hotel"&&p.n===sv.n&&Math.abs(p.x-sv.x)<5;})[0];if(ho){items.push({o:ho,t:ho.n});h.push("<button class='btn' data-i='0' style='border-color:#b45309;font-weight:700'>Hotel saya</button>");}}}catch(e){}QUICK[state.site].forEach(function(q){var e=P.idx.filter(function(x){return x.t.indexOf(q)===0||x.t.indexOf(q)>=0;}).sort(function(a,b){return a.t.indexOf(q)-b.t.indexOf(q)||a.t.length-b.t.length;})[0];if(e){items.push(e);h.push("<button class='btn' data-i='"+(items.length-1)+"'>"+esc(e.t.replace(/ \(.*\)$/,""))+"</button>");}});
+  try{var sv=JSON.parse(localStorage.getItem("pu:hotel:"+state.site)||"null");if(sv){var ho=P.POI.filter(function(p){return p.k==="hotel"&&(p.n===sv.n||p.lama===sv.n)&&Math.abs(p.x-sv.x)<5;})[0];if(ho){items.push({o:ho,t:ho.n});h.push("<button class='btn' data-i='0' style='border-color:#b45309;font-weight:700'>Hotel saya</button>");}}}catch(e){}QUICK[state.site].forEach(function(q){var e=P.idx.filter(function(x){return x.t.indexOf(q)===0||x.t.indexOf(q)>=0;}).sort(function(a,b){return a.t.indexOf(q)-b.t.indexOf(q)||a.t.length-b.t.length;})[0];if(e){items.push(e);h.push("<button class='btn' data-i='"+(items.length-1)+"'>"+esc(e.t.replace(/ \(.*\)$/,""))+"</button>");}});
   $("quick").innerHTML=h.join("");$("quick").querySelectorAll("button").forEach(function(b){b.onclick=function(){var e=items[+b.getAttribute("data-i")];if(state.mode==="zk")setMode("2d");select(e.o,true);};});}
 
 /* ---------- tables ---------- */
