@@ -51,3 +51,7 @@ Logo ada di `ikon/logo.svg` (vektor, bisa diperbesar tanpa pecah). Versi PNG unt
 ## Nomor versi
 
 Nomor versi tampil di bawah nama aplikasi dan di halaman Tentang dan sumber. Setiap kali ada pembaruan, ubah `versi` di `config.js`, tambahkan catatan baru di urutan paling atas `riwayat`, lalu naikkan semua angka `?v=` di `index.html` (termasuk alamat peta.html dan langkah-menuju-umrah.html). Patokan sederhananya: angka terakhir untuk perbaikan kecil (1.1.0 ke 1.1.1), angka tengah untuk fitur atau materi baru (1.1.0 ke 1.2.0), dan angka depan untuk perubahan besar (ke 2.0.0).
+
+## Statistik pengunjung
+
+Aplikasi bisa menghitung kunjungan secara anonim lewat GoatCounter (tanpa cookie, tanpa nama atau email). Daftar di goatcounter.com, pilih kode akun (misalnya `bekalumroh`), lalu isi `goatcounterKode` di `config.js`. Statistiknya dilihat di `https://KODE.goatcounter.com`. Setiap halaman aplikasi tercatat sebagai alamat tersendiri, misalnya `/beranda`, `/manasik`, `/peta`.
