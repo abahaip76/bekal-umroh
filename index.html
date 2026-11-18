@@ -147,6 +147,12 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 .mkartu .lencana{position:absolute;top:10px;right:10px;background:rgba(15,37,41,.55);color:#F7F2E8;border:1px solid rgba(232,173,98,.35);border-radius:999px;padding:2px 9px;font-size:.78rem;font-family:ui-monospace,Menlo,monospace;z-index:1}
 .mkartu:active{transform:scale(.96)!important}
 @media (min-width:600px){.mkartu{flex-basis:42%}}
+.kisi-menu{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kisi-menu .mkartu{max-width:none;min-height:184px;flex:none}
+.kisi-menu .mkartu img{width:96px;height:96px}
+.kisi-menu .mkartu:last-child:nth-child(odd){grid-column:1/-1;flex-direction:row;justify-content:flex-start;text-align:left;min-height:0;gap:12px;padding:12px 16px}
+.kisi-menu .mkartu:last-child:nth-child(odd) img{width:72px;height:72px;margin:0}
+.mkartu .teks{display:flex;flex-direction:column;gap:2px;position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -191,8 +197,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118b"></script>
-<script src="content.js?v=20261118b"></script>
+<script src="config.js?v=20261118c"></script>
+<script src="content.js?v=20261118c"></script>
 <script>
 (function(){
 "use strict";
@@ -238,7 +244,7 @@ var GRUP_MENU=[
 function lencana(k){if(k==="cek"){var n=0,d=0;M.checklist.forEach(function(g){g.butir.forEach(function(b,i){n++;if(S.cek[g.id+i])d++;});});return d+"/"+n;}
   if(k==="lat"){var d2=0;for(var i=1;i<=30;i++)if(S.lat[i])d2++;return d2+"/30";}
   if(k==="man"){var d3=0;M.manasik.forEach(function(m){if(S.man[m.id])d3++;});return d3+"/"+M.manasik.length;}return "";}
-function menuKartu(){return GRUP_MENU.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='rel' data-rel>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='112' height='112' loading='lazy'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></button>";}).join("")+"</div></section>";}).join("");}
+function menuKartu(){return GRUP_MENU.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='rel' data-rel>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='112' height='112' loading='lazy'><span class='teks'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></span></button>";}).join("")+"</div></section>";}).join("");}
 var relGerak={aktif:false};
 function pasangRel(){
   var gerak=!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches);
@@ -389,8 +395,11 @@ HAL.tentang=function(){
   "<div class='kartu'><p style='margin:0'>Aplikasi ini alat bantu persiapan. Ia tidak menggantikan pembimbing manasik, dokter, atau petugas di lapangan.</p></div>";
 };
 HAL.menu=function(){
-  var it=[["latihan","Latihan fisik","Program jalan 30 hari"],["langkah","Langkah Menuju Umrah","Jadwal 28 hari bergambar"],["koper","Koper dan bagasi","Isi tas, kabin, dan bagasi"],["info","Info perjalanan","Waktu, uang, cuaca, HP"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, haid, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat","emas"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]];
-  V.innerHTML="<h2 class='judul-hal'>Menu</h2><div class='menu-grid'>"+it.map(function(x){return "<button data-r='"+x[0]+"'"+(x[3]?" class='emas'":"")+"><b>"+x[1]+"</b><span class='kecil'>"+x[2]+"</span></button>";}).join("")+"</div>";
+  var G=[["Persiapan",[["koper","koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","latihan","Latihan fisik","Program jalan 30 hari","lat"],["langkah","langkah","Langkah 28 hari","Jadwal latihan bergambar"]]],
+    ["Ilmu dan panduan",[["doa","doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","info","Info perjalanan","Waktu, uang, cuaca"]]],
+    ["Di sana",[["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]],
+    ["Aplikasi",[["traktir","traktir","Traktir pengembang","Gratis, traktir bila bermanfaat"],["akun","akun","Akun dan privasi","Login dan data Anda"],["tentang","tentang","Tentang dan sumber","Status tinjauan dan rujukan"]]]];
+  V.innerHTML="<h2 class='judul-hal'>Menu</h2>"+G.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='kisi-menu'>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='96' height='96' loading='lazy'><span class='teks'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></span></button>";}).join("")+"</div></section>";}).join("");
 };
 /* ---------- navigasi ---------- */
 var TAB={beranda:1,persiapan:1,manasik:1,peta:1,menu:1},BINGKAI={peta:1,langkah:1},petaSiap=false,halSiap=false;
