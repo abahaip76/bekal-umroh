@@ -202,8 +202,8 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <button class="btn polos" id="ajakStop" style="justify-content:center">Jangan tanya lagi</button>
 </div></div>
 
-<script src="config.js?v=20261118h"></script>
-<script src="content.js?v=20261118h"></script>
+<script src="config.js?v=20261118i"></script>
+<script src="content.js?v=20261118i"></script>
 <script>
 (function(){
 "use strict";
@@ -394,6 +394,25 @@ HAL.akun=function(){
   $("hapus").onclick=function(){$("hapusWrap").innerHTML="<p style='margin:0 0 8px'>Semua centang, catatan, dan isi kartu akan hilang dan tidak bisa dikembalikan.</p><div class='baris'><button class='btn bahaya' id='hapusYa'>Ya, hapus semuanya</button><button class='btn' id='hapusTidak'>Batal</button></div>";
     $("hapusYa").onclick=function(){try{localStorage.removeItem(KEY);localStorage.removeItem("pu:hotel:mk");localStorage.removeItem("pu:hotel:md");}catch(e){}location.reload();};$("hapusTidak").onclick=function(){buka("akun");};};
 };
+function adalahAdmin(){return !!(S.user&&CFG.adminEmail&&String(S.user.email||"").toLowerCase()===String(CFG.adminEmail).toLowerCase());}
+HAL.statistik=function(){
+  if(!adalahAdmin()){buka("menu");return;}
+  var k=CFG.goatcounterKode,dasar="https://"+k+".goatcounter.com";
+  var baris=[["TOTAL","Semua kunjungan halaman"],["akun-google-baru","Akun Google yang login"],["tamu-baru","Pengguna baru tanpa akun"]];
+  var hal=[["/beranda","Beranda"],["/persiapan","Persiapan"],["/manasik","Manasik"],["/peta","Peta"],["/latihan","Latihan"],["/langkah","Langkah 28 hari"],["/koper","Koper"],["/doa","Doa"],["/info","Info perjalanan"],["/kartu","Kartu perjalanan"],["/darurat","Bila ada masalah"],["/traktir","Traktir"]];
+  var rentang=[["","Sejak awal"],["month","30 hari"],["week","7 hari"]],pilih=sub||"";
+  var h="<h2 class='judul-hal'>Statistik</h2><p class='kecil' style='margin:0'>Hanya tampil untuk akun admin. Angka diambil dari GoatCounter dan tidak memuat nama atau email.</p>";
+  h+="<div class='pilihjk'>"+rentang.map(function(r){return "<button data-rentang='"+r[0]+"' class='"+(r[0]===pilih?"on":"")+"'>"+r[1]+"</button>";}).join("")+"</div>";
+  h+="<div class='kartu'><h2>Ringkasan</h2><table class='aturan'><tbody>"+baris.map(function(b,i){return "<tr><td>"+esc(b[1])+"</td><td id='st"+i+"' style='width:90px;text-align:right'>…</td></tr>";}).join("")+"</tbody></table></div>";
+  h+="<div class='kartu'><h2>Halaman yang dibuka</h2><table class='aturan'><tbody>"+hal.map(function(b,i){return "<tr><td>"+esc(b[1])+"</td><td id='sh"+i+"' style='width:90px;text-align:right'>…</td></tr>";}).join("")+"</tbody></table></div>";
+  h+="<div class='kartu'><p style='margin:0 0 8px'>Rincian lengkap seperti asal kota, jenis HP, dan sumber kunjungan ada di dasbor GoatCounter.</p><a class='btn' href='"+dasar+"' target='_blank' rel='noopener'>Buka dasbor GoatCounter</a></div><p class='kecil' id='stCatatan'></p>";
+  V.innerHTML=h;
+  V.querySelectorAll("[data-rentang]").forEach(function(b){b.onclick=function(){buka("statistik",b.getAttribute("data-rentang"));};});
+  var gagal=0;
+  function ambil(path,el){var u=dasar+"/counter/"+encodeURIComponent(path)+".json"+(pilih?"?start="+pilih:"");
+    fetch(u).then(function(r){if(r.status===404)return {count:"0"};if(!r.ok)throw r.status;return r.json();}).then(function(j){$(el).textContent=j.count||"0";}).catch(function(){$(el).textContent="–";if(!gagal++)$("stCatatan").textContent="Sebagian angka belum bisa diambil. Pastikan pilihan “Allow adding visitor counts on your website” sudah dinyalakan di Settings GoatCounter.";});}
+  baris.forEach(function(b,i){ambil(b[0],"st"+i);});hal.forEach(function(b,i){ambil(b[0],"sh"+i);});
+};
 HAL.tentang=function(){
   V.innerHTML="<h2 class='judul-hal'>Tentang dan sumber</h2><div class='kartu'><h2>Status tinjauan materi</h2><ul class='rapi'><li>Materi ibadah: "+(CFG.peninjauIbadah?"ditinjau oleh "+esc(CFG.peninjauIbadah):"belum ditinjau pembimbing atau ustadz")+".</li><li>Program latihan: "+(CFG.peninjauFisik?"ditinjau oleh "+esc(CFG.peninjauFisik):"belum ditinjau dokter atau fisioterapis")+".</li><li>Dalil berlabel <span class='pil ok'>dicocokkan</span> sudah dicek ke sumbernya. Yang berlabel <span class='pil cek2'>perlu dicek</span> nomor haditsnya masih harus dipastikan.</li></ul></div>"+
   "<div class='kartu'><h2>Sumber</h2><ul class='rapi'><li>Hadits Jabir tentang ibadah Nabi, Shahih Muslim no. 1218</li><li><a href='https://risala.prh.gov.sa/storage/contents/941/id_sifat_alomrah_harmain.pdf' target='_blank' rel='noopener'>Tata Cara Umrah Disertai Doa-doa Pilihan</a>, terbitan otoritas urusan agama Masjidil Haram dan Masjid Nabawi</li><li><a href='https://islamqa.info/id/answers/34744' target='_blank' rel='noopener'>Tempat dan redaksi doa dalam umrah</a>, IslamQA</li><li><a href='https://sunnah.com/abudawud:1892' target='_blank' rel='noopener'>Sunan Abi Dawud no. 1892</a></li><li>Anjuran jalan kaki 30 menit sehari dari Pusat Kesehatan Haji</li><li>Peta: © kontributor <a href='https://www.openstreetmap.org/copyright' target='_blank' rel='noopener'>OpenStreetMap</a>, lisensi ODbL, data 16 November 2026</li></ul></div>"+
@@ -405,6 +424,7 @@ HAL.menu=function(){
     ["Ilmu dan panduan",[["doa","doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","info","Info perjalanan","Waktu, uang, cuaca"]]],
     ["Di sana",[["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]],
     ["Aplikasi",[["traktir","traktir","Traktir pengembang","Gratis, traktir bila bermanfaat"],["akun","akun","Akun dan privasi","Login dan data Anda"],["tentang","tentang","Tentang dan sumber","Status tinjauan dan rujukan"]]]];
+  if(adalahAdmin()&&CFG.goatcounterKode)G.push(["Admin",[["statistik","statistik","Statistik","Kunjungan dan pengguna baru"]]]);
   V.innerHTML="<h2 class='judul-hal'>Menu</h2>"+G.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='kisi-menu'>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='96' height='96' loading='lazy'><span class='teks'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></span></button>";}).join("")+"</div></section>";}).join("");
 };
 /* ---------- navigasi ---------- */
@@ -418,8 +438,8 @@ function buka(r,s){
   if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;hitung(r);
   var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
   var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
-  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118h' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
-  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118h#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118i' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118i#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
   else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
   try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
 }
