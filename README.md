@@ -4,6 +4,8 @@ Webapp panduan umroh berbahasa Indonesia: checklist persiapan, manasik langkah d
 
 Aplikasi ini berupa file statis. Tidak ada server dan tidak ada proses build.
 
+Versi saat ini: 1.3.0 (18 November 2026). Riwayat perubahan ada di `config.js`.
+
 ## Isi
 
 | File | Isi |
