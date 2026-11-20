@@ -236,6 +236,26 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
 .batang-isi{display:block;height:100%;width:0;background:var(--kiswah-bar);border-radius:6px;transition:width .5s ease}
 .batang-angka{text-align:right;font-variant-numeric:tabular-nums}
 .prolog{border-color:rgba(232,173,98,.45)}
+.hari-strip{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:2px 16px 6px;scrollbar-width:none}
+.hari-strip::-webkit-scrollbar{display:none}
+.hari-strip button{flex:none;min-width:58px;border:1px solid var(--garis);background:var(--kartu);border-radius:14px;padding:8px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;line-height:1.15}
+.hari-strip button b{font-family:var(--f-judul);font-weight:600;font-size:1.1rem}
+.hari-strip button small{font-size:.7rem;color:var(--redup)}
+.hari-strip button.on{background:var(--kiswah);border-color:var(--kiswah);color:var(--di-kiswah)}
+.hari-strip button.on small{color:var(--redup-kiswah)}
+.hari-strip button.kini{border:2px solid var(--emas-isi)}
+.agenda-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--garis)}
+.agenda-item:first-of-type{border-top:0}
+.agenda-item input[type=checkbox]{width:22px;height:22px;margin:1px 0 0;accent-color:var(--hijau);flex:none}
+.agenda-item .jam{font-variant-numeric:tabular-nums;font-weight:700;min-width:3.2rem;color:var(--emas)}
+.agenda-item.sudah .tk{color:var(--redup);text-decoration:line-through}
+.agenda-item .pergi{margin-left:auto;flex:none;border:1px solid var(--garis);background:var(--kartu2);border-radius:10px;padding:4px 10px;font-size:.8rem;cursor:pointer;color:var(--tinta)}
+.ubah-item{display:grid;grid-template-columns:5.6rem 1fr auto;gap:8px;align-items:center;padding:6px 0}
+.ubah-item input{border:1px solid var(--garis);border-radius:10px;padding:8px;background:var(--kartu2);color:var(--tinta);min-width:0;font-size:.95rem}
+.ubah-item button{border:1px solid var(--garis);background:var(--kartu);border-radius:10px;min-width:40px;height:40px;cursor:pointer;color:var(--awas)}
+.miqat-baris{border:1px solid var(--garis);border-radius:14px;padding:10px 12px;background:var(--kartu2);margin-top:8px}
+.miqat-baris .atas{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.miqat-baris .jarak{font-variant-numeric:tabular-nums;color:var(--emas);font-weight:700;white-space:nowrap;font-size:.9rem}
 </style>
 </head>
 <body>
@@ -283,15 +303,15 @@ table.aturan{width:100%;border-collapse:collapse;font-size:.95rem}table.aturan t
   <div class="cari-isi" id="cariHasil"></div>
 </div></div>
 
-<script src="config.js?v=20261118k"></script>
-<script src="content.js?v=20261118k"></script>
+<script src="config.js?v=20261120a"></script>
+<script src="content.js?v=20261120a"></script>
 <script>
 (function(){
 "use strict";
 var CFG=window.APP_CONFIG||{},M=window.MATERI,$=function(i){return document.getElementById(i);};
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 /* ---------- simpanan di perangkat ---------- */
-var KEY="pu:state",S={tamu:false,user:null,tgl:"",cek:{},lat:{},man:{},kartu:{},hit:{t:0,s:0},aksi:0,traktirLast:0,traktirOff:false,lunakOff:false,hari:[],besar:false,aman:false};
+var KEY="pu:state",S={tamu:false,user:null,tgl:"",cek:{},lat:{},man:{},kartu:{},hit:{t:0,s:0},aksi:0,traktirLast:0,traktirOff:false,lunakOff:false,hari:[],besar:false,aman:false,agenda:null,belanja:[]};
 function muat(){try{var o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)for(var k in o)S[k]=o[k];}catch(e){}}
 function simpan(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function hotel(s){try{return JSON.parse(localStorage.getItem("pu:hotel:"+s)||"null");}catch(e){return null;}}
@@ -325,11 +345,13 @@ function hotelKartu(s,nama){var j=jalan(s);if(!j)return "<div class='baris'><div
 var GRUP_MENU=[
   ["Persiapan",[["persiapan","persiapan","Checklist persiapan","Dokumen sampai perlengkapan","cek"],["koper","koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","latihan","Latihan fisik","Program jalan 30 hari","lat"],["langkah","langkah","Langkah 28 hari","Jadwal latihan bergambar"]]],
   ["Ilmu dan panduan",[["manasik","manasik","Manasik umrah","Langkah demi langkah","man"],["doa","doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","info","Info perjalanan","Waktu, uang, cuaca"]]],
-  ["Di sana",[["peta","peta","Peta dan maket","Pintu, hotel, toilet"],["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]]
+  ["Di sana",[["agenda","agenda","Agenda perjalanan","Kegiatan tiap hari","agd"],["peta","peta","Peta dan maket","Pintu, hotel, toilet"],["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["belanja","belanja","Belanja dan oleh-oleh","Daftar yang mau dibeli","blj"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]]
 ];
 function lencana(k){if(k==="cek"){var n=0,d=0;M.checklist.forEach(function(g){g.butir.forEach(function(b,i){n++;if(S.cek[g.id+i])d++;});});return d+"/"+n;}
   if(k==="lat"){var d2=0;for(var i=1;i<=30;i++)if(S.lat[i])d2++;return d2+"/30";}
-  if(k==="man"){var d3=0;M.manasik.forEach(function(m){if(S.man[m.id])d3++;});return d3+"/"+M.manasik.length;}return "";}
+  if(k==="man"){var d3=0;M.manasik.forEach(function(m){if(S.man[m.id])d3++;});return d3+"/"+M.manasik.length;}
+  if(k==="agd"){var x=hariPerjalanan();return x?"H"+(x.i+1)+"/"+x.n:(S.agenda?S.agenda.hari.length+" hari":"");}
+  if(k==="blj"){var b=S.belanja||[];if(!b.length)return "";return b.filter(function(y){return y.ok;}).length+"/"+b.length;}return "";}
 function menuKartu(){return GRUP_MENU.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='rel' data-rel>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='112' height='112' loading='lazy'><span class='teks'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></span></button>";}).join("")+"</div></section>";}).join("");}
 var relGerak={aktif:false};
 function pasangRel(){
@@ -344,6 +366,84 @@ function pasangRel(){
   relGerak.f=ikut;ikut();
 }
 var HAL={};
+/* ---------- agenda perjalanan ---------- */
+var BLN3=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],HRI=["Min","Sen","Sel","Rab","Kam","Jum","Sab"];
+function tglKe(i){if(!S.tgl)return null;var d=new Date(S.tgl+"T00:00:00");d.setDate(d.getDate()+i);return d;}
+function tglPendek(d){return d?HRI[d.getDay()]+", "+d.getDate()+" "+BLN3[d.getMonth()]:"";}
+function hariPerjalanan(){var G=S.agenda;if(!G||!S.tgl)return null;var s=sisaHari();if(s==null)return null;var i=-s;if(i<0||i>=G.hari.length)return null;return {i:i,n:G.hari.length,h:G.hari[i]};}
+function susunAgenda(n,mulai){var A=M.agenda,H=[];n=Math.max(5,Math.min(30,n|0));
+  function salin(a){return a.map(function(x){return {j:"",t:x.t,go:x.go||"",umrah:!!x.umrah,ok:false};});}
+  var isi=n-2,nMd=Math.max(1,Math.floor(isi/2)),nMk=isi-nMd,i,a;
+  if(mulai==="md"){
+    H.push({k:"jalan",a:salin(A.berangkat.concat(A.tibaMd))});
+    for(i=0;i<nMd;i++){a=A.md.slice();if(i===Math.min(1,nMd-1))a=a.concat(A.mdZiarah);if(i===Math.min(2,nMd-1)&&nMd>1)a=a.concat(A.mdRaudhah);if(nMd===1)a=a.concat(A.mdRaudhah);if(i===nMd-1)a=a.concat(A.mdAkhir);H.push({k:"md",a:salin(a)});}
+    for(i=0;i<nMk;i++){a=i===0?A.keMk.slice():A.mk.slice();if(i===Math.min(2,nMk-1)&&i>0)a=a.concat(A.mkZiarah);H.push({k:"mk",a:salin(a)});}
+    H.push({k:"jalan",a:salin(A.wada.concat(A.pulang))});
+  }else{
+    H.push({k:"jalan",a:salin(A.berangkat.concat(A.tibaMkUdara))});
+    for(i=0;i<nMk;i++){a=A.mk.slice();if(i===Math.min(1,nMk-1))a=a.concat(A.mkZiarah);H.push({k:"mk",a:salin(a)});}
+    for(i=0;i<nMd;i++){a=i===0?A.wada.concat(A.keMd):A.md.slice();if(i===Math.min(1,nMd-1)&&i>0)a=a.concat(A.mdZiarah);if(i===Math.min(2,nMd-1)&&i>0)a=a.concat(A.mdRaudhah);H.push({k:"md",a:salin(a)});}
+    H.push({k:"jalan",a:salin(A.pulang)});
+  }
+  return {lama:n,mulai:mulai,hari:H,diubah:false};}
+function namaKota(h,i,n){return h.k==="md"?"Madinah":h.k==="mk"?"Makkah":i===0?"Berangkat":i===n-1?"Pulang":"Perjalanan";}
+function goLabel(g){var r=g.split("/")[0];return {manasik:"Manasik",doa:"Doa",peta:"Peta",koper:"Koper",kartu:"Kartu"}[r]||"Buka";}
+function itemHTML(it,i,j){return "<label class='agenda-item"+(it.ok?" sudah":"")+"'><input type='checkbox' data-ai='"+i+":"+j+"'"+(it.ok?" checked":"")+">"+(it.j?"<span class='jam'>"+esc(it.j)+"</span>":"")+"<span class='tk'>"+esc(it.t)+"</span>"+(it.go?"<button class='pergi' data-go='"+esc(it.go)+"'>"+goLabel(it.go)+" ›</button>":"")+"</label>";}
+function pasangItem(ulang){V.querySelectorAll("[data-ai]").forEach(function(c){c.onchange=function(){var p=c.getAttribute("data-ai").split(":");var it=S.agenda.hari[+p[0]].a[+p[1]];it.ok=c.checked;simpan();if(c.checked)aksi();c.parentNode.classList.toggle("sudah",c.checked);};});
+  V.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(e){e.preventDefault();e.stopPropagation();var g=b.getAttribute("data-go").split("/");buka(g[0],g[1]);};});}
+var agendaUbah=false;
+function setelanAgendaHTML(G){var n=G?G.lama:9,m=G?G.mulai:"md";
+  return "<label class='isian'>Lama perjalanan (hari)<span class='pilihjk' id='aLama'>"+[9,12,14].map(function(x){return "<button type='button' data-lama='"+x+"' class='"+(n===x?"on":"")+"'>"+x+" hari</button>";}).join("")+"</span><input type='number' id='aLamaIsi' min='5' max='30' inputmode='numeric' value='"+n+"' aria-label='Lama perjalanan dalam hari'><span class='kecil'>Atau ketik jumlah hari lain, 5 sampai 30.</span></label>"+
+    "<label class='isian'>Kota pertama<span class='pilihjk' id='aMulai'><button type='button' data-mulai='md' class='"+(m==="md"?"on":"")+"'>Madinah dulu</button><button type='button' data-mulai='mk' class='"+(m==="mk"?"on":"")+"'>Makkah dulu</button></span></label>";}
+function pasangSetelan(){var lama=$("aLamaIsi"),mulai=V.querySelector("[data-mulai].on").getAttribute("data-mulai");
+  V.querySelectorAll("[data-lama]").forEach(function(b){b.onclick=function(){V.querySelectorAll("[data-lama]").forEach(function(x){x.classList.remove("on");});b.classList.add("on");lama.value=b.getAttribute("data-lama");};});
+  lama.oninput=function(){V.querySelectorAll("[data-lama]").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-lama")===lama.value);});};
+  V.querySelectorAll("[data-mulai]").forEach(function(b){b.onclick=function(){V.querySelectorAll("[data-mulai]").forEach(function(x){x.classList.remove("on");});b.classList.add("on");mulai=b.getAttribute("data-mulai");};});
+  return function(){return {n:+lama.value||9,m:mulai};};}
+HAL.agenda=function(){var G=S.agenda,h="<h2 class='judul-hal'>Agenda perjalanan</h2>";
+  if(!G){h+="<div class='kartu'><p style='margin-top:0'>Susun kegiatan tiap hari selama di Tanah Suci. Aplikasi menyiapkan contoh agenda umum, lalu Anda menyesuaikannya dengan itinerary dari travel.</p>"+setelanAgendaHTML(null)+
+      (S.tgl?"":"<p class='kecil'>Tanggal berangkat belum diisi. Isi di Beranda supaya agenda menampilkan tanggal dan hari ini.</p>")+"<div class='baris' style='margin-top:12px'><button class='btn utama tumbuh' id='aBuat'>Susun agenda</button></div></div>";
+    V.innerHTML=h;var ambil=pasangSetelan();$("aBuat").onclick=function(){var x=ambil();S.agenda=susunAgenda(x.n,x.m);simpan();aksi();buka("agenda");};return;}
+  var n=G.hari.length,kini=hariPerjalanan(),pilih=sub!=null&&!isNaN(+sub)?Math.max(0,Math.min(n-1,+sub)):(kini?kini.i:0),hr=G.hari[pilih],d0=tglKe(0),dN=tglKe(n-1);
+  h+="<p class='kecil' style='margin:-6px 0 0'>"+n+" hari · "+(G.mulai==="md"?"Madinah dulu":"Makkah dulu")+(d0?" · "+tglPendek(d0)+" sampai "+tglPendek(dN):" · tanggal berangkat belum diisi")+"</p>";
+  h+="<div class='hari-strip' role='tablist'>"+G.hari.map(function(x,i){var d=tglKe(i);return "<button role='tab' data-hari='"+i+"' class='"+(i===pilih?"on":"")+(kini&&kini.i===i?" kini":"")+"' aria-selected='"+(i===pilih)+"'><small>H"+(i+1)+"</small><b>"+(d?d.getDate():i+1)+"</b><small>"+(x.k==="md"?"Madinah":x.k==="mk"?"Makkah":"Jalan")+"</small></button>";}).join("")+"</div>";
+  var dp=tglKe(pilih),umrah=hr.a.some(function(x){return x.umrah;});
+  h+="<div class='kartu'><div class='baris'><div class='tumbuh'><p class='alis'>Hari ke-"+(pilih+1)+(kini&&kini.i===pilih?" · hari ini":"")+"</p><h2 style='margin:2px 0 0'>"+namaKota(hr,pilih,n)+(dp?"<span class='kecil' style='font-weight:400'> · "+tglPendek(dp)+"</span>":"")+"</h2></div><button class='btn' id='aUbah'>"+(agendaUbah?"Selesai":"Ubah")+"</button></div>";
+  if(!agendaUbah){h+=hr.a.length?hr.a.map(function(it,j){return itemHTML(it,pilih,j);}).join(""):"<p class='kecil'>Belum ada kegiatan. Ketuk Ubah untuk menambah.</p>";}
+  else{h+="<p class='kecil' style='margin:6px 0'>Jam boleh dikosongkan. Kegiatan berjam diurutkan otomatis.</p>"+hr.a.map(function(it,j){return "<div class='ubah-item'><input type='time' data-uj='"+j+"' value='"+esc(it.j)+"' aria-label='Jam'><input type='text' data-ut='"+j+"' value='"+esc(it.t)+"' aria-label='Kegiatan'><button data-uh='"+j+"' aria-label='Hapus kegiatan'>✕</button></div>";}).join("")+
+    "<div class='ubah-item' style='border-top:1px solid var(--garis);margin-top:6px;padding-top:12px'><input type='time' id='aJamBaru' aria-label='Jam kegiatan baru'><input type='text' id='aTeksBaru' placeholder='Kegiatan baru' aria-label='Kegiatan baru'><button id='aTambah' aria-label='Tambah kegiatan' style='color:var(--hijau);font-weight:700'>+</button></div>";}
+  h+="</div>";
+  if(umrah)h+="<div class='peringatan'><b>Hari umrah.</b> Setelah niat di miqat, jaga larangan ihram sampai tahallul. <a href='#manasik' data-r='manasik'>Lihat larangannya</a>.</div>";
+  h+="<details><summary>Atur ulang agenda</summary><div class='isi'>"+setelanAgendaHTML(G)+"<p class='kecil'>Menyusun ulang mengganti semua kegiatan dan centang dengan contoh agenda baru.</p><div id='aUlangWrap' class='baris'><button class='btn' id='aUlang'>Susun ulang</button></div></div></details>";
+  V.innerHTML=h;pasangItem();
+  V.querySelectorAll("[data-hari]").forEach(function(b){b.onclick=function(){sub=b.getAttribute("data-hari");HAL.agenda();};});
+  var aktif=V.querySelector(".hari-strip .on");if(aktif)aktif.scrollIntoView({inline:"center",block:"nearest"});
+  function urut(){var a=hr.a,berjam=a.filter(function(x){return x.j;}).sort(function(p,q){return p.j<q.j?-1:p.j>q.j?1:0;}),k=0;hr.a=a.map(function(x){return x.j?berjam[k++]:x;});}
+  $("aUbah").onclick=function(){if(agendaUbah){urut();G.diubah=true;simpan();}agendaUbah=!agendaUbah;sub=String(pilih);HAL.agenda();};
+  if(agendaUbah){
+    V.querySelectorAll("[data-uj]").forEach(function(x){x.onchange=function(){hr.a[+x.getAttribute("data-uj")].j=x.value;simpan();};});
+    V.querySelectorAll("[data-ut]").forEach(function(x){x.oninput=function(){hr.a[+x.getAttribute("data-ut")].t=x.value;simpan();};});
+    V.querySelectorAll("[data-uh]").forEach(function(x){x.onclick=function(){hr.a.splice(+x.getAttribute("data-uh"),1);G.diubah=true;simpan();sub=String(pilih);HAL.agenda();};});
+    function tambah(){var t=$("aTeksBaru").value.trim();if(!t){$("aTeksBaru").focus();return;}hr.a.push({j:$("aJamBaru").value,t:t,go:"",umrah:false,ok:false});urut();G.diubah=true;simpan();aksi();sub=String(pilih);HAL.agenda();setTimeout(function(){var i=$("aTeksBaru");if(i)i.focus();},30);}
+    $("aTambah").onclick=tambah;$("aTeksBaru").onkeydown=function(e){if(e.key==="Enter")tambah();};}
+  var ambil=pasangSetelan();
+  $("aUlang").onclick=function(){$("aUlangWrap").innerHTML="<button class='btn bahaya' id='aUlangYa'>Ya, susun ulang</button><button class='btn' id='aUlangTidak'>Batal</button>";
+    $("aUlangYa").onclick=function(){var x=ambil();S.agenda=susunAgenda(x.n,x.m);agendaUbah=false;simpan();buka("agenda");};$("aUlangTidak").onclick=function(){sub=String(pilih);HAL.agenda();};};
+};
+/* ---------- belanja dan oleh-oleh ---------- */
+HAL.belanja=function(){var B=S.belanja=S.belanja||[],sudah=B.filter(function(x){return x.ok;}).length;
+  var h="<h2 class='judul-hal'>Belanja dan oleh-oleh</h2><div class='kartu'><h2>Tambah barang</h2><div class='ubah-item' style='grid-template-columns:1fr auto'><input type='text' id='bBaru' placeholder='Misalnya kurma ajwa 1 kg' aria-label='Barang yang mau dibeli'><button id='bTambah' aria-label='Tambah' style='color:var(--hijau);font-weight:700'>+</button></div>";
+  var saran=M.belanjaSaran.filter(function(x){return !B.some(function(y){return y.t.toLowerCase()===x.toLowerCase();});});
+  if(saran.length)h+="<p class='kecil' style='margin:10px 0 6px'>Ketuk untuk menambahkan:</p><div class='chip-baris'>"+saran.map(function(x){return "<button data-saran='"+esc(x)+"'>+ "+esc(x)+"</button>";}).join("")+"</div>";
+  h+="</div><div class='kartu'><h2>Daftar <span class='kecil' style='font-weight:400'>"+(B.length?sudah+" dari "+B.length+" sudah dibeli":"masih kosong")+"</span></h2>"+B.map(function(x,i){return "<div class='agenda-item"+(x.ok?" sudah":"")+"'><input type='checkbox' data-bi='"+i+"'"+(x.ok?" checked":"")+" aria-label='Sudah dibeli'><span class='tk' style='flex:1'>"+esc(x.t)+"</span><button class='pergi' data-bh='"+i+"' aria-label='Hapus "+esc(x.t)+"' style='color:var(--awas)'>✕</button></div>";}).join("")+"</div>";
+  h+="<div class='peringatan'>Belanjaan ikut menambah berat koper. Cek batas bagasi dan aturan air zamzam sebelum membeli banyak. <a href='#koper' data-r='koper'>Koper dan bagasi</a>.</div>";
+  V.innerHTML=h;
+  function tambah(t){t=String(t||"").trim();if(!t)return;B.push({t:t,ok:false});simpan();aksi();HAL.belanja();setTimeout(function(){var i=$("bBaru");if(i)i.focus();},30);}
+  $("bTambah").onclick=function(){tambah($("bBaru").value);};$("bBaru").onkeydown=function(e){if(e.key==="Enter")tambah(this.value);};
+  V.querySelectorAll("[data-saran]").forEach(function(b){b.onclick=function(){tambah(b.getAttribute("data-saran"));};});
+  V.querySelectorAll("[data-bi]").forEach(function(c){c.onchange=function(){B[+c.getAttribute("data-bi")].ok=c.checked;simpan();HAL.belanja();};});
+  V.querySelectorAll("[data-bh]").forEach(function(b){b.onclick=function(){B.splice(+b.getAttribute("data-bh"),1);simpan();HAL.belanja();};});
+};
 HAL.beranda=function(){
   var c=pctCek(),l=pctLat(),m=pctMan(),sk=Math.round((c+l+m)/3*100),sisa=sisaHari(),nm=S.user?S.user.nama.split(" ")[0]:"";
   var bln=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
@@ -353,6 +453,12 @@ HAL.beranda=function(){
     "<p>Aplikasi ini menemani persiapan umroh Anda sejak masih di rumah sampai tiba di Tanah Suci. Isinya daftar persiapan dokumen dan perlengkapan, latihan jalan kaki bertahap supaya badan kuat menjalani tawaf dan sa'i, serta tuntunan manasik langkah demi langkah dengan doa dan dalil yang mengikuti sunnah. Ada juga peta Masjidil Haram dan Masjid Nabawi untuk mencari pintu, toilet, dan jarak dari hotel.</p>"+
     "<p>Mulailah dengan mengisi tanggal berangkat di bawah ini. Setelah itu cukup kerjakan tugas harian yang muncul. Semua catatan tersimpan di HP ini saja.</p>"+
     "<div class='baris'><button class='btn polos' id='prologTutup'>Sembunyikan</button></div></div>";
+  var kini=hariPerjalanan();
+  if(kini){var umr=kini.h.a.some(function(x){return x.umrah;});
+    h+="<section class='kartu' style='border-color:rgba(232,173,98,.55)'><div class='baris'><div class='tumbuh'><p class='alis'>Hari ini · H"+(kini.i+1)+" dari "+kini.n+"</p><h2 style='margin:2px 0 0'>"+namaKota(kini.h,kini.i,kini.n)+"</h2></div><button class='btn' data-r='agenda'>Agenda</button></div>"+
+      (kini.h.a.length?kini.h.a.map(function(it,j){return itemHTML(it,kini.i,j);}).join(""):"<p class='kecil'>Belum ada kegiatan untuk hari ini.</p>")+
+      (umr?"<div class='peringatan' style='margin-top:8px'><b>Hari umrah.</b> Jaga larangan ihram sampai tahallul. <a href='#manasik' data-r='manasik'>Lihat larangannya</a>.</div>":"")+"</section>";}
+  else if(S.tgl&&!S.agenda&&sisa!=null&&sisa>-30)h+="<button class='kartu' data-r='agenda' style='text-align:left;cursor:pointer;display:flex;gap:12px;align-items:center;font:inherit;color:inherit'><img src='ikon/menu/agenda.svg' alt='' width='56' height='56'><span><b>Susun agenda perjalanan</b><span class='kecil' style='display:block'>Kegiatan tiap hari di Madinah dan Makkah, lalu tampil di sini selama perjalanan.</span></span></button>";
   var R=40,K=2*Math.PI*R;
   var judulHitung=sisa==null?"<div class='angka' style='font-size:2rem'>Kapan <em style='margin:0'>berangkat?</em></div><div class='ket'>Isi tanggal supaya hitung mundur dan tugas harian menyesuaikan.</div>":
     sisa>0?"<div class='angka'>"+sisa+"<em>hari lagi</em></div><div class='ket'>Berangkat "+tglIndo(S.tgl)+"</div>":
@@ -372,7 +478,7 @@ HAL.beranda=function(){
   h+=menuKartu();
   h+="<div class='kartu'><h2>Hotel saya</h2><div style='display:flex;flex-direction:column;gap:12px'>"+hotelKartu("mk","Makkah")+hotelKartu("md","Madinah")+"</div><p class='kecil'>Pilih hotel dari menu Peta: ketuk hotelnya, lalu tekan Jadikan hotel saya.</p></div>";
   if(!S.lunakOff&&S.hari.length>=3&&CFG.mayarUrl)h+="<div class='kartu' style='border-color:var(--emas-isi)'><h2>Terbantu oleh aplikasi ini?</h2><p>Aplikasi ini gratis. Kalau bermanfaat, Anda bisa mentraktir pengembangnya secangkir kopi.</p><div class='baris'><a class='btn emas' href='"+esc(CFG.mayarUrl)+"' target='_blank' rel='noopener'>Traktir kopi</a><button class='btn polos' id='lunakOff'>Lewati</button></div></div>";
-  V.innerHTML=h;
+  V.innerHTML=h;pasangItem();
   pasangRel();
   $("tgl").onchange=function(){S.tgl=this.value;simpan();buka("beranda");};
   if($("lunakOff"))$("lunakOff").onclick=function(){S.lunakOff=true;simpan();buka("beranda");};
@@ -389,6 +495,7 @@ HAL.persiapan=function(){
     var det=c.closest("details"),g=M.checklist.filter(function(x){return x.id===det.getAttribute("data-g");})[0];det.querySelector(".hit").textContent=g.butir.filter(function(b,i){return S.cek[g.id+i];}).length+"/"+g.butir.length;if(c.checked){aksi();cobaAjak();}};});
 };
 HAL.manasik=function(){
+  var keMiqat=false;if(sub==="miqat"){sub=null;keMiqat=true;}
   if(sub){var m=M.manasik.filter(function(x){return x.id===sub;})[0],ix=M.manasik.indexOf(m);
     var h="<button class='btn' id='balik' style='align-self:flex-start'>← Semua langkah</button><h2 class='judul-hal'>"+(ix+1)+". "+esc(m.judul)+"</h2>";
     h+="<div class='kartu'><h2>Yang dikerjakan</h2><ol class='kerja'>"+m.kerjakan.map(function(k){return "<li>"+esc(k)+"</li>";}).join("")+"</ol></div>";
@@ -405,7 +512,11 @@ HAL.manasik=function(){
   h+="<div class='kartu'><h2>Penghitung putaran</h2><div class='hitung'>"+[["t","Tawaf"],["s","Sa'i"]].map(function(x){return "<div class='kotak'><div class='kecil'>"+x[1]+"</div><div class='n' id='n_"+x[0]+"'>"+(S.hit[x[0]]||0)+"<span style='font-size:1rem;color:var(--redup)'> / 7</span></div><div class='tmb'><button data-h='"+x[0]+"' data-d='-1' aria-label='Kurangi "+x[1]+"'>−</button><button class='plus' data-h='"+x[0]+"' data-d='1'>+ 1</button><button data-h='"+x[0]+"' data-d='0' aria-label='Ulang "+x[1]+"'>↺</button></div></div>";}).join("")+"</div></div>";
   M.manasik.forEach(function(m,i){h+="<button class='langkah"+(S.man[m.id]?" sudah":"")+"' data-m='"+m.id+"'><span class='no'>"+(S.man[m.id]?"✓":i+1)+"</span><span><b>"+esc(m.judul)+"</b><small>"+esc(m.ringkas)+"</small></span></button>";});
   var L=M.larangan;h+="<details><summary>Larangan selama ihram</summary><div class='isi'><h3 style='margin:0 0 4px'>Pria dan wanita</h3><ul class='rapi'>"+L.semua.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><h3 style='margin:10px 0 4px'>Khusus pria</h3><ul class='rapi'>"+L.pria.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><h3 style='margin:10px 0 4px'>Khusus wanita</h3><ul class='rapi'>"+L.wanita.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul><p class='kecil'>Bila melanggar karena lupa atau tidak tahu, tanyakan hukumnya kepada pembimbing.</p></div></details>";
+  var Q=M.miqat;h+="<details id='miqat'"+(keMiqat?" open":"")+"><summary>Miqat: tempat mulai ihram</summary><div class='isi'><p style='margin-top:0'>"+esc(Q.pengantar)+"</p><p class='kecil'>Angka di kanan adalah perkiraan jarak ke Makkah. Sumber menyebut angka yang berbeda-beda, jadi dibulatkan.</p>"+
+    Q.daftar.map(function(q){return "<div class='miqat-baris'><div class='atas'><b>"+esc(q.n)+"</b><span class='jarak'>"+esc(q.jarak)+"</span></div><div class='kecil'>"+esc(q.untuk)+"</div><div style='margin-top:4px'>"+esc(q.ket)+"</div></div>";}).join("")+
+    "<h3 style='margin:14px 0 4px'>Perlu diingat</h3><ul class='rapi'>"+Q.catatan.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+"</ul>"+dalilHTML(Q.dalil)+"</div></details>";
   V.innerHTML=h;
+  if(keMiqat)setTimeout(function(){var e=$("miqat");if(e)e.scrollIntoView({block:"start"});},30);
   V.querySelectorAll("[data-m]").forEach(function(b){b.onclick=function(){buka("manasik",b.getAttribute("data-m"));};});
   V.querySelectorAll("[data-h]").forEach(function(b){b.onclick=function(){var k=b.getAttribute("data-h"),d=+b.getAttribute("data-d");S.hit[k]=d===0?0:Math.max(0,Math.min(7,(S.hit[k]||0)+d));simpan();$("n_"+k).firstChild.nodeValue=S.hit[k];};});
 };
@@ -477,10 +588,20 @@ HAL.akun=function(){
   var u=S.user,h="<h2 class='judul-hal'>Akun dan privasi</h2><div class='kartu'>";
   if(u)h+="<h2>"+esc(u.nama)+"</h2><p class='kecil'>"+esc(u.email)+" · masuk dengan Google</p><button class='btn' id='keluar'>Keluar</button>";
   else h+="<h2>Anda memakai aplikasi sebagai tamu</h2><p class='kecil'>"+(CFG.googleClientId?"Masuk dengan Google untuk menampilkan nama Anda di aplikasi.":"Login Google belum diaktifkan pada salinan aplikasi ini.")+"</p>"+(CFG.googleClientId?"<div id='gbtn2'></div>":"");
+  h+="</div><div class='kartu'><h2>Cadangan data</h2><p class='kecil' style='margin-top:0'>Semua catatan hanya ada di HP ini. Simpan cadangan sebelum ganti HP atau membersihkan browser, lalu pulihkan di HP baru.</p><div class='baris' id='cadWrap'><button class='btn' id='cadSimpan'>Simpan cadangan</button><button class='btn' id='cadPulih'>Pulihkan dari cadangan</button><input type='file' id='cadFile' accept='application/json,.json' hidden></div><p class='kecil' id='cadPesan' style='margin-bottom:0'></p>";
   h+="</div><div class='kartu'><h2>Data Anda</h2><ul class='rapi'><li>Centang, catatan latihan, hotel pilihan, dan isi Kartu perjalanan tersimpan di perangkat ini saja.</li><li>Bila Anda masuk dengan Google, aplikasi membaca nama, alamat email, dan foto profil, lalu menyimpannya di perangkat ini untuk sapaan. Data itu tidak dikirim ke server pengembang.</li>"+(CFG.goatcounterKode?"<li>Aplikasi menghitung jumlah kunjungan dan halaman yang dibuka lewat GoatCounter, tanpa cookie dan tanpa nama atau email. Pengembang hanya melihat angka total, termasuk berapa akun Google yang pernah login, tanpa tahu akun yang mana.</li>":"")+"<li>Ganti HP atau hapus data browser berarti catatan ikut hilang.</li></ul><div id='hapusWrap' style='margin-top:10px'><button class='btn bahaya' id='hapus'>Hapus semua data di perangkat ini</button></div></div>";
   V.innerHTML=h;
   if($("keluar"))$("keluar").onclick=function(){S.user=null;S.tamu=false;simpan();try{google.accounts.id.disableAutoSelect();}catch(e){}tampil();};
   if($("gbtn2"))gambarTombol($("gbtn2"));
+  $("cadSimpan").onclick=function(){var data={app:"bekal-umroh",versi:CFG.versi||"",dibuat:new Date().toISOString(),state:S,hotel:{mk:hotel("mk"),md:hotel("md")}};
+    try{var url=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:"application/json"})),a=document.createElement("a");a.href=url;a.download="bekal-umroh-cadangan-"+hariIni+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},500);
+      $("cadPesan").textContent="Berkas cadangan sudah diunduh. Simpan di tempat aman, misalnya Google Drive atau kirim ke WhatsApp sendiri.";}catch(e){$("cadPesan").textContent="Cadangan gagal dibuat di browser ini.";}};
+  $("cadPulih").onclick=function(){$("cadFile").click();};
+  $("cadFile").onchange=function(){var f=this.files&&this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){var d;try{d=JSON.parse(r.result);}catch(e){d=null;}
+      if(!d||d.app!=="bekal-umroh"||!d.state){$("cadPesan").textContent="Berkas ini bukan cadangan Bekal Umroh.";return;}
+      $("cadWrap").innerHTML="<p style='margin:0 0 8px;width:100%'>Pulihkan cadangan tanggal "+esc(String(d.dibuat||"").slice(0,10))+"? Catatan yang ada di HP ini akan diganti.</p><button class='btn bahaya' id='cadYa'>Ya, pulihkan</button><button class='btn' id='cadBatal'>Batal</button>";
+      $("cadYa").onclick=function(){try{var st=d.state;if(S.user&&!st.user)st.user=S.user;localStorage.setItem(KEY,JSON.stringify(st));["mk","md"].forEach(function(k){if(d.hotel&&d.hotel[k])localStorage.setItem("pu:hotel:"+k,JSON.stringify(d.hotel[k]));});}catch(e){}location.reload();};
+      $("cadBatal").onclick=function(){buka("akun");};};r.readAsText(f);};
   $("hapus").onclick=function(){$("hapusWrap").innerHTML="<p style='margin:0 0 8px'>Semua centang, catatan, dan isi kartu akan hilang dan tidak bisa dikembalikan.</p><div class='baris'><button class='btn bahaya' id='hapusYa'>Ya, hapus semuanya</button><button class='btn' id='hapusTidak'>Batal</button></div>";
     $("hapusYa").onclick=function(){try{localStorage.removeItem(KEY);localStorage.removeItem("pu:hotel:mk");localStorage.removeItem("pu:hotel:md");}catch(e){}location.reload();};$("hapusTidak").onclick=function(){buka("akun");};};
 };
@@ -533,7 +654,7 @@ HAL.tentang=function(){
 HAL.menu=function(){
   var G=[["Persiapan",[["koper","koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","latihan","Latihan fisik","Program jalan 30 hari","lat"],["langkah","langkah","Langkah 28 hari","Jadwal latihan bergambar"]]],
     ["Ilmu dan panduan",[["doa","doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","info","Info perjalanan","Waktu, uang, cuaca"]]],
-    ["Di sana",[["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]],
+    ["Di sana",[["agenda","agenda","Agenda perjalanan","Kegiatan tiap hari","agd"],["kartu","kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["belanja","belanja","Belanja dan oleh-oleh","Daftar yang mau dibeli","blj"],["darurat","darurat","Bila ada masalah","Tersesat, sakit, kehilangan"]]],
     ["Aplikasi",[["traktir","traktir","Traktir pengembang","Gratis, traktir bila bermanfaat"],["akun","akun","Akun dan privasi","Login dan data Anda"],["tentang","tentang","Tentang dan sumber","Status tinjauan dan rujukan"]]]];
   if(adalahAdmin()&&CFG.goatcounterKode)G.push(["Admin",[["statistik","statistik","Statistik","Kunjungan dan pengguna baru"]]]);
   V.innerHTML="<h2 class='judul-hal'>Menu</h2>"+G.map(function(g){return "<section class='grup'><div class='grup-judul'><span>"+esc(g[0])+"</span></div><div class='kisi-menu'>"+g[1].map(function(c){var l=c[4]?lencana(c[4]):"";return "<button class='mkartu' data-r='"+c[0]+"'>"+(l?"<span class='lencana'>"+l+"</span>":"")+"<img src='ikon/menu/"+c[1]+".svg' alt='' width='96' height='96' loading='lazy'><span class='teks'><b>"+esc(c[2])+"</b><small>"+esc(c[3])+"</small></span></button>";}).join("")+"</div></section>";}).join("");
@@ -549,8 +670,8 @@ function buka(r,s){
   if(!HAL[r]&&!BINGKAI[r])r="beranda";rute=r;sub=s||null;hitung(r);
   var tab=TAB[r]?r:"menu";document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===tab);});
   var pw=$("petaWrap"),hw=$("halWrap");hw.style.display="none";
-  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261118k' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
-  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261118k#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
+  if(r==="langkah"){if(!halSiap){hw.innerHTML="<iframe src='langkah-menuju-umrah.html?v=20261120a' title='Langkah Menuju Umrah'></iframe>";halSiap=true;}hw.style.display="block";pw.style.display="none";V.style.display="none";}
+  else if(r==="peta"){if(!petaSiap){pw.innerHTML="<iframe src='peta.html?v=20261120a#embed"+(s==="md"?"-md":"")+"' title='Peta Masjidil Haram dan Masjid Nabawi' allowfullscreen></iframe>";petaSiap=true;}pw.style.display="block";V.style.display="none";}
   else{pw.style.display="none";V.style.display="flex";HAL[r]();if(!s)V.scrollTop=0;}
   try{if(location.hash.slice(1)!==r)history.replaceState(null,"","#"+r);}catch(e){}
 }
@@ -564,9 +685,11 @@ $("btnAkun").onclick=function(){buka("akun");};
 function polos(t){return String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[’'`]/g,"").replace(/[^a-z0-9 ]+/g," ").replace(/\s+/g," ").trim();}
 var INDEKS=null;
 function bangunIndeks(){var X=[];function t(j,judul,ket,go,isi){X.push({j:j,judul:judul,ket:ket||"",go:go,cari:polos(judul+" "+(ket||"")+" "+(isi||""))});}
-  [["persiapan","Checklist persiapan","Dokumen sampai perlengkapan"],["koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","Latihan fisik 30 hari","Program jalan kaki bertahap"],["langkah","Langkah 28 hari","Jadwal latihan bergambar"],["manasik","Manasik umrah","Langkah demi langkah, penghitung tawaf dan sa'i"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","Info perjalanan","Waktu, uang, cuaca"],["peta","Peta dan maket","Pintu, hotel, toilet, terminal bus"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]].forEach(function(x){t("Halaman",x[1],x[2],[x[0]]);});
+  [["agenda","Agenda perjalanan","Kegiatan tiap hari di Madinah dan Makkah"],["belanja","Belanja dan oleh-oleh","Daftar yang mau dibeli"],["persiapan","Checklist persiapan","Dokumen sampai perlengkapan"],["koper","Koper dan bagasi","Isi tas, kabin, bagasi"],["latihan","Latihan fisik 30 hari","Program jalan kaki bertahap"],["langkah","Langkah 28 hari","Jadwal latihan bergambar"],["manasik","Manasik umrah","Langkah demi langkah, penghitung tawaf dan sa'i"],["doa","Doa dan dzikir","Bacaan selama perjalanan"],["info","Info perjalanan","Waktu, uang, cuaca"],["peta","Peta dan maket","Pintu, hotel, toilet, terminal bus"],["kartu","Kartu perjalanan","Untuk ditunjukkan ke petugas"],["darurat","Bila ada masalah","Tersesat, sakit, kehilangan"],["traktir","Traktir pengembang","Gratis, traktir bila bermanfaat"],["akun","Akun dan privasi","Login dan data Anda"],["tentang","Tentang dan sumber","Status tinjauan dan rujukan"]].forEach(function(x){t("Halaman",x[1],x[2],[x[0]]);});
   M.manasik.forEach(function(m,i){t("Manasik",(i+1)+". "+m.judul,m.ringkas,["manasik",m.id],(m.kerjakan||[]).join(" ")+" "+(m.catatan||"")+" "+(m.baca||[]).map(function(b){return (b.lb||"")+" "+(b.lt||"")+" "+(b.id||"");}).join(" "));});
   var L=M.larangan;t("Manasik","Larangan selama ihram","Pria dan wanita, khusus pria, khusus wanita",["manasik"],L.semua.concat(L.pria,L.wanita).join(" "));
+  t("Manasik","Miqat: tempat mulai ihram",M.miqat.pengantar,["manasik","miqat"],M.miqat.catatan.join(" ")+" Bir Ali Tan'im Jeddah");
+  M.miqat.daftar.forEach(function(q){t("Miqat",q.n,q.untuk+", "+q.jarak+" dari Makkah",["manasik","miqat"],q.ket);});
   M.checklist.forEach(function(g){g.butir.forEach(function(b,i){t("Persiapan",b,g.judul,["persiapan",g.id,g.id+i]);});});
   M.doa.forEach(function(d){t("Doa",d.lb||"Doa",d.id,["doa"],d.lt);});
   M.madinah.forEach(function(x){t("Madinah",x.split(". ")[0].replace(/\.$/,""),"Doa dan dzikir, bagian Tentang Madinah",["doa"],x);});
@@ -577,7 +700,7 @@ function bangunIndeks(){var X=[];function t(j,judul,ket,go,isi){X.push({j:j,judu
   M.latihan.gerakan.forEach(function(g){t("Latihan",g.n,g.c,["latihan"]);});
   ISIAN.forEach(function(f){t("Kartu",f[1],"Isian Kartu perjalanan",["kartu"]);});
   return X;}
-var CHIP=["Miqat","Talbiyah","Tawaf","Sa'i","Tahallul","Larangan ihram","Raudhah","Paspor","Power bank","Tersesat","Pintu","Hotel"];
+var CHIP=["Agenda","Miqat","Talbiyah","Tawaf","Sa'i","Tahallul","Larangan ihram","Raudhah","Paspor","Power bank","Tersesat","Pintu","Hotel"];
 function sorotTeks(teks,kata){var e=esc(teks);kata.forEach(function(k){if(k.length<2)return;var re=new RegExp("("+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig");e=e.replace(re,"<mark>$1</mark>");});return e;}
 function cariJalan(q){var box=$("cariHasil"),qp=polos(q);if(!INDEKS)INDEKS=bangunIndeks();
   if(!qp){box.innerHTML="<p class='alis'>Pencarian populer</p><div class='chip-baris'>"+CHIP.map(function(c){return "<button data-chip='"+esc(c)+"'>"+esc(c)+"</button>";}).join("")+"</div><p class='kecil' style='margin:4px 2px 0'>Mencari di checklist, manasik, doa, koper, info perjalanan, dan panduan darurat. Nama pintu dan hotel dicari di menu Peta.</p>";return;}

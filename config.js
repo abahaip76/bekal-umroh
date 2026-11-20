@@ -3,8 +3,9 @@ window.APP_CONFIG = {
   name: "Bekal Umroh",
   tagline: "Persiapan, manasik, dan peta dalam satu aplikasi",
   /* Naikkan angka versi setiap kali ada pembaruan, lalu tambahkan catatannya di bagian paling atas riwayat. */
-  versi: "1.3.0",
+  versi: "1.4.0",
   riwayat: [
+    {v: "1.4.0", tgl: "20 November 2026", isi: ["Agenda perjalanan: kegiatan tiap hari di Madinah dan Makkah, disusun dari contoh 9, 12, atau 14 hari lalu bisa diubah", "Kartu Hari ini di Beranda selama perjalanan, lengkap dengan centang dan pengingat larangan ihram pada hari umrah", "Penjelasan lima miqat beserta dalilnya di halaman Manasik", "Daftar belanja dan oleh-oleh", "Cadangan data: simpan dan pulihkan catatan saat ganti HP"]},
     {v: "1.3.0", tgl: "18 November 2026", isi: ["Tampilan baru: layar depan dengan ringkasan isi aplikasi, judul berhuruf serif, dan tema gelap atau terang mengikuti pengaturan HP", "Beranda: hitung mundur keberangkatan dan lingkaran kesiapan dalam satu kartu", "Pencarian cepat lewat tombol kaca pembesar untuk checklist, manasik, doa, koper, info, dan panduan darurat", "Hasil pencarian bisa diteruskan ke Peta untuk mencari pintu dan hotel", "Penghitung tawaf dan sa'i tidak lagi terpotong di layar HP yang sempit"]},
     {v: "1.2.0", tgl: "18 November 2026", isi: ["Statistik pengunjung anonim untuk pengembang (tanpa nama, email, atau cookie)", "Hitungan akun Google yang login dan pengguna tamu baru, tanpa mencatat siapa orangnya", "Menu Statistik untuk admin, dengan grafik kunjungan per hari dan per halaman"]},
     {v: "1.1.1", tgl: "18 November 2026", isi: ["Peta: Maysan Al Mashaer Hotel bisa dicari (di OpenStreetMap masih bernama Rayyana Ajyad Hotel)", "Pencarian peta lebih longgar: urutan kata dan tanda hubung tidak lagi berpengaruh"]},
