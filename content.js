@@ -208,6 +208,50 @@ window.MATERI = {
       "Benda tajam, bahan mudah terbakar, dan yang sejenisnya dilarang dibawa ke kabin pesawat."
     ]
   },
+  /* Miqat: lima tempat mulai ihram. Jarak ke Makkah dibulatkan karena sumber berbeda-beda. */
+  miqat: {
+    pengantar:"Miqat adalah batas tempat jamaah umrah mulai berihram. Pakaian ihram boleh dipakai lebih awal, tetapi niat diucapkan di miqat atau saat sejajar dengannya.",
+    daftar:[
+      {n:"Dzul Hulaifah (Bir Ali)", untuk:"Penduduk Madinah dan yang datang lewat Madinah", jarak:"±420–450 km", ket:"Jamaah yang ke Madinah lebih dulu berniat di sini saat bus menuju Makkah."},
+      {n:"Al-Juhfah", untuk:"Dari arah Syam, Mesir, dan Afrika Utara", jarak:"±180–190 km", ket:"Kini jamaah biasanya berihram di Rabigh, sedikit sebelum Juhfah."},
+      {n:"Qarnul Manazil (As-Sail al-Kabir)", untuk:"Dari Najd, Riyadh, dan Thaif", jarak:"±75–80 km", ket:"Miqat terdekat ke Makkah."},
+      {n:"Yalamlam (As-Sa'diyah)", untuk:"Dari Yaman dan arah selatan", jarak:"±90–100 km", ket:"Pesawat dari Indonesia ke Jeddah biasanya melintasi garis sejajar miqat di sisi selatan atau timur. Awak kabin mengumumkan saatnya."},
+      {n:"Dzatu 'Irq", untuk:"Dari Irak dan arah timur laut", jarak:"±90–110 km", ket:"Ditetapkan oleh Umar bin Khattab, dan ada riwayat dari Aisyah bahwa Nabi juga menetapkannya."}
+    ],
+    catatan:[
+      "Jangan melewati miqat tanpa berihram bila berniat umrah. Bila terlanjur, segera tanyakan pembimbing.",
+      "Orang yang tinggal di dalam batas miqat berihram dari tempat tinggalnya.",
+      "Untuk umrah yang dimulai dari Makkah, jamaah keluar dulu ke tanah halal, misalnya Tan'im (Masjid Aisyah), lalu berniat di sana.",
+      "Ada ulama yang membolehkan niat di Bandara Jeddah bagi jamaah yang mendarat di sana. Bila travel Anda memakai pendapat ini, ikuti arahan pembimbing."
+    ],
+    dalil:[
+      {t:"Empat miqat yang ditetapkan Nabi", r:"HR. Bukhari no. 1524, Muslim no. 1181", s:"ok"},
+      {t:"Dzatu 'Irq ditetapkan Umar", r:"HR. Bukhari no. 1531", s:"ok"},
+      {t:"Dzatu 'Irq untuk penduduk Irak (riwayat Aisyah)", r:"HR. Abu Dawud no. 1739, An-Nasa'i", s:"ok"},
+      {t:"Umrah Aisyah dari Tan'im", r:"HR. Bukhari no. 1784", s:"cek"}
+    ]
+  },
+
+  /* Templat agenda perjalanan. Kegiatan umum tanpa nama travel; jamaah mengubahnya
+     sesuai itinerary masing-masing. go: rute di aplikasi yang relevan. */
+  agenda: {
+    berangkat:[{t:"Kumpul di bandara sesuai jadwal travel"},{t:"Pastikan paspor, tiket, dan Kartu perjalanan ada di tas kecil", go:"kartu"}],
+    tibaMd:[{t:"Tiba di Madinah, check-in hotel, lalu istirahat"},{t:"Salat pertama di Masjid Nabawi. Masuk dengan kaki kanan dan baca doa masuk masjid", go:"doa"}],
+    tibaMkUdara:[{t:"Pakai ihram sebelum naik pesawat atau di pesawat", go:"manasik/siap"},{t:"Niat umrah dan talbiyah saat pesawat melintasi miqat (awak kabin mengumumkan)", go:"manasik/niat"},{t:"Tiba di Jeddah, lanjut ke Makkah, check-in hotel"},{t:"Umrah: tawaf, salat dua rakaat, sa'i, tahallul. Bila tiba larut, ikuti jadwal pembimbing", go:"manasik", umrah:true}],
+    md:[{t:"Salat lima waktu berjamaah di Masjid Nabawi"}],
+    mdZiarah:[{t:"Ziarah Madinah bersama rombongan (Quba, Uhud, dan lainnya sesuai jadwal travel)", go:"peta"}],
+    mdRaudhah:[{t:"Masuk Raudhah sesuai jadwal izin di aplikasi Nusuk atau tasreh rombongan", go:"doa"}],
+    mdAkhir:[{t:"Siapkan pakaian ihram dan sandal di tas kabin untuk besok", go:"koper"}],
+    keMk:[{t:"Mandi sunnah dan pakai pakaian ihram di hotel", go:"manasik/siap"},{t:"Check-out, berangkat ke Makkah"},{t:"Niat umrah dan talbiyah di miqat Bir Ali", go:"manasik/niat"},{t:"Check-in hotel di Makkah, istirahat sejenak"},{t:"Umrah: tawaf, salat dua rakaat, sa'i, tahallul", go:"manasik", umrah:true}],
+    mk:[{t:"Salat lima waktu berjamaah di Masjidil Haram"},{t:"Perbanyak tawaf sunnah di luar waktu padat"}],
+    mkZiarah:[{t:"Ziarah Makkah bersama rombongan sesuai jadwal travel", go:"peta"}],
+    wada:[{t:"Tawaf wada (perpisahan) sebelum meninggalkan Makkah. Ikuti arahan pembimbing", go:"manasik/tawaf"}],
+    keMd:[{t:"Check-out, perjalanan ke Madinah"},{t:"Check-in hotel di Madinah, salat di Masjid Nabawi"}],
+    pulang:[{t:"Check-out dan timbang ulang koper", go:"koper"},{t:"Menuju bandara, penerbangan pulang"}]
+  },
+
+  belanjaSaran:["Kurma","Sajadah","Tasbih","Peci atau kopiah","Mukena","Al-Qur'an saku","Kacang dan cokelat","Minyak wangi tanpa alkohol"],
+
   darurat: [
     {judul:"Tersesat atau terpisah dari rombongan", langkah:["Berhenti dan menepi. Jangan terus berjalan sambil panik.","Lihat nomor pintu atau nomor toilet terdekat. Catat atau foto.","Buka menu Peta, cari nomor itu, lalu lihat arah ke hotel Anda.","Telepon tour leader atau muthawif, atau tulis posisi Anda di grup WhatsApp rombongan.","Cari petugas berseragam atau pos jamaah tersesat, lalu tunjukkan Kartu perjalanan dan ID card dari travel.","Kalau baterai hampir habis, tunggu di titik kumpul yang sudah disepakati rombongan."]},
     {judul:"Sakit atau sangat lelah", langkah:["Istirahat dulu. Ibadah boleh ditunda sampai badan pulih.","Minum air dan cari tempat teduh.","Hubungi pembimbing. Minta diantar ke pos kesehatan atau klinik terdekat.","Tunjukkan catatan riwayat penyakit dan obat di Kartu perjalanan.","Nyeri dada, sesak berat, atau pingsan adalah keadaan gawat. Minta tolong orang terdekat memanggil petugas saat itu juga."]},
